@@ -1,0 +1,1918 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+  """measured in seconds"""
+  ttl: Int! = 60
+) on QUERY
+
+input AuthAnonymousInput {
+  deviceId: String!
+  tenantId: String!
+}
+
+input AuthEmailInput {
+  email: citext!
+  state: String
+  tenantId: String!
+  useVerificationCode: Boolean
+}
+
+input AuthEmailPasswordInput {
+  email: citext!
+  password: String!
+  tenantId: String!
+}
+
+input AuthEmailPasswordSignUpInput {
+  displayNameOverride: String
+  email: citext!
+  firstName: String
+  lastName: String
+  password: String!
+  state: String
+  tenantId: String!
+  useVerificationCode: Boolean
+  username: citext
+}
+
+input AuthEmailSignupInput {
+  displayNameOverride: String
+  email: citext!
+  firstName: String
+  lastName: String
+  state: String
+  tenantId: String!
+  useVerificationCode: Boolean
+  username: citext
+}
+
+input AuthEmailTicketInput {
+  email: citext!
+  tenantId: String!
+  ticket: String!
+}
+
+type AuthOutput {
+  profileId: uuid
+  sessionId: String
+  tenantId: String!
+  token: String
+}
+
+input AuthResetPasswordInput {
+  email: citext!
+  password: String!
+  tenantId: String!
+  ticket: String!
+}
+
+input AuthSmsCodeInput {
+  code: String!
+  mobile: citext!
+  tenantId: String!
+}
+
+input AuthSmsInput {
+  mobile: citext!
+  tenantId: String!
+}
+
+input AuthSmsSignUpInput {
+  displayNameOverride: String
+  firstName: String
+  lastName: String
+  mobile: citext!
+  tenantId: String!
+  username: citext
+}
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input BooleanComparisonExp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _isNull: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+Boolean expression to compare columns of type "citext". All fields are combined with logical 'AND'.
+"""
+input CitextComparisonExp {
+  _eq: citext
+  _gt: citext
+  _gte: citext
+  """does the column match the given case-insensitive pattern"""
+  _ilike: citext
+  _in: [citext!]
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: citext
+  _isNull: Boolean
+  """does the column match the given pattern"""
+  _like: citext
+  _lt: citext
+  _lte: citext
+  _neq: citext
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: citext
+  _nin: [citext!]
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: citext
+  """does the column NOT match the given pattern"""
+  _nlike: citext
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: citext
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: citext
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: citext
+  """does the column match the given SQL regular expression"""
+  _similar: citext
+}
+
+input ContactFormInput {
+  data: jsonb!
+  email: String!
+  name: String!
+  profileId: String
+  tenantId: String!
+  turnstileToken: String!
+}
+
+"""ordering argument of a cursor"""
+enum CursorOrdering {
+  """ascending ordering of the cursor"""
+  ASC
+  """descending ordering of the cursor"""
+  DESC
+}
+
+"""
+Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
+"""
+input DateComparisonExp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _isNull: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+"""
+columns and relationships of "event"
+"""
+type Event {
+  createdAt: timestamptz!
+  endDate: date!
+  endTimestamp: timestamptz
+  """An object relationship"""
+  eventLive: EventLive
+  id: uuid!
+  isPublic: Boolean!
+  kind: String!
+  label: String
+  """An object relationship"""
+  location: GeoLocation
+  locationId: uuid
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  name: citext!
+  """An object relationship"""
+  profile: Profile!
+  profileId: uuid!
+  raffleId: uuid
+  startDate: date!
+  startTimestamp: timestamptz
+  templateId: uuid
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+columns and relationships of "event_availability_kind"
+"""
+type EventAvailabilityKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "event_availability_kind". All fields are combined with a logical 'AND'.
+"""
+input EventAvailabilityKindBoolExp {
+  _and: [EventAvailabilityKindBoolExp!]
+  _not: EventAvailabilityKindBoolExp
+  _or: [EventAvailabilityKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "event_availability_kind"."""
+input EventAvailabilityKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "event_availability_kind"
+"""
+enum EventAvailabilityKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "event_availability_kind"
+"""
+input EventAvailabilityKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: EventAvailabilityKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EventAvailabilityKindStreamCursorValueInput {
+  id: String
+}
+
+"""
+Boolean expression to filter rows from the table "event". All fields are combined with a logical 'AND'.
+"""
+input EventBoolExp {
+  _and: [EventBoolExp!]
+  _not: EventBoolExp
+  _or: [EventBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  endDate: DateComparisonExp
+  endTimestamp: TimestamptzComparisonExp
+  eventLive: EventLiveBoolExp
+  id: UuidComparisonExp
+  isPublic: BooleanComparisonExp
+  kind: StringComparisonExp
+  label: StringComparisonExp
+  location: GeoLocationBoolExp
+  locationId: UuidComparisonExp
+  metadata: JsonbComparisonExp
+  name: CitextComparisonExp
+  profile: ProfileBoolExp
+  profileId: UuidComparisonExp
+  raffleId: UuidComparisonExp
+  startDate: DateComparisonExp
+  startTimestamp: TimestamptzComparisonExp
+  templateId: UuidComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""
+columns and relationships of "event_live"
+"""
+type EventLive {
+  cleanupReady: Boolean
+  createdAt: timestamptz
+  """An object relationship"""
+  event: Event!
+  eventId: uuid!
+  id: String!
+  isLive: Boolean
+  isPaused: Boolean
+  """Gets the response counts for the currently active question_set"""
+  liveResponseCounts(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  nextTimer: timestamptz
+  """An object relationship"""
+  profile: Profile!
+  profileId: uuid!
+  questionId: uuid
+  questionSetId: uuid
+  raffleId: uuid
+  """
+  A computed field, executes function "current_time"
+  """
+  serverTime: timestamptz
+  showAfterQuestionDetails: Boolean!
+  startTimestamp: timestamptz
+  """An object relationship"""
+  tenant: Tenant!
+  tenantId: String!
+  updatedAt: timestamptz
+}
+
+"""
+Boolean expression to filter rows from the table "event_live". All fields are combined with a logical 'AND'.
+"""
+input EventLiveBoolExp {
+  _and: [EventLiveBoolExp!]
+  _not: EventLiveBoolExp
+  _or: [EventLiveBoolExp!]
+  cleanupReady: BooleanComparisonExp
+  createdAt: TimestamptzComparisonExp
+  event: EventBoolExp
+  eventId: UuidComparisonExp
+  id: StringComparisonExp
+  isLive: BooleanComparisonExp
+  isPaused: BooleanComparisonExp
+  liveResponseCounts: JsonbComparisonExp
+  nextTimer: TimestamptzComparisonExp
+  profile: ProfileBoolExp
+  profileId: UuidComparisonExp
+  questionId: UuidComparisonExp
+  questionSetId: UuidComparisonExp
+  raffleId: UuidComparisonExp
+  serverTime: TimestamptzComparisonExp
+  showAfterQuestionDetails: BooleanComparisonExp
+  startTimestamp: TimestamptzComparisonExp
+  tenant: TenantBoolExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""Ordering options when selecting data from "event_live"."""
+input EventLiveOrderBy {
+  cleanupReady: OrderBy
+  createdAt: OrderBy
+  event: EventOrderBy
+  eventId: OrderBy
+  id: OrderBy
+  isLive: OrderBy
+  isPaused: OrderBy
+  liveResponseCounts: OrderBy
+  nextTimer: OrderBy
+  profile: ProfileOrderBy
+  profileId: OrderBy
+  questionId: OrderBy
+  questionSetId: OrderBy
+  raffleId: OrderBy
+  serverTime: OrderBy
+  showAfterQuestionDetails: OrderBy
+  startTimestamp: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "event_live"
+"""
+enum EventLiveSelectColumn {
+  """column name"""
+  cleanupReady
+  """column name"""
+  createdAt
+  """column name"""
+  eventId
+  """column name"""
+  id
+  """column name"""
+  isLive
+  """column name"""
+  isPaused
+  """column name"""
+  nextTimer
+  """column name"""
+  profileId
+  """column name"""
+  questionId
+  """column name"""
+  questionSetId
+  """column name"""
+  raffleId
+  """column name"""
+  showAfterQuestionDetails
+  """column name"""
+  startTimestamp
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "event_live"
+"""
+input EventLiveStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: EventLiveStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EventLiveStreamCursorValueInput {
+  cleanupReady: Boolean
+  createdAt: timestamptz
+  eventId: uuid
+  id: String
+  isLive: Boolean
+  isPaused: Boolean
+  nextTimer: timestamptz
+  profileId: uuid
+  questionId: uuid
+  questionSetId: uuid
+  raffleId: uuid
+  showAfterQuestionDetails: Boolean
+  startTimestamp: timestamptz
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""Ordering options when selecting data from "event"."""
+input EventOrderBy {
+  createdAt: OrderBy
+  endDate: OrderBy
+  endTimestamp: OrderBy
+  eventLive: EventLiveOrderBy
+  id: OrderBy
+  isPublic: OrderBy
+  kind: OrderBy
+  label: OrderBy
+  location: GeoLocationOrderBy
+  locationId: OrderBy
+  metadata: OrderBy
+  name: OrderBy
+  profile: ProfileOrderBy
+  profileId: OrderBy
+  raffleId: OrderBy
+  startDate: OrderBy
+  startTimestamp: OrderBy
+  templateId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "event"
+"""
+enum EventSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  endDate
+  """column name"""
+  endTimestamp
+  """column name"""
+  id
+  """column name"""
+  isPublic
+  """column name"""
+  kind
+  """column name"""
+  label
+  """column name"""
+  locationId
+  """column name"""
+  metadata
+  """column name"""
+  name
+  """column name"""
+  profileId
+  """column name"""
+  raffleId
+  """column name"""
+  startDate
+  """column name"""
+  startTimestamp
+  """column name"""
+  templateId
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "event"
+"""
+input EventStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: EventStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EventStreamCursorValueInput {
+  createdAt: timestamptz
+  endDate: date
+  endTimestamp: timestamptz
+  id: uuid
+  isPublic: Boolean
+  kind: String
+  label: String
+  locationId: uuid
+  metadata: jsonb
+  name: citext
+  profileId: uuid
+  raffleId: uuid
+  startDate: date
+  startTimestamp: timestamptz
+  templateId: uuid
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+input FeedbackInput {
+  email: String!
+  feedback: String!
+  name: String!
+  navigationStateJSON: String
+  profileId: String
+  sourceScreen: String
+  tenantId: String!
+}
+
+type FeedbackOutput {
+  success: Boolean!
+}
+
+"""
+columns and relationships of "geo_location"
+"""
+type GeoLocation {
+  city: String
+  country: String!
+  countryCode: String!
+  createdAt: timestamptz!
+  """An object relationship"""
+  event: Event
+  formatted: String
+  id: uuid!
+  latitude: numeric!
+  longitude: numeric!
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  name: String
+  postalCode: String
+  """An object relationship"""
+  profile: Profile
+  state: String
+  stateCode: String
+  street1: String
+  street2: String
+  tenantId: String!
+  timezone: String
+  updatedAt: timestamptz!
+}
+
+"""
+Boolean expression to filter rows from the table "geo_location". All fields are combined with a logical 'AND'.
+"""
+input GeoLocationBoolExp {
+  _and: [GeoLocationBoolExp!]
+  _not: GeoLocationBoolExp
+  _or: [GeoLocationBoolExp!]
+  city: StringComparisonExp
+  country: StringComparisonExp
+  countryCode: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  event: EventBoolExp
+  formatted: StringComparisonExp
+  id: UuidComparisonExp
+  latitude: NumericComparisonExp
+  longitude: NumericComparisonExp
+  metadata: JsonbComparisonExp
+  name: StringComparisonExp
+  postalCode: StringComparisonExp
+  profile: ProfileBoolExp
+  state: StringComparisonExp
+  stateCode: StringComparisonExp
+  street1: StringComparisonExp
+  street2: StringComparisonExp
+  tenantId: StringComparisonExp
+  timezone: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""Ordering options when selecting data from "geo_location"."""
+input GeoLocationOrderBy {
+  city: OrderBy
+  country: OrderBy
+  countryCode: OrderBy
+  createdAt: OrderBy
+  event: EventOrderBy
+  formatted: OrderBy
+  id: OrderBy
+  latitude: OrderBy
+  longitude: OrderBy
+  metadata: OrderBy
+  name: OrderBy
+  postalCode: OrderBy
+  profile: ProfileOrderBy
+  state: OrderBy
+  stateCode: OrderBy
+  street1: OrderBy
+  street2: OrderBy
+  tenantId: OrderBy
+  timezone: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "geo_location"
+"""
+enum GeoLocationSelectColumn {
+  """column name"""
+  city
+  """column name"""
+  country
+  """column name"""
+  countryCode
+  """column name"""
+  createdAt
+  """column name"""
+  formatted
+  """column name"""
+  id
+  """column name"""
+  latitude
+  """column name"""
+  longitude
+  """column name"""
+  metadata
+  """column name"""
+  name
+  """column name"""
+  postalCode
+  """column name"""
+  state
+  """column name"""
+  stateCode
+  """column name"""
+  street1
+  """column name"""
+  street2
+  """column name"""
+  tenantId
+  """column name"""
+  timezone
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "geo_location"
+"""
+input GeoLocationStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: GeoLocationStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input GeoLocationStreamCursorValueInput {
+  city: String
+  country: String
+  countryCode: String
+  createdAt: timestamptz
+  formatted: String
+  id: uuid
+  latitude: numeric
+  longitude: numeric
+  metadata: jsonb
+  name: String
+  postalCode: String
+  state: String
+  stateCode: String
+  street1: String
+  street2: String
+  tenantId: String
+  timezone: String
+  updatedAt: timestamptz
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input IntComparisonExp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _isNull: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+input JsonbCastExp {
+  String: StringComparisonExp
+}
+
+"""
+Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'.
+"""
+input JsonbComparisonExp {
+  _cast: JsonbCastExp
+  """is the column contained in the given json value"""
+  _containedIn: jsonb
+  """does the column contain the given json value at the top level"""
+  _contains: jsonb
+  _eq: jsonb
+  _gt: jsonb
+  _gte: jsonb
+  """does the string exist as a top-level key in the column"""
+  _hasKey: String
+  """do all of these strings exist as top-level keys in the column"""
+  _hasKeysAll: [String!]
+  """do any of these strings exist as top-level keys in the column"""
+  _hasKeysAny: [String!]
+  _in: [jsonb!]
+  _isNull: Boolean
+  _lt: jsonb
+  _lte: jsonb
+  _neq: jsonb
+  _nin: [jsonb!]
+}
+
+"""
+Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
+"""
+input NumericComparisonExp {
+  _eq: numeric
+  _gt: numeric
+  _gte: numeric
+  _in: [numeric!]
+  _isNull: Boolean
+  _lt: numeric
+  _lte: numeric
+  _neq: numeric
+  _nin: [numeric!]
+}
+
+"""column ordering options"""
+enum OrderBy {
+  """in ascending order, nulls last"""
+  ASC
+  """in ascending order, nulls first"""
+  ASC_NULLS_FIRST
+  """in ascending order, nulls last"""
+  ASC_NULLS_LAST
+  """in descending order, nulls first"""
+  DESC
+  """in descending order, nulls first"""
+  DESC_NULLS_FIRST
+  """in descending order, nulls last"""
+  DESC_NULLS_LAST
+}
+
+"""
+columns and relationships of "profile"
+"""
+type Profile {
+  """An array relationship"""
+  attributes(
+    """distinct select on columns"""
+    distinctOn: [ProfileAttributeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileAttributeOrderBy!]
+    """filter the rows returned"""
+    where: ProfileAttributeBoolExp
+  ): [ProfileAttribute!]!
+  createdAt: timestamptz
+  """
+  A computed field, executes function "display_name"
+  """
+  displayName: String
+  id: uuid!
+  kind: String!
+  """An object relationship"""
+  location: GeoLocation
+  locationId: uuid
+  photoUrl: String
+  """An object relationship"""
+  tenant: Tenant!
+  tenantId: String!
+  username: citext!
+}
+
+"""
+columns and relationships of "profile_attribute"
+"""
+type ProfileAttribute {
+  kind: String!
+  order: Int
+  value: String!
+}
+
+"""
+order by aggregate values of table "profile_attribute"
+"""
+input ProfileAttributeAggregateOrderBy {
+  avg: ProfileAttributeAvgOrderBy
+  count: OrderBy
+  max: ProfileAttributeMaxOrderBy
+  min: ProfileAttributeMinOrderBy
+  stddev: ProfileAttributeStddevOrderBy
+  stddevPop: ProfileAttributeStddevPopOrderBy
+  stddevSamp: ProfileAttributeStddevSampOrderBy
+  sum: ProfileAttributeSumOrderBy
+  varPop: ProfileAttributeVarPopOrderBy
+  varSamp: ProfileAttributeVarSampOrderBy
+  variance: ProfileAttributeVarianceOrderBy
+}
+
+"""
+order by avg() on columns of table "profile_attribute"
+"""
+input ProfileAttributeAvgOrderBy {
+  order: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "profile_attribute". All fields are combined with a logical 'AND'.
+"""
+input ProfileAttributeBoolExp {
+  _and: [ProfileAttributeBoolExp!]
+  _not: ProfileAttributeBoolExp
+  _or: [ProfileAttributeBoolExp!]
+  kind: StringComparisonExp
+  order: IntComparisonExp
+  value: StringComparisonExp
+}
+
+"""
+order by max() on columns of table "profile_attribute"
+"""
+input ProfileAttributeMaxOrderBy {
+  kind: OrderBy
+  order: OrderBy
+  value: OrderBy
+}
+
+"""
+order by min() on columns of table "profile_attribute"
+"""
+input ProfileAttributeMinOrderBy {
+  kind: OrderBy
+  order: OrderBy
+  value: OrderBy
+}
+
+"""Ordering options when selecting data from "profile_attribute"."""
+input ProfileAttributeOrderBy {
+  kind: OrderBy
+  order: OrderBy
+  value: OrderBy
+}
+
+"""
+select columns of table "profile_attribute"
+"""
+enum ProfileAttributeSelectColumn {
+  """column name"""
+  kind
+  """column name"""
+  order
+  """column name"""
+  value
+}
+
+"""
+order by stddev() on columns of table "profile_attribute"
+"""
+input ProfileAttributeStddevOrderBy {
+  order: OrderBy
+}
+
+"""
+order by stddevPop() on columns of table "profile_attribute"
+"""
+input ProfileAttributeStddevPopOrderBy {
+  order: OrderBy
+}
+
+"""
+order by stddevSamp() on columns of table "profile_attribute"
+"""
+input ProfileAttributeStddevSampOrderBy {
+  order: OrderBy
+}
+
+"""
+Streaming cursor of the table "profile_attribute"
+"""
+input ProfileAttributeStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ProfileAttributeStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ProfileAttributeStreamCursorValueInput {
+  kind: String
+  order: Int
+  value: String
+}
+
+"""
+order by sum() on columns of table "profile_attribute"
+"""
+input ProfileAttributeSumOrderBy {
+  order: OrderBy
+}
+
+"""
+order by varPop() on columns of table "profile_attribute"
+"""
+input ProfileAttributeVarPopOrderBy {
+  order: OrderBy
+}
+
+"""
+order by varSamp() on columns of table "profile_attribute"
+"""
+input ProfileAttributeVarSampOrderBy {
+  order: OrderBy
+}
+
+"""
+order by variance() on columns of table "profile_attribute"
+"""
+input ProfileAttributeVarianceOrderBy {
+  order: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "profile". All fields are combined with a logical 'AND'.
+"""
+input ProfileBoolExp {
+  _and: [ProfileBoolExp!]
+  _not: ProfileBoolExp
+  _or: [ProfileBoolExp!]
+  attributes: ProfileAttributeBoolExp
+  createdAt: TimestamptzComparisonExp
+  displayName: StringComparisonExp
+  id: UuidComparisonExp
+  kind: StringComparisonExp
+  location: GeoLocationBoolExp
+  locationId: UuidComparisonExp
+  photoUrl: StringComparisonExp
+  tenant: TenantBoolExp
+  tenantId: StringComparisonExp
+  username: CitextComparisonExp
+}
+
+"""Ordering options when selecting data from "profile"."""
+input ProfileOrderBy {
+  attributesAggregate: ProfileAttributeAggregateOrderBy
+  createdAt: OrderBy
+  displayName: OrderBy
+  id: OrderBy
+  kind: OrderBy
+  location: GeoLocationOrderBy
+  locationId: OrderBy
+  photoUrl: OrderBy
+  tenant: TenantOrderBy
+  tenantId: OrderBy
+  username: OrderBy
+}
+
+"""
+select columns of table "profile"
+"""
+enum ProfileSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  id
+  """column name"""
+  kind
+  """column name"""
+  locationId
+  """column name"""
+  photoUrl
+  """column name"""
+  tenantId
+  """column name"""
+  username
+}
+
+"""
+Streaming cursor of the table "profile"
+"""
+input ProfileStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ProfileStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ProfileStreamCursorValueInput {
+  createdAt: timestamptz
+  id: uuid
+  kind: String
+  locationId: uuid
+  photoUrl: String
+  tenantId: String
+  username: citext
+}
+
+"""
+columns and relationships of "question_kind"
+"""
+type QuestionKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "question_kind". All fields are combined with a logical 'AND'.
+"""
+input QuestionKindBoolExp {
+  _and: [QuestionKindBoolExp!]
+  _not: QuestionKindBoolExp
+  _or: [QuestionKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "question_kind"."""
+input QuestionKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "question_kind"
+"""
+enum QuestionKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "question_kind"
+"""
+input QuestionKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: QuestionKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input QuestionKindStreamCursorValueInput {
+  id: String
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input StringComparisonExp {
+  _eq: String
+  _gt: String
+  _gte: String
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _isNull: Boolean
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+  """does the column NOT match the given pattern"""
+  _nlike: String
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+type SuccessOutput {
+  success: Boolean!
+}
+
+"""
+columns and relationships of "tenant"
+"""
+type Tenant {
+  createdAt: timestamptz!
+  domain: citext!
+  """url friendly version of name"""
+  id: String!
+  name: String!
+  profileId: uuid
+  transactionalFromEmail: citext!
+}
+
+"""
+Boolean expression to filter rows from the table "tenant". All fields are combined with a logical 'AND'.
+"""
+input TenantBoolExp {
+  _and: [TenantBoolExp!]
+  _not: TenantBoolExp
+  _or: [TenantBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  domain: CitextComparisonExp
+  id: StringComparisonExp
+  name: StringComparisonExp
+  profileId: UuidComparisonExp
+  transactionalFromEmail: CitextComparisonExp
+}
+
+"""Ordering options when selecting data from "tenant"."""
+input TenantOrderBy {
+  createdAt: OrderBy
+  domain: OrderBy
+  id: OrderBy
+  name: OrderBy
+  profileId: OrderBy
+  transactionalFromEmail: OrderBy
+}
+
+"""
+select columns of table "tenant"
+"""
+enum TenantSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  domain
+  """column name"""
+  id
+  """column name"""
+  name
+  """column name"""
+  profileId
+  """column name"""
+  transactionalFromEmail
+}
+
+"""
+Streaming cursor of the table "tenant"
+"""
+input TenantStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: TenantStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input TenantStreamCursorValueInput {
+  createdAt: timestamptz
+  domain: citext
+  """url friendly version of name"""
+  id: String
+  name: String
+  profileId: uuid
+  transactionalFromEmail: citext
+}
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input TimestamptzComparisonExp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _isNull: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "user_role_kind"
+"""
+type UserRoleKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "user_role_kind". All fields are combined with a logical 'AND'.
+"""
+input UserRoleKindBoolExp {
+  _and: [UserRoleKindBoolExp!]
+  _not: UserRoleKindBoolExp
+  _or: [UserRoleKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "user_role_kind"."""
+input UserRoleKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "user_role_kind"
+"""
+enum UserRoleKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "user_role_kind"
+"""
+input UserRoleKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: UserRoleKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input UserRoleKindStreamCursorValueInput {
+  id: String
+}
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input UuidComparisonExp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _isNull: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
+"""
+columns and relationships of "value_kind"
+"""
+type ValueKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "value_kind". All fields are combined with a logical 'AND'.
+"""
+input ValueKindBoolExp {
+  _and: [ValueKindBoolExp!]
+  _not: ValueKindBoolExp
+  _or: [ValueKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "value_kind"."""
+input ValueKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "value_kind"
+"""
+enum ValueKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "value_kind"
+"""
+input ValueKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ValueKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ValueKindStreamCursorValueInput {
+  id: String
+}
+
+"""
+columns and relationships of "visibility_kind"
+"""
+type VisibilityKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "visibility_kind". All fields are combined with a logical 'AND'.
+"""
+input VisibilityKindBoolExp {
+  _and: [VisibilityKindBoolExp!]
+  _not: VisibilityKindBoolExp
+  _or: [VisibilityKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "visibility_kind"."""
+input VisibilityKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "visibility_kind"
+"""
+enum VisibilityKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "visibility_kind"
+"""
+input VisibilityKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: VisibilityKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input VisibilityKindStreamCursorValueInput {
+  id: String
+}
+
+scalar citext
+
+scalar date
+
+scalar jsonb
+
+"""mutation root"""
+type mutation_root {
+  authAnonymousSignIn(args: AuthAnonymousInput!): AuthOutput
+  authEmailSendVerification(args: AuthEmailInput!): AuthOutput
+  authEmailVerify(args: AuthEmailTicketInput!): AuthOutput
+  authMagicLinkSendEmail(args: AuthEmailInput!): AuthOutput
+  authMagicLinkSignIn(args: AuthEmailTicketInput!): AuthOutput
+  authMagicLinkSignUpAndSend(args: AuthEmailSignupInput!): AuthOutput
+  authPasswordReset(args: AuthResetPasswordInput!): AuthOutput
+  authPasswordSendResetEmail(args: AuthEmailInput!): AuthOutput
+  authPasswordSignIn(args: AuthEmailPasswordInput!): AuthOutput
+  authPasswordSignUpAndSendVerification(args: AuthEmailPasswordSignUpInput!): AuthOutput
+  authSmsSendCode(args: AuthSmsInput!): AuthOutput
+  authSmsSignIn(args: AuthSmsCodeInput!): AuthOutput
+  authSmsSignUpAndSend(args: AuthSmsSignUpInput!): AuthOutput
+  authSmsVerify(args: AuthSmsCodeInput!): AuthOutput
+  submitContactForm(args: ContactFormInput!): SuccessOutput
+  submitFeedback(args: FeedbackInput!): FeedbackOutput
+}
+
+scalar numeric
+
+type query_root {
+  """
+  fetch data from the table: "event"
+  """
+  event(
+    """distinct select on columns"""
+    distinctOn: [EventSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventOrderBy!]
+    """filter the rows returned"""
+    where: EventBoolExp
+  ): [Event!]!
+  """
+  fetch data from the table: "event_availability_kind"
+  """
+  eventAvailabilityKind(
+    """distinct select on columns"""
+    distinctOn: [EventAvailabilityKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventAvailabilityKindOrderBy!]
+    """filter the rows returned"""
+    where: EventAvailabilityKindBoolExp
+  ): [EventAvailabilityKind!]!
+  """
+  fetch data from the table: "event_availability_kind" using primary key columns
+  """
+  eventAvailabilityKindByPk(id: String!): EventAvailabilityKind
+  """fetch data from the table: "event" using primary key columns"""
+  eventByPk(id: uuid!): Event
+  """
+  fetch data from the table: "event_live"
+  """
+  eventLive(
+    """distinct select on columns"""
+    distinctOn: [EventLiveSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventLiveOrderBy!]
+    """filter the rows returned"""
+    where: EventLiveBoolExp
+  ): [EventLive!]!
+  """fetch data from the table: "event_live" using primary key columns"""
+  eventLiveByPk(id: String!): EventLive
+  """
+  fetch data from the table: "geo_location"
+  """
+  geoLocation(
+    """distinct select on columns"""
+    distinctOn: [GeoLocationSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GeoLocationOrderBy!]
+    """filter the rows returned"""
+    where: GeoLocationBoolExp
+  ): [GeoLocation!]!
+  """fetch data from the table: "geo_location" using primary key columns"""
+  geoLocationByPk(id: uuid!): GeoLocation
+  """
+  fetch data from the table: "profile"
+  """
+  profile(
+    """distinct select on columns"""
+    distinctOn: [ProfileSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileOrderBy!]
+    """filter the rows returned"""
+    where: ProfileBoolExp
+  ): [Profile!]!
+  """
+  fetch data from the table: "profile_attribute"
+  """
+  profileAttribute(
+    """distinct select on columns"""
+    distinctOn: [ProfileAttributeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileAttributeOrderBy!]
+    """filter the rows returned"""
+    where: ProfileAttributeBoolExp
+  ): [ProfileAttribute!]!
+  """fetch data from the table: "profile" using primary key columns"""
+  profileByPk(id: uuid!): Profile
+  """
+  fetch data from the table: "question_kind"
+  """
+  questionKind(
+    """distinct select on columns"""
+    distinctOn: [QuestionKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [QuestionKindOrderBy!]
+    """filter the rows returned"""
+    where: QuestionKindBoolExp
+  ): [QuestionKind!]!
+  """fetch data from the table: "question_kind" using primary key columns"""
+  questionKindByPk(id: String!): QuestionKind
+  """
+  fetch data from the table: "tenant"
+  """
+  tenant(
+    """distinct select on columns"""
+    distinctOn: [TenantSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [TenantOrderBy!]
+    """filter the rows returned"""
+    where: TenantBoolExp
+  ): [Tenant!]!
+  """fetch data from the table: "tenant" using primary key columns"""
+  tenantByPk(
+    """url friendly version of name"""
+    id: String!
+  ): Tenant
+  """
+  fetch data from the table: "user_role_kind"
+  """
+  userRoleKind(
+    """distinct select on columns"""
+    distinctOn: [UserRoleKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [UserRoleKindOrderBy!]
+    """filter the rows returned"""
+    where: UserRoleKindBoolExp
+  ): [UserRoleKind!]!
+  """fetch data from the table: "user_role_kind" using primary key columns"""
+  userRoleKindByPk(id: String!): UserRoleKind
+  """
+  fetch data from the table: "value_kind"
+  """
+  valueKind(
+    """distinct select on columns"""
+    distinctOn: [ValueKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ValueKindOrderBy!]
+    """filter the rows returned"""
+    where: ValueKindBoolExp
+  ): [ValueKind!]!
+  """fetch data from the table: "value_kind" using primary key columns"""
+  valueKindByPk(id: String!): ValueKind
+  """
+  fetch data from the table: "visibility_kind"
+  """
+  visibilityKind(
+    """distinct select on columns"""
+    distinctOn: [VisibilityKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [VisibilityKindOrderBy!]
+    """filter the rows returned"""
+    where: VisibilityKindBoolExp
+  ): [VisibilityKind!]!
+  """fetch data from the table: "visibility_kind" using primary key columns"""
+  visibilityKindByPk(id: String!): VisibilityKind
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "event"
+  """
+  event(
+    """distinct select on columns"""
+    distinctOn: [EventSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventOrderBy!]
+    """filter the rows returned"""
+    where: EventBoolExp
+  ): [Event!]!
+  """
+  fetch data from the table: "event_availability_kind"
+  """
+  eventAvailabilityKind(
+    """distinct select on columns"""
+    distinctOn: [EventAvailabilityKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventAvailabilityKindOrderBy!]
+    """filter the rows returned"""
+    where: EventAvailabilityKindBoolExp
+  ): [EventAvailabilityKind!]!
+  """
+  fetch data from the table: "event_availability_kind" using primary key columns
+  """
+  eventAvailabilityKindByPk(id: String!): EventAvailabilityKind
+  """
+  fetch data from the table in a streaming manner: "event_availability_kind"
+  """
+  eventAvailabilityKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EventAvailabilityKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: EventAvailabilityKindBoolExp
+  ): [EventAvailabilityKind!]!
+  """fetch data from the table: "event" using primary key columns"""
+  eventByPk(id: uuid!): Event
+  """
+  fetch data from the table: "event_live"
+  """
+  eventLive(
+    """distinct select on columns"""
+    distinctOn: [EventLiveSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventLiveOrderBy!]
+    """filter the rows returned"""
+    where: EventLiveBoolExp
+  ): [EventLive!]!
+  """fetch data from the table: "event_live" using primary key columns"""
+  eventLiveByPk(id: String!): EventLive
+  """
+  fetch data from the table in a streaming manner: "event_live"
+  """
+  eventLiveStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EventLiveStreamCursorInput]!
+    """filter the rows returned"""
+    where: EventLiveBoolExp
+  ): [EventLive!]!
+  """
+  fetch data from the table in a streaming manner: "event"
+  """
+  eventStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EventStreamCursorInput]!
+    """filter the rows returned"""
+    where: EventBoolExp
+  ): [Event!]!
+  """
+  fetch data from the table: "geo_location"
+  """
+  geoLocation(
+    """distinct select on columns"""
+    distinctOn: [GeoLocationSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GeoLocationOrderBy!]
+    """filter the rows returned"""
+    where: GeoLocationBoolExp
+  ): [GeoLocation!]!
+  """fetch data from the table: "geo_location" using primary key columns"""
+  geoLocationByPk(id: uuid!): GeoLocation
+  """
+  fetch data from the table in a streaming manner: "geo_location"
+  """
+  geoLocationStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [GeoLocationStreamCursorInput]!
+    """filter the rows returned"""
+    where: GeoLocationBoolExp
+  ): [GeoLocation!]!
+  """
+  fetch data from the table: "profile"
+  """
+  profile(
+    """distinct select on columns"""
+    distinctOn: [ProfileSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileOrderBy!]
+    """filter the rows returned"""
+    where: ProfileBoolExp
+  ): [Profile!]!
+  """
+  fetch data from the table: "profile_attribute"
+  """
+  profileAttribute(
+    """distinct select on columns"""
+    distinctOn: [ProfileAttributeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileAttributeOrderBy!]
+    """filter the rows returned"""
+    where: ProfileAttributeBoolExp
+  ): [ProfileAttribute!]!
+  """
+  fetch data from the table in a streaming manner: "profile_attribute"
+  """
+  profileAttributeStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ProfileAttributeStreamCursorInput]!
+    """filter the rows returned"""
+    where: ProfileAttributeBoolExp
+  ): [ProfileAttribute!]!
+  """fetch data from the table: "profile" using primary key columns"""
+  profileByPk(id: uuid!): Profile
+  """
+  fetch data from the table in a streaming manner: "profile"
+  """
+  profileStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ProfileStreamCursorInput]!
+    """filter the rows returned"""
+    where: ProfileBoolExp
+  ): [Profile!]!
+  """
+  fetch data from the table: "question_kind"
+  """
+  questionKind(
+    """distinct select on columns"""
+    distinctOn: [QuestionKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [QuestionKindOrderBy!]
+    """filter the rows returned"""
+    where: QuestionKindBoolExp
+  ): [QuestionKind!]!
+  """fetch data from the table: "question_kind" using primary key columns"""
+  questionKindByPk(id: String!): QuestionKind
+  """
+  fetch data from the table in a streaming manner: "question_kind"
+  """
+  questionKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [QuestionKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: QuestionKindBoolExp
+  ): [QuestionKind!]!
+  """
+  fetch data from the table: "tenant"
+  """
+  tenant(
+    """distinct select on columns"""
+    distinctOn: [TenantSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [TenantOrderBy!]
+    """filter the rows returned"""
+    where: TenantBoolExp
+  ): [Tenant!]!
+  """fetch data from the table: "tenant" using primary key columns"""
+  tenantByPk(
+    """url friendly version of name"""
+    id: String!
+  ): Tenant
+  """
+  fetch data from the table in a streaming manner: "tenant"
+  """
+  tenantStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [TenantStreamCursorInput]!
+    """filter the rows returned"""
+    where: TenantBoolExp
+  ): [Tenant!]!
+  """
+  fetch data from the table: "user_role_kind"
+  """
+  userRoleKind(
+    """distinct select on columns"""
+    distinctOn: [UserRoleKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [UserRoleKindOrderBy!]
+    """filter the rows returned"""
+    where: UserRoleKindBoolExp
+  ): [UserRoleKind!]!
+  """fetch data from the table: "user_role_kind" using primary key columns"""
+  userRoleKindByPk(id: String!): UserRoleKind
+  """
+  fetch data from the table in a streaming manner: "user_role_kind"
+  """
+  userRoleKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [UserRoleKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: UserRoleKindBoolExp
+  ): [UserRoleKind!]!
+  """
+  fetch data from the table: "value_kind"
+  """
+  valueKind(
+    """distinct select on columns"""
+    distinctOn: [ValueKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ValueKindOrderBy!]
+    """filter the rows returned"""
+    where: ValueKindBoolExp
+  ): [ValueKind!]!
+  """fetch data from the table: "value_kind" using primary key columns"""
+  valueKindByPk(id: String!): ValueKind
+  """
+  fetch data from the table in a streaming manner: "value_kind"
+  """
+  valueKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ValueKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: ValueKindBoolExp
+  ): [ValueKind!]!
+  """
+  fetch data from the table: "visibility_kind"
+  """
+  visibilityKind(
+    """distinct select on columns"""
+    distinctOn: [VisibilityKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [VisibilityKindOrderBy!]
+    """filter the rows returned"""
+    where: VisibilityKindBoolExp
+  ): [VisibilityKind!]!
+  """fetch data from the table: "visibility_kind" using primary key columns"""
+  visibilityKindByPk(id: String!): VisibilityKind
+  """
+  fetch data from the table in a streaming manner: "visibility_kind"
+  """
+  visibilityKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [VisibilityKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: VisibilityKindBoolExp
+  ): [VisibilityKind!]!
+}
+
+scalar timestamptz
+
+scalar uuid
