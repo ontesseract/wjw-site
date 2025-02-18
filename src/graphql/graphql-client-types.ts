@@ -1,6 +1,6 @@
-import type { DocumentNode, GraphQLError } from 'graphql';
+import type { DocumentNode, GraphQLError } from "graphql";
 
-import { type TypedDocumentString } from '@/graphql';
+import { type TypedDocumentNode } from "@graphql-typed-document-node/core";
 
 export type Fetch = typeof fetch;
 
@@ -19,9 +19,9 @@ export interface GraphQLResponse<T = unknown> {
   [key: string]: unknown;
 }
 
-export type HTTPMethodInput = 'GET' | 'POST' | 'get' | 'post';
+export type HTTPMethodInput = "GET" | "POST" | "get" | "post";
 
-export interface RequestConfig extends Omit<RequestInit, 'headers' | 'method'> {
+export interface RequestConfig extends Omit<RequestInit, "headers" | "method"> {
   fetch?: Fetch;
   method?: HTTPMethodInput;
   headers?: HeadersInit;
@@ -33,14 +33,14 @@ export interface RequestConfig extends Omit<RequestInit, 'headers' | 'method'> {
 export type RequestDocument = string | DocumentNode;
 
 export type RequestOptions<T, V> = {
-  document: TypedDocumentString<T, V>;
+  document: TypedDocumentNode<T, V>;
   variables?: V;
   requestHeaders?: HeadersInit;
-  signal?: RequestInit['signal'];
+  signal?: RequestInit["signal"];
 };
 
 export type SubscriptionOptions<Data, V extends Variables = Variables> = {
-  document: TypedDocumentString<Data, V>;
+  document: TypedDocumentNode<Data, V>;
   variables?: V;
 };
 

@@ -1,3 +1,4 @@
+import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import {
   type DocumentNode,
   type FragmentDefinitionNode,
@@ -16,8 +17,6 @@ import {
   parse,
   print,
 } from "graphql";
-
-import { TypedDocumentString } from "./index";
 
 export enum OrderBy {
   Asc = "ASC", // in ascending order, nulls last
@@ -67,13 +66,10 @@ export function documentToString(document: DocumentNode | string): string {
 }
 
 export function documentToDocument<T, V>(
-  document: DocumentNode | string | TypedDocumentString<T, V>
+  document: DocumentNode | string | TypedDocumentNode<T, V>
 ): DocumentNode {
   if (typeof document === "string") {
     return parse(document);
-  }
-  if (document instanceof TypedDocumentString) {
-    return parse(document.toString());
   }
   return document;
 }
@@ -110,7 +106,7 @@ export function getOperationFragmentSpreadNode(
 }
 
 export function getOperationName<T, V>(
-  document: DocumentNode | string | TypedDocumentString<T, V>
+  document: DocumentNode | string | TypedDocumentNode<T, V>
 ): string | undefined {
   const doc = documentToDocument(document);
   for (const definition of doc.definitions) {

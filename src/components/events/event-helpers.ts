@@ -22,7 +22,7 @@ export function getDateKey(date: Date): string {
 }
 
 export function getTimeKey(date: Date): string {
-  return format(date, "h a");
+  return format(date, "h:mm a");
 }
 
 export function getStart(event: Event): Date {
