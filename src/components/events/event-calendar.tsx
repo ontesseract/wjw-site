@@ -6,29 +6,25 @@ import {
   createEventDays,
   getUniqueLegendKeys,
   getUniqueMonths,
-} from "./event-helpers";
+} from "./event-utils";
 import EventCalendarDay from "./event-calendar-day";
 import { TooltipProvider } from "@/components/ui/tooltip";
-
+import { TheaterInfo } from "@/lib/data";
 export interface EventCalendarProps {
   showName?: string;
   year?: number;
   city?: string;
   backgroundColorClasses?: string[];
+  theater: TheaterInfo;
 }
 
 const defaultBackgroundColorClasses = [
-  "bg-red-600",
-  "bg-indigo-600",
-  "bg-purple-600",
-  "bg-green-600",
-  "bg-yellow-600",
-  "bg-orange-600",
-  "bg-rose-600",
-  "bg-gray-600",
-  "bg-blue-600",
-  "bg-indigo-600",
-  "bg-fuchsia-600",
+  "bg-chart-1",
+  "bg-chart-2",
+  "bg-chart-3",
+  "bg-chart-4",
+  "bg-chart-5",
+  "bg-chart-6",
 ];
 
 export default async function EventCalendar({
@@ -36,6 +32,7 @@ export default async function EventCalendar({
   year,
   city,
   backgroundColorClasses = defaultBackgroundColorClasses,
+  theater,
 }: EventCalendarProps) {
   let events: EventsQuery["events"] = [];
   try {
@@ -78,7 +75,7 @@ export default async function EventCalendar({
 
   return (
     <TooltipProvider delayDuration={100}>
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto p-4">
         {/* Legend */}
         <div className="flex justify-center gap-8 mb-8 flex-wrap">
           {legendKeys.map((legendKey) => (
@@ -98,7 +95,7 @@ export default async function EventCalendar({
           {months.map((month) => (
             <div
               key={month.toString()}
-              className="border border-gray-800 rounded-lg p-4"
+              className="border border-border rounded-lg p-4"
             >
               <h3 className="text-center font-bold mb-4">
                 {format(month, "MMMM yyyy").toUpperCase()}
@@ -125,6 +122,7 @@ export default async function EventCalendar({
                       backgroundColorClassName={getBackgroundColorClassNameForLegendKey(
                         getDayForDate(date)?.legendKey
                       )}
+                      theater={theater}
                     />
                   ) : (
                     <div key={`empty-${index}`} className="aspect-square" />

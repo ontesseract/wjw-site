@@ -1,6 +1,7 @@
 import { CalendarDays, Expand, Clock, Ticket } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { Gallery } from "@/components/gallery";
+import { showLengthMinutes } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -8,7 +9,10 @@ export default function Home() {
       <div className="flex-grow">
         <HeroSection />
 
-        <section id="about" className="py-16 bg-muted">
+        <section
+          id="about"
+          className="py-16 bg-secondary text-secondary-foreground"
+        >
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8 text-center">
               About the Experience
@@ -28,22 +32,24 @@ export default function Home() {
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-background p-4 rounded-lg shadow">
+                <div className="bg-background p-4 rounded-lg border border-border">
                   <Clock className="w-8 h-8 mb-2 text-primary" />
-                  <h3 className="font-semibold mb-2">60 Minutes</h3>
+                  <h3 className="font-semibold mb-2">
+                    {showLengthMinutes} Minutes
+                  </h3>
                   <p>Immersive experience</p>
                 </div>
-                <div className="bg-background p-4 rounded-lg shadow">
+                <div className="bg-background p-4 rounded-lg border border-border">
                   <Expand className="w-8 h-8 mb-2 text-primary" />
                   <h3 className="font-semibold mb-2">360° Screens</h3>
                   <p>Surround viewing</p>
                 </div>
-                <div className="bg-background p-4 rounded-lg shadow">
+                <div className="bg-background p-4 rounded-lg border border-border">
                   <Ticket className="w-8 h-8 mb-2 text-primary" />
                   <h3 className="font-semibold mb-2">Limited Seating</h3>
                   <p>Intimate atmosphere</p>
                 </div>
-                <div className="bg-background p-4 rounded-lg shadow">
+                <div className="bg-background p-4 rounded-lg border border-border">
                   <CalendarDays className="w-8 h-8 mb-2 text-primary" />
                   <h3 className="font-semibold mb-2">Multiple Shows</h3>
                   <p>Flexible scheduling</p>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const heroImages = [
   "/wjw-sand-background.jpg",
@@ -57,12 +58,11 @@ export function HeroSection() {
           to the Holy Land to walk alongside Jesus during key moments of his
           life.
         </p>
-        <Button
-          size="lg"
-          className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-        >
-          Book Now
-        </Button>
+        <Link href="/tickets">
+          <Button size="lg" className="text-lg cursor-pointer">
+            Book Now
+          </Button>
+        </Link>
       </div>
     </section>
   );

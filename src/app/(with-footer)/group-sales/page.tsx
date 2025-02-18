@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MainNav } from "@/components/main-nav";
 
 export default function GroupSalesPage() {
   const [groupSize, setGroupSize] = useState("");
@@ -27,8 +26,6 @@ export default function GroupSalesPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <MainNav />
-
       <main className="flex-grow">
         <section className="py-16 bg-muted">
           <div className="container mx-auto px-4">
@@ -182,12 +179,6 @@ export default function GroupSalesPage() {
           </div>
         </section>
       </main>
-
-      <footer className="bg-secondary text-secondary-foreground py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2023 Where Jesus Walked. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

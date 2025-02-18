@@ -32,6 +32,10 @@ export function getStart(event: Event): Date {
   return parseISO(event.startDate);
 }
 
+export function getEventStartTime(event: Event): string {
+  return getTimeKey(getStart(event));
+}
+
 export function getUniqueMonths(events: EventsQuery["events"]): Date[] {
   const uniqueMonths = new Set<string>();
 

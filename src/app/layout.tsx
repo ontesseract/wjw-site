@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import type React from "react"; // Import React
 import { cn } from "@/lib/utils";
 import { MainNav } from "@/components/main-nav";
+import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,20 +19,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.className)}>
-        <main className="flex-grow bg-background">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <MainNav />
-          {children}
-        </main>
-        <footer className="bg-secondary text-secondary-foreground py-8">
-          <div className="container mx-auto px-4 text-center">
-            <p>
-              &copy; {new Date().getFullYear()} Where Jesus Walked. All rights
-              reserved.
-            </p>
-          </div>
-        </footer>
+          <main className="flex flex-col flex-grow bg-background">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

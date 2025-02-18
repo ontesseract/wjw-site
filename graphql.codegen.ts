@@ -13,6 +13,9 @@ function schemaConfig(role?: string) {
   if (role) {
     headers["x-hasura-role"] = role;
   }
+  if (process.env.NEXT_PUBLIC_TENANT_ID) {
+    headers["x-hasura-tenant-id"] = process.env.NEXT_PUBLIC_TENANT_ID;
+  }
   return {
     [process.env.NEXT_PUBLIC_GRAPHQL_URL ?? "http://localhost:8080/v1/graphql"]:
       {
@@ -33,7 +36,7 @@ const hasuraScalars = {
 
 const config: CodegenConfig = {
   schema: [schemaConfig("public")],
-  documents: ["src/**/*.tsx", "src/**/*.ts"],
+  documents: ["src/**/*.ts*"],
   ignoreNoDocuments: true,
   generates: {
     "./src/graphql/generated/": {

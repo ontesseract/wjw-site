@@ -4,11 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 
 const navItems = [
   { href: "/tickets", label: "Tickets" },
-  { href: "/contact", label: "Contact" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
   { href: "/group-sales", label: "Group Sales" },
 ];
 
@@ -16,7 +22,7 @@ export function MainNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-background text-foreground py-4 sticky top-0 z-50">
+    <header className="bg-background text-foreground py-4 sticky top-0 z-50 border-b border-border">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
           Where Jesus Walked
@@ -34,18 +40,24 @@ export function MainNav() {
 
         {/* Desktop navigation */}
         <nav className="hidden md:block">
-          <ul className="flex space-x-6">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="hover:text-primary transition-colors"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <NavigationMenu>
+            <NavigationMenuList>
+              {navItems.map((item) => (
+                <NavigationMenuItem key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  >
+                    {item.label}
+                  </Link>
+                </NavigationMenuItem>
+              ))}
+
+              <NavigationMenuItem>
+                <ThemeToggle />
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </nav>
       </div>
 
