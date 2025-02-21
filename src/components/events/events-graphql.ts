@@ -117,13 +117,10 @@ export async function getEvents({
     };
   }
 
-  console.log(JSON.stringify(where, null, 2));
-
   const data = await publicClient.request({
     document: eventsQuery,
     variables: { where },
   });
-  console.log(data?.events.length);
   return data?.events ?? [];
 }
 

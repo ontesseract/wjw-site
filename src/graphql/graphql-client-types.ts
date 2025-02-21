@@ -33,14 +33,14 @@ export interface RequestConfig extends Omit<RequestInit, "headers" | "method"> {
 export type RequestDocument = string | DocumentNode;
 
 export type RequestOptions<T, V> = {
-  document: TypedDocumentNode<T, V>;
+  document: TypedDocumentNode<T, V> | string;
   variables?: V;
   requestHeaders?: HeadersInit;
   signal?: RequestInit["signal"];
 };
 
 export type SubscriptionOptions<Data, V extends Variables = Variables> = {
-  document: TypedDocumentNode<Data, V>;
+  document: TypedDocumentNode<Data, V> | string;
   variables?: V;
 };
 

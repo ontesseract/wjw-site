@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ImageModal } from "@/components/ui/image-modal";
+import { ImageModal } from "@/components/image-modal";
 
 const galleryImages = [
   "/wjw-sunset.jpg",

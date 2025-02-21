@@ -1,4 +1,4 @@
-import { type ExecutionResult, print } from "graphql";
+import { type ExecutionResult } from "graphql";
 import { createClient, type Sink } from "graphql-ws";
 
 import type {
@@ -10,7 +10,7 @@ import type {
   Variables,
 } from "@/graphql/graphql-client-types";
 
-import { getOperationName } from "./graphql-utils";
+import { getOperationName, documentToString } from "./graphql-utils";
 
 export default class GraphQLClient {
   readonly url: string;
@@ -40,7 +40,7 @@ export default class GraphQLClient {
       method: methodOverride ?? this.config?.method ?? "POST",
       headers: options.requestHeaders ?? this.config?.headers,
       body: JSON.stringify({
-        query: print(options.document),
+        query: documentToString(options.document),
         variables: options.variables,
       }),
       variables: options.variables,
@@ -75,7 +75,7 @@ export default class GraphQLClient {
         await this.config?.requestMiddleware?.(request);
         wsClient.subscribe(
           {
-            query: print(options.document),
+            query: documentToString(options.document),
             variables: options.variables,
           },
           sink
@@ -98,7 +98,7 @@ export default class GraphQLClient {
     options: RequestOptions<Data, V>
   ): Promise<Data | undefined> {
     const requestContext = {
-      query: print(options.document),
+      query: documentToString(options.document),
       variables: options.variables,
     };
 

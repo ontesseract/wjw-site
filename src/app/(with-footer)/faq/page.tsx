@@ -20,7 +20,7 @@ export default function FAQPage() {
           {faqs.map((faq, index) => (
             <div key={index} className="mb-4">
               <button
-                className="flex justify-between items-center w-full text-left p-4 bg-background rounded-lg border border-border"
+                className="flex justify-between items-center w-full text-left p-4 bg-background rounded-lg border border-border cursor-pointer"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
                 <span className="font-semibold">{faq.question}</span>

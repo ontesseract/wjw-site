@@ -1,29 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { Check } from "lucide-react";
+import ContactGroupForm from "@/components/contact-form/contact-group-form";
+import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 export default function GroupSalesPage() {
-  const [groupSize, setGroupSize] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically handle form submission
-    console.log("Form submitted");
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow">
@@ -33,37 +18,43 @@ export default function GroupSalesPage() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-2xl font-semibold mb-4">
-                  Experience &quot;Where Jesus Walked&quot; Together
+                  Experience Where Jesus Walked Together
                 </h2>
                 <p className="mb-4">
-                  Bring your church group, school class, or organization to
-                  witness the life of Jesus in our immersive 360° theater
-                  experience. Group bookings offer a unique opportunity for
-                  shared spiritual growth and discussion.
+                  Bring your church group, tour group, student group, family
+                  reunion, military reunion, or organization to witness the life
+                  of Jesus in our immersive 360° theater experience. Group
+                  bookings offer a unique opportunity for shared spiritual
+                  growth and discussion.
                 </p>
                 <h3 className="text-xl font-semibold mb-2">Group Benefits:</h3>
                 <ul className="space-y-2 mb-4">
-                  <li className="flex items-center">
-                    <Check className="w-5 h-5 text-primary mr-2" />
-                    Discounted rates for groups of 10 or more
+                  <li className="flex flex-row">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" />
+                    Discounted rates for groups of 20 or more
                   </li>
-                  <li className="flex items-center">
-                    <Check className="w-5 h-5 text-primary mr-2" />
+                  <li className="flex flex-row">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" />
                     Priority booking for popular showtimes
                   </li>
-                  <li className="flex items-center">
-                    <Check className="w-5 h-5 text-primary mr-2" />
-                    Optional guided discussion after the experience
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-5 h-5 text-primary mr-2" />
+                  <li className="flex flex-row">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" />
                     Customizable packages for large groups
+                  </li>
+                  <li className="flex flex-row">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" />
+                    Combo rates with The Dutton Inn and The Duttons&apos; show
+                  </li>
+                  <li className="flex flex-row">
+                    <Check className="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" />
+                    Complimentary admission, drinks, and concessions for group
+                    leaders and bus drivers (one each per group)
                   </li>
                 </ul>
               </div>
               <div>
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Group+Experience"
+                  src="/group-inside-bus.jpg"
                   alt="Group experiencing Where Jesus Walked"
                   width={600}
                   height={400}
@@ -79,103 +70,19 @@ export default function GroupSalesPage() {
             <h2 className="text-3xl font-bold mb-8 text-center">
               Request Group Booking
             </h2>
-            <form
-              onSubmit={handleSubmit}
-              className="max-w-2xl mx-auto space-y-4"
-            >
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block mb-1 font-medium">
-                    Group Name
-                  </label>
-                  <Input
-                    type="text"
-                    id="name"
-                    placeholder="Enter your group name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="contact-person"
-                    className="block mb-1 font-medium"
-                  >
-                    Contact Person
-                  </label>
-                  <Input
-                    type="text"
-                    id="contact-person"
-                    placeholder="Enter contact person's name"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="email" className="block mb-1 font-medium">
-                    Email
-                  </label>
-                  <Input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block mb-1 font-medium">
-                    Phone
-                  </label>
-                  <Input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter your phone number"
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="group-size" className="block mb-1 font-medium">
-                  Estimated Group Size
-                </label>
-                <Select value={groupSize} onValueChange={setGroupSize}>
-                  <SelectTrigger id="group-size">
-                    <SelectValue placeholder="Select group size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10-20">10-20 people</SelectItem>
-                    <SelectItem value="21-50">21-50 people</SelectItem>
-                    <SelectItem value="51-100">51-100 people</SelectItem>
-                    <SelectItem value="100+">100+ people</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label
-                  htmlFor="preferred-date"
-                  className="block mb-1 font-medium"
-                >
-                  Preferred Date
-                </label>
-                <Input type="date" id="preferred-date" required />
-              </div>
-              <div>
-                <label htmlFor="message" className="block mb-1 font-medium">
-                  Additional Information
-                </label>
-                <Textarea
-                  id="message"
-                  placeholder="Any special requests or questions?"
-                  rows={4}
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Submit Group Inquiry
-              </Button>
-            </form>
+            <p className="text-center mb-8">
+              Call our group department at{" "}
+              <Link href={`tel:${theDuttonFamilyTheaterBranson.phone}`}>
+                {theDuttonFamilyTheaterBranson.phone}
+              </Link>{" "}
+              or submit the form below.
+            </p>
+            <div className="max-w-2xl mx-auto">
+              <ContactGroupForm
+                tenantId="wjw"
+                turnstileSiteKey={turnstileSiteKey}
+              />
+            </div>
           </div>
         </section>
       </main>

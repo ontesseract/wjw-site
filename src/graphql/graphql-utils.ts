@@ -61,8 +61,13 @@ export function hasScalars(type: GraphQLObjectType): boolean {
   return false;
 }
 
-export function documentToString(document: DocumentNode | string): string {
-  return typeof document === "string" ? document : print(document);
+export function documentToString(
+  document: DocumentNode | string | TypedDocumentNode<unknown, unknown>
+): string {
+  if (typeof document === "string") {
+    return document;
+  }
+  return print(document);
 }
 
 export function documentToDocument<T, V>(

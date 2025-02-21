@@ -1,7 +1,7 @@
 # For more details on how to configure Wrangler, refer to:
 # https://developers.cloudflare.com/workers/wrangler/configuration/
 
-name = "nextjs-starter"
+name = "where-jesus-walked-site"
 account_id = "578a0ae80302acfd988a901aa9463418"
 main = ".open-next/worker.js"
 compatibility_date = "2024-09-26"

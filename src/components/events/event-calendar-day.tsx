@@ -59,7 +59,7 @@ export default function EventCalendarDay({
             </span>
           </div>
           {!!day?.legendKey && (
-            <TooltipContent className="bg-secondary text-secondary-foreground border border-border flex flex-col gap-2 items-center justify-center">
+            <TooltipContent className="bg-secondary text-secondary-foreground  flex flex-col gap-2 items-center justify-center">
               {day?.legendKey.split(" & ").map((key) => (
                 <span key={day.legendKey + key}>{key}</span>
               ))}

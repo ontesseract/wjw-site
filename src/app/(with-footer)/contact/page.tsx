@@ -1,6 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { FormattedLocation } from "@/components/formatted-location";
+import ContactForm from "@/components/contact-form/contact-form";
 import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
 export default function FAQPage() {
   return (
     <section id="contact" className="py-16 bg-background text-foreground">
@@ -12,29 +15,7 @@ export default function FAQPage() {
           className="mb-8 text-center"
         />
         <div className="max-w-md mx-auto">
-          <form className="space-y-4">
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="w-full p-2 border border-border rounded"
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full p-2 border border-border rounded"
-            />
-            <textarea
-              placeholder="Your Message"
-              rows={4}
-              className="w-full p-2 border border-border rounded"
-            ></textarea>
-            <Button
-              type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              Send Message
-            </Button>
-          </form>
+          <ContactForm tenantId="wjw" turnstileSiteKey={turnstileSiteKey} />
         </div>
       </div>
     </section>

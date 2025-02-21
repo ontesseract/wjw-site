@@ -95,9 +95,13 @@ export function createEventDays(events: Event[]): Record<string, EventDay> {
     if (day.events.length === 2) {
       day.legendKey = day.events
         .map((e) => getTimeKey(getStart(e)))
+        .sort()
         .join(" & ");
     } else if (day.events.length > 2) {
-      day.legendKey = day.events.map((e) => getTimeKey(getStart(e))).join(", ");
+      day.legendKey = day.events
+        .map((e) => getTimeKey(getStart(e)))
+        .sort()
+        .join(", ");
     }
   });
 
