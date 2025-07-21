@@ -1,8 +1,8 @@
-import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+import { bransonTheater } from "@/lib/data";
 import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { location, phone } = theDuttonFamilyTheaterBranson;
+  const { location, phone } = bransonTheater;
   return (
     <div className="flex flex-col">
       {children}

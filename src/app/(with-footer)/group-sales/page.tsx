@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import ContactGroupForm from "@/components/contact-form/contact-group-form";
-import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+import { bransonTheater } from "@/lib/data";
 import Link from "next/link";
 
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
@@ -72,8 +72,8 @@ export default function GroupSalesPage() {
             </h2>
             <p className="text-center mb-8">
               Call our group department at{" "}
-              <Link href={`tel:${theDuttonFamilyTheaterBranson.phone}`}>
-                {theDuttonFamilyTheaterBranson.phone}
+              <Link href={`tel:${bransonTheater.phone}`}>
+                {bransonTheater.phone}
               </Link>{" "}
               or submit the form below.
             </p>

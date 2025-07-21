@@ -14,7 +14,7 @@ export interface TheaterInfo {
   groupLink: string;
 }
 
-export const theDuttonFamilyTheaterBranson: TheaterInfo = {
+export const bransonTheater: TheaterInfo = {
   name: "The Dutton Family Theater",
   phone: "417-332-2772",
   groupLink: "/group-sales",

@@ -1,6 +1,6 @@
 import { FormattedLocation } from "@/components/formatted-location";
 import ContactForm from "@/components/contact-form/contact-form";
-import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+import { bransonTheater } from "@/lib/data";
 
 const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
@@ -10,8 +10,8 @@ export default function FAQPage() {
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">Contact Us</h2>
         <FormattedLocation
-          location={theDuttonFamilyTheaterBranson.location}
-          phone={theDuttonFamilyTheaterBranson.phone}
+          location={bransonTheater.location}
+          phone={bransonTheater.phone}
           className="mb-8 text-center"
         />
         <div className="max-w-md mx-auto">

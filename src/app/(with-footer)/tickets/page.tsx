@@ -1,5 +1,5 @@
 import EventCalendar from "@/components/events/event-calendar";
-import { theDuttonFamilyTheaterBranson } from "@/lib/data";
+import { bransonTheater } from "@/lib/data";
 
 export default function TicketsPage() {
   return (
@@ -8,7 +8,7 @@ export default function TicketsPage() {
         showName="Where Jesus Walked"
         year={2025}
         city="branson"
-        theater={theDuttonFamilyTheaterBranson}
+        theater={bransonTheater}
       />
     </div>
   );
