@@ -1,6 +1,6 @@
 "use client";
 
-import { format, isSameMonth } from "date-fns";
+import { format, isSameMonth, isBefore, startOfDay } from "date-fns";
 import { EventDay } from "./event-utils";
 import { useState } from "react";
 import EventDayModal from "./event-day-modal";
@@ -24,8 +24,14 @@ export default function EventCalendarDay({
 }: EventCalendarDayProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Check if the date is in the past (before today)
+  const isPastDate = isBefore(startOfDay(date), startOfDay(new Date()));
+  
+  // Check if the day has events and is not in the past
+  const isClickable = day?.events.length && !isPastDate;
+
   const handleClick = () => {
-    if (day?.events.length) {
+    if (isClickable) {
       setIsModalOpen(true);
     }
   };
@@ -38,7 +44,8 @@ export default function EventCalendarDay({
             className={`
             relative aspect-square flex items-center justify-center
           ${!isSameMonth(date, month) ? "invisible" : ""}
-          ${day?.events.length ? "cursor-pointer hover:opacity-80" : ""}
+          ${isClickable ? "cursor-pointer hover:opacity-80" : ""}
+          ${isPastDate && day?.events.length ? "opacity-50 cursor-not-allowed" : ""}
         `}
             onClick={handleClick}
           >
