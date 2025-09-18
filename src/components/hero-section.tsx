@@ -40,7 +40,7 @@ export function HeroSection() {
         />
       ))}
       <div className="absolute inset-0 bg-black/20 z-[1]"></div>
-      <div className="relative z-10 text-center text-white flex flex-col items-center max-w-4xl mx-auto px-4">
+      <div className="relative z-10 text-center text-white flex flex-col items-center max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="w-full max-w-[600px] mb-8">
           <Image
             src="/wjw-logo-white.png"
@@ -51,12 +51,11 @@ export function HeroSection() {
           />
         </div>
         <h2 className="text-5xl font-bold mb-4">
-          Experience the Life of Jesus
+          A 360° Immersive Christian Show in Branson, MO
         </h2>
         <p className="text-xl mb-8">
-          An immersive 360° theater experience that transports you back in time
-          to the Holy Land to walk alongside Jesus during key moments of his
-          life.
+          Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion.
+          At Where Jesus Walked - Branson&apos;s premier immersive Christian theater - you don&apos;t just hear these stories, you&apos;re surrounded by them.
         </p>
         <Link href="/tickets">
           <Button size="lg" className="text-lg cursor-pointer">

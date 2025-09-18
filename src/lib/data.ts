@@ -42,48 +42,53 @@ export const bransonTheater: TheaterInfo = {
 
 export const faqs: FAQItem[] = [
   {
-    question: "What is Where Jesus Walked?",
+    question: "How long should I plan for the show?",
     answer:
-      "Where Jesus Walked is a 360° immersive theater experience that brings the life of Jesus Christ to vivid reality. Using state-of-the-art technology and masterful storytelling, we transport you back in time to witness key moments in Jesus' life.",
+      "The performance runs 70 minutes, making it easy to pair with dinner, sightseeing, or another Branson attraction.",
   },
   {
-    question: "What is a 360° immersive theater experience?",
+    question: "Can kids attend?",
     answer:
-      "360° immersive means there are theater screens in every direction, in front of you, to the sides, and even behind you. Some immersive experiences are designed for attendees to walk around a large room with screens on every wall. Where Jesus Walked is presented in a theater with seats and is designed for the audience to face the front screens. The side and back screens extend the viewing area to more fully immerse audiences in the experience.",
+      "Absolutely. Where Jesus Walked is a family-friendly Branson show that's meaningful for children, parents, and grandparents alike.",
   },
   {
-    question: "Where is the best place to sit?",
+    question: "Where exactly are you located?",
     answer:
-      "We recommend sitting in the center of the theater or further back for the best viewing experience. This allows you to easily see the front and side screens. Like at a movie theater, you may not want to sit in the front row. ",
+      "At the Dutton Family Theater, 3454 W. 76 Country Boulevard, Branson, Missouri.",
   },
   {
-    question: "How long is the experience?",
-    answer: `The entire experience lasts approximately ${showLengthMinutes} minutes. There is not an intermission.`,
+    question: "Why should I choose Where Jesus Walked?",
+    answer:
+      "Because it's unlike anything else in Branson — a biblical theater with 360° screens and surround sound that places you in the middle of Christ's story.",
   },
   {
-    question: "Is there an age restriction?",
+    question: "What is the number one show in Branson?",
     answer:
-      "No. While the experience is suitable for most ages, we recommend it for children 10 and above due to the immersive nature and some thematically intense moments relating to the life of Christ. Parental discretion is advised.",
+      "Many visitors say Where Jesus Walked is the number one Christian show in Branson because of its powerful message and unique immersive format.",
   },
   {
-    question:
-      "Are there any special effects that might be concerning for those with visual sensitivities or epilepsy?",
+    question: "What is Missouri best known for?",
     answer:
-      "The experience includes various special effects such as lighting changes and sound effects. If you have specific concerns, please contact us for more detailed information.",
+      "Missouri is known for live music, the Ozarks, and Branson's legendary shows. Where Jesus Walked captures the very heart of what makes Missouri special — faith, family, and unforgettable entertainment.",
   },
   {
-    question: "Is the venue wheelchair accessible?",
+    question: "What other things can families do in Branson?",
     answer:
-      "Yes, our venue is fully wheelchair accessible. Please let us know in advance if you require wheelchair specific seating.",
+      "Branson is packed with family attractions beyond theater shows — from Silver Dollar City theme park to the Branson Ferris Wheel and scenic boat tours on Table Rock Lake.",
   },
   {
-    question: "Can I take photos or videos during the experience?",
+    question: "Are there faith-based attractions in Branson besides this show?",
     answer:
-      "To maintain the immersive atmosphere and respect copyright laws, photography and video recording are not permitted during the experience. We offer professional photos for purchase after the show.",
+      "Yes. Branson has a strong tradition of Christian entertainment, including gospel music shows and faith-based concerts. Where Jesus Walked is unique as the only 360° immersive Christian theater.",
   },
   {
-    question: "Is there a dress code?",
+    question: "When is the best time of year to visit Branson?",
     answer:
-      "There is no strict dress code, but we ask that guests dress respectfully given the sacred nature of the content.",
+      "Spring and fall are the most popular, thanks to mild weather and seasonal festivals. Christmas season is also magical in Branson, with lights and special holiday performances.",
+  },
+  {
+    question: "Do you offer discounts for groups or churches?",
+    answer:
+      "Yes. We welcome church groups, ministries, and tour buses with flexible seating and group rates. Contact us directly for group sales information.",
   },
 ];
