@@ -14,20 +14,17 @@ directive @cached(
 
 input AuthAnonymousInput {
   deviceId: String!
-  tenantId: String!
 }
 
 input AuthEmailInput {
   email: citext!
   state: String
-  tenantId: String!
   useVerificationCode: Boolean
 }
 
 input AuthEmailPasswordInput {
   email: citext!
   password: String!
-  tenantId: String!
 }
 
 input AuthEmailPasswordSignUpInput {
@@ -37,7 +34,6 @@ input AuthEmailPasswordSignUpInput {
   lastName: String
   password: String!
   state: String
-  tenantId: String!
   useVerificationCode: Boolean
   username: citext
 }
@@ -48,40 +44,80 @@ input AuthEmailSignupInput {
   firstName: String
   lastName: String
   state: String
-  tenantId: String!
   useVerificationCode: Boolean
   username: citext
 }
 
 input AuthEmailTicketInput {
   email: citext!
-  tenantId: String!
   ticket: String!
 }
 
 type AuthOutput {
   profileId: uuid
+  refreshToken: String
   sessionId: String
-  tenantId: String!
   token: String
 }
 
 input AuthResetPasswordInput {
   email: citext!
   password: String!
-  tenantId: String!
   ticket: String!
+}
+
+"""
+columns and relationships of "auth_role_kind"
+"""
+type AuthRoleKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "auth_role_kind". All fields are combined with a logical 'AND'.
+"""
+input AuthRoleKindBoolExp {
+  _and: [AuthRoleKindBoolExp!]
+  _not: AuthRoleKindBoolExp
+  _or: [AuthRoleKindBoolExp!]
+  id: StringComparisonExp
+}
+
+"""Ordering options when selecting data from "auth_role_kind"."""
+input AuthRoleKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "auth_role_kind"
+"""
+enum AuthRoleKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "auth_role_kind"
+"""
+input AuthRoleKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: AuthRoleKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input AuthRoleKindStreamCursorValueInput {
+  id: String
 }
 
 input AuthSmsCodeInput {
   code: String!
   mobile: citext!
-  tenantId: String!
 }
 
 input AuthSmsInput {
   mobile: citext!
-  tenantId: String!
 }
 
 input AuthSmsSignUpInput {
@@ -89,7 +125,6 @@ input AuthSmsSignUpInput {
   firstName: String
   lastName: String
   mobile: citext!
-  tenantId: String!
   username: citext
 }
 
@@ -756,6 +791,303 @@ input JsonbComparisonExp {
 }
 
 """
+columns and relationships of "media_item"
+"""
+type MediaItem {
+  blurHash: String!
+  contentLength: Int!
+  contentType: String!
+  createdAt: timestamptz!
+  defaultUrl: String!
+  filename: String!
+  height: Int!
+  id: String!
+  kind: MediaKindEnum!
+  """An array relationship"""
+  tags(
+    """distinct select on columns"""
+    distinctOn: [MediaItemTagSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaItemTagOrderBy!]
+    """filter the rows returned"""
+    where: MediaItemTagBoolExp
+  ): [MediaItemTag!]!
+  tenantId: String!
+  thumbnailUrl: String!
+  updatedAt: timestamptz!
+  width: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "media_item". All fields are combined with a logical 'AND'.
+"""
+input MediaItemBoolExp {
+  _and: [MediaItemBoolExp!]
+  _not: MediaItemBoolExp
+  _or: [MediaItemBoolExp!]
+  blurHash: StringComparisonExp
+  contentLength: IntComparisonExp
+  contentType: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  defaultUrl: StringComparisonExp
+  filename: StringComparisonExp
+  height: IntComparisonExp
+  id: StringComparisonExp
+  kind: MediaKindEnumComparisonExp
+  tags: MediaItemTagBoolExp
+  tenantId: StringComparisonExp
+  thumbnailUrl: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+  width: IntComparisonExp
+}
+
+"""Ordering options when selecting data from "media_item"."""
+input MediaItemOrderBy {
+  blurHash: OrderBy
+  contentLength: OrderBy
+  contentType: OrderBy
+  createdAt: OrderBy
+  defaultUrl: OrderBy
+  filename: OrderBy
+  height: OrderBy
+  id: OrderBy
+  kind: OrderBy
+  tagsAggregate: MediaItemTagAggregateOrderBy
+  tenantId: OrderBy
+  thumbnailUrl: OrderBy
+  updatedAt: OrderBy
+  width: OrderBy
+}
+
+"""
+select columns of table "media_item"
+"""
+enum MediaItemSelectColumn {
+  """column name"""
+  blurHash
+  """column name"""
+  contentLength
+  """column name"""
+  contentType
+  """column name"""
+  createdAt
+  """column name"""
+  defaultUrl
+  """column name"""
+  filename
+  """column name"""
+  height
+  """column name"""
+  id
+  """column name"""
+  kind
+  """column name"""
+  tenantId
+  """column name"""
+  thumbnailUrl
+  """column name"""
+  updatedAt
+  """column name"""
+  width
+}
+
+"""
+Streaming cursor of the table "media_item"
+"""
+input MediaItemStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MediaItemStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MediaItemStreamCursorValueInput {
+  blurHash: String
+  contentLength: Int
+  contentType: String
+  createdAt: timestamptz
+  defaultUrl: String
+  filename: String
+  height: Int
+  id: String
+  kind: MediaKindEnum
+  tenantId: String
+  thumbnailUrl: String
+  updatedAt: timestamptz
+  width: Int
+}
+
+"""
+columns and relationships of "media_item_tag"
+"""
+type MediaItemTag {
+  createdAt: timestamptz!
+  """An object relationship"""
+  mediaItem: MediaItem!
+  mediaItemId: String!
+  tag: String!
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+order by aggregate values of table "media_item_tag"
+"""
+input MediaItemTagAggregateOrderBy {
+  count: OrderBy
+  max: MediaItemTagMaxOrderBy
+  min: MediaItemTagMinOrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "media_item_tag". All fields are combined with a logical 'AND'.
+"""
+input MediaItemTagBoolExp {
+  _and: [MediaItemTagBoolExp!]
+  _not: MediaItemTagBoolExp
+  _or: [MediaItemTagBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  mediaItem: MediaItemBoolExp
+  mediaItemId: StringComparisonExp
+  tag: StringComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""
+order by max() on columns of table "media_item_tag"
+"""
+input MediaItemTagMaxOrderBy {
+  createdAt: OrderBy
+  mediaItemId: OrderBy
+  tag: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+order by min() on columns of table "media_item_tag"
+"""
+input MediaItemTagMinOrderBy {
+  createdAt: OrderBy
+  mediaItemId: OrderBy
+  tag: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "media_item_tag"."""
+input MediaItemTagOrderBy {
+  createdAt: OrderBy
+  mediaItem: MediaItemOrderBy
+  mediaItemId: OrderBy
+  tag: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "media_item_tag"
+"""
+enum MediaItemTagSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  mediaItemId
+  """column name"""
+  tag
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "media_item_tag"
+"""
+input MediaItemTagStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MediaItemTagStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MediaItemTagStreamCursorValueInput {
+  createdAt: timestamptz
+  mediaItemId: String
+  tag: String
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""
+columns and relationships of "media_kind"
+"""
+type MediaKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "media_kind". All fields are combined with a logical 'AND'.
+"""
+input MediaKindBoolExp {
+  _and: [MediaKindBoolExp!]
+  _not: MediaKindBoolExp
+  _or: [MediaKindBoolExp!]
+  id: StringComparisonExp
+}
+
+enum MediaKindEnum {
+  CLOUDFLARE_IMAGE
+  CLOUDFLARE_VIDEO
+}
+
+"""
+Boolean expression to compare columns of type "MediaKindEnum". All fields are combined with logical 'AND'.
+"""
+input MediaKindEnumComparisonExp {
+  _eq: MediaKindEnum
+  _in: [MediaKindEnum!]
+  _isNull: Boolean
+  _neq: MediaKindEnum
+  _nin: [MediaKindEnum!]
+}
+
+"""Ordering options when selecting data from "media_kind"."""
+input MediaKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "media_kind"
+"""
+enum MediaKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "media_kind"
+"""
+input MediaKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: MediaKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MediaKindStreamCursorValueInput {
+  id: String
+}
+
+"""
 Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
 """
 input NumericComparisonExp {
@@ -803,29 +1135,121 @@ type Profile {
     """filter the rows returned"""
     where: ProfileAttributeBoolExp
   ): [ProfileAttribute!]!
-  createdAt: timestamptz
+  bio: String
+  """An array relationship"""
+  childProfileNodes(
+    """distinct select on columns"""
+    distinctOn: [ProfileSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileOrderBy!]
+    """filter the rows returned"""
+    where: ProfileBoolExp
+  ): [Profile!]!
+  createdAt: timestamptz!
   """
   A computed field, executes function "display_name"
   """
   displayName: String
+  facebookUsername: String
+  """An array relationship"""
+  followedProfiles(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): [ProfileFollower!]!
+  """An aggregate relationship"""
+  followedProfilesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): ProfileFollowerAggregate!
+  """An array relationship"""
+  followers(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): [ProfileFollower!]!
+  """An aggregate relationship"""
+  followersAggregate(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): ProfileFollowerAggregate!
   id: uuid!
+  instagramUsername: String
   kind: String!
   """An object relationship"""
   location: GeoLocation
   locationId: uuid
-  photoUrl: String
+  metaData(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  parentNodeId: uuid
+  """An object relationship"""
+  parentProfileNode: Profile
+  """An object relationship"""
+  photo: MediaItem
+  photoId: String
+  startDate: date
   """An object relationship"""
   tenant: Tenant!
   tenantId: String!
+  tiktokUsername: String
+  updatedAt: timestamptz!
   username: citext!
+  xUsername: String
+}
+
+"""
+order by aggregate values of table "profile"
+"""
+input ProfileAggregateOrderBy {
+  count: OrderBy
+  max: ProfileMaxOrderBy
+  min: ProfileMinOrderBy
 }
 
 """
 columns and relationships of "profile_attribute"
 """
 type ProfileAttribute {
+  createdAt: timestamptz!
   kind: String!
   order: Int
+  updatedAt: timestamptz!
   value: String!
 }
 
@@ -860,8 +1284,10 @@ input ProfileAttributeBoolExp {
   _and: [ProfileAttributeBoolExp!]
   _not: ProfileAttributeBoolExp
   _or: [ProfileAttributeBoolExp!]
+  createdAt: TimestamptzComparisonExp
   kind: StringComparisonExp
   order: IntComparisonExp
+  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -869,8 +1295,10 @@ input ProfileAttributeBoolExp {
 order by max() on columns of table "profile_attribute"
 """
 input ProfileAttributeMaxOrderBy {
+  createdAt: OrderBy
   kind: OrderBy
   order: OrderBy
+  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -878,15 +1306,19 @@ input ProfileAttributeMaxOrderBy {
 order by min() on columns of table "profile_attribute"
 """
 input ProfileAttributeMinOrderBy {
+  createdAt: OrderBy
   kind: OrderBy
   order: OrderBy
+  updatedAt: OrderBy
   value: OrderBy
 }
 
 """Ordering options when selecting data from "profile_attribute"."""
 input ProfileAttributeOrderBy {
+  createdAt: OrderBy
   kind: OrderBy
   order: OrderBy
+  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -895,9 +1327,13 @@ select columns of table "profile_attribute"
 """
 enum ProfileAttributeSelectColumn {
   """column name"""
+  createdAt
+  """column name"""
   kind
   """column name"""
   order
+  """column name"""
+  updatedAt
   """column name"""
   value
 }
@@ -935,8 +1371,10 @@ input ProfileAttributeStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input ProfileAttributeStreamCursorValueInput {
+  createdAt: timestamptz
   kind: String
   order: Int
+  updatedAt: timestamptz
   value: String
 }
 
@@ -976,31 +1414,281 @@ input ProfileBoolExp {
   _not: ProfileBoolExp
   _or: [ProfileBoolExp!]
   attributes: ProfileAttributeBoolExp
+  bio: StringComparisonExp
+  childProfileNodes: ProfileBoolExp
   createdAt: TimestamptzComparisonExp
   displayName: StringComparisonExp
+  facebookUsername: StringComparisonExp
+  followedProfiles: ProfileFollowerBoolExp
+  followedProfilesAggregate: ProfileFollowerAggregateBoolExp
+  followers: ProfileFollowerBoolExp
+  followersAggregate: ProfileFollowerAggregateBoolExp
   id: UuidComparisonExp
+  instagramUsername: StringComparisonExp
   kind: StringComparisonExp
   location: GeoLocationBoolExp
   locationId: UuidComparisonExp
-  photoUrl: StringComparisonExp
+  metaData: JsonbComparisonExp
+  parentNodeId: UuidComparisonExp
+  parentProfileNode: ProfileBoolExp
+  photo: MediaItemBoolExp
+  photoId: StringComparisonExp
+  startDate: DateComparisonExp
   tenant: TenantBoolExp
   tenantId: StringComparisonExp
+  tiktokUsername: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
   username: CitextComparisonExp
+  xUsername: StringComparisonExp
+}
+
+input ProfileCheckUsernameInput {
+  username: citext!
+}
+
+type ProfileCheckUsernameOutput {
+  isAvailable: Boolean!
+  suggestedUsername: String
+}
+
+"""
+columns and relationships of "profile_follower"
+"""
+type ProfileFollower {
+  createdAt: timestamptz!
+  """An object relationship"""
+  followedProfile: Profile!
+  followedProfileId: uuid!
+  """An object relationship"""
+  follower: Profile!
+  followerId: uuid!
+  kind: ProfileFollowerKindEnum!
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+aggregated selection of "profile_follower"
+"""
+type ProfileFollowerAggregate {
+  aggregate: ProfileFollowerAggregateFields
+  nodes: [ProfileFollower!]!
+}
+
+input ProfileFollowerAggregateBoolExp {
+  count: profileFollowerAggregateBoolExpCount
+}
+
+"""
+aggregate fields of "profile_follower"
+"""
+type ProfileFollowerAggregateFields {
+  count(columns: [ProfileFollowerSelectColumn!], distinct: Boolean): Int!
+  max: ProfileFollowerMaxFields
+  min: ProfileFollowerMinFields
+}
+
+"""
+order by aggregate values of table "profile_follower"
+"""
+input ProfileFollowerAggregateOrderBy {
+  count: OrderBy
+  max: ProfileFollowerMaxOrderBy
+  min: ProfileFollowerMinOrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "profile_follower". All fields are combined with a logical 'AND'.
+"""
+input ProfileFollowerBoolExp {
+  _and: [ProfileFollowerBoolExp!]
+  _not: ProfileFollowerBoolExp
+  _or: [ProfileFollowerBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  followedProfile: ProfileBoolExp
+  followedProfileId: UuidComparisonExp
+  follower: ProfileBoolExp
+  followerId: UuidComparisonExp
+  kind: ProfileFollowerKindEnumComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+enum ProfileFollowerKindEnum {
+  ORGANIZATION
+  SOCIAL
+}
+
+"""
+Boolean expression to compare columns of type "ProfileFollowerKindEnum". All fields are combined with logical 'AND'.
+"""
+input ProfileFollowerKindEnumComparisonExp {
+  _eq: ProfileFollowerKindEnum
+  _in: [ProfileFollowerKindEnum!]
+  _isNull: Boolean
+  _neq: ProfileFollowerKindEnum
+  _nin: [ProfileFollowerKindEnum!]
+}
+
+"""aggregate max on columns"""
+type ProfileFollowerMaxFields {
+  createdAt: timestamptz
+  followedProfileId: uuid
+  followerId: uuid
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""
+order by max() on columns of table "profile_follower"
+"""
+input ProfileFollowerMaxOrderBy {
+  createdAt: OrderBy
+  followedProfileId: OrderBy
+  followerId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""aggregate min on columns"""
+type ProfileFollowerMinFields {
+  createdAt: timestamptz
+  followedProfileId: uuid
+  followerId: uuid
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""
+order by min() on columns of table "profile_follower"
+"""
+input ProfileFollowerMinOrderBy {
+  createdAt: OrderBy
+  followedProfileId: OrderBy
+  followerId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "profile_follower"."""
+input ProfileFollowerOrderBy {
+  createdAt: OrderBy
+  followedProfile: ProfileOrderBy
+  followedProfileId: OrderBy
+  follower: ProfileOrderBy
+  followerId: OrderBy
+  kind: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "profile_follower"
+"""
+enum ProfileFollowerSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  followedProfileId
+  """column name"""
+  followerId
+  """column name"""
+  kind
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "profile_follower"
+"""
+input ProfileFollowerStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ProfileFollowerStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ProfileFollowerStreamCursorValueInput {
+  createdAt: timestamptz
+  followedProfileId: uuid
+  followerId: uuid
+  kind: ProfileFollowerKindEnum
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""
+order by max() on columns of table "profile"
+"""
+input ProfileMaxOrderBy {
+  bio: OrderBy
+  createdAt: OrderBy
+  facebookUsername: OrderBy
+  id: OrderBy
+  instagramUsername: OrderBy
+  kind: OrderBy
+  locationId: OrderBy
+  parentNodeId: OrderBy
+  photoId: OrderBy
+  startDate: OrderBy
+  tenantId: OrderBy
+  tiktokUsername: OrderBy
+  updatedAt: OrderBy
+  username: OrderBy
+  xUsername: OrderBy
+}
+
+"""
+order by min() on columns of table "profile"
+"""
+input ProfileMinOrderBy {
+  bio: OrderBy
+  createdAt: OrderBy
+  facebookUsername: OrderBy
+  id: OrderBy
+  instagramUsername: OrderBy
+  kind: OrderBy
+  locationId: OrderBy
+  parentNodeId: OrderBy
+  photoId: OrderBy
+  startDate: OrderBy
+  tenantId: OrderBy
+  tiktokUsername: OrderBy
+  updatedAt: OrderBy
+  username: OrderBy
+  xUsername: OrderBy
 }
 
 """Ordering options when selecting data from "profile"."""
 input ProfileOrderBy {
   attributesAggregate: ProfileAttributeAggregateOrderBy
+  bio: OrderBy
+  childProfileNodesAggregate: ProfileAggregateOrderBy
   createdAt: OrderBy
   displayName: OrderBy
+  facebookUsername: OrderBy
+  followedProfilesAggregate: ProfileFollowerAggregateOrderBy
+  followersAggregate: ProfileFollowerAggregateOrderBy
   id: OrderBy
+  instagramUsername: OrderBy
   kind: OrderBy
   location: GeoLocationOrderBy
   locationId: OrderBy
-  photoUrl: OrderBy
+  metaData: OrderBy
+  parentNodeId: OrderBy
+  parentProfileNode: ProfileOrderBy
+  photo: MediaItemOrderBy
+  photoId: OrderBy
+  startDate: OrderBy
   tenant: TenantOrderBy
   tenantId: OrderBy
+  tiktokUsername: OrderBy
+  updatedAt: OrderBy
   username: OrderBy
+  xUsername: OrderBy
 }
 
 """
@@ -1008,19 +1696,37 @@ select columns of table "profile"
 """
 enum ProfileSelectColumn {
   """column name"""
+  bio
+  """column name"""
   createdAt
   """column name"""
+  facebookUsername
+  """column name"""
   id
+  """column name"""
+  instagramUsername
   """column name"""
   kind
   """column name"""
   locationId
   """column name"""
-  photoUrl
+  metaData
+  """column name"""
+  parentNodeId
+  """column name"""
+  photoId
+  """column name"""
+  startDate
   """column name"""
   tenantId
   """column name"""
+  tiktokUsername
+  """column name"""
+  updatedAt
+  """column name"""
   username
+  """column name"""
+  xUsername
 }
 
 """
@@ -1035,13 +1741,22 @@ input ProfileStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input ProfileStreamCursorValueInput {
+  bio: String
   createdAt: timestamptz
+  facebookUsername: String
   id: uuid
+  instagramUsername: String
   kind: String
   locationId: uuid
-  photoUrl: String
+  metaData: jsonb
+  parentNodeId: uuid
+  photoId: String
+  startDate: date
   tenantId: String
+  tiktokUsername: String
+  updatedAt: timestamptz
   username: citext
+  xUsername: String
 }
 
 """
@@ -1087,6 +1802,182 @@ input QuestionKindStreamCursorInput {
 """Initial value of the column from where the streaming should start"""
 input QuestionKindStreamCursorValueInput {
   id: String
+}
+
+"""
+columns and relationships of "shop_product"
+"""
+type ShopProduct {
+  createdAt: timestamptz!
+  description: String
+  externalId: String
+  id: uuid!
+  kind: ShopProductKindEnum!
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  name: String!
+  price: Int!
+  sku: String!
+  tenantId: String!
+  trialPeriodDays: Int
+  updatedAt: timestamptz!
+}
+
+"""
+Boolean expression to filter rows from the table "shop_product". All fields are combined with a logical 'AND'.
+"""
+input ShopProductBoolExp {
+  _and: [ShopProductBoolExp!]
+  _not: ShopProductBoolExp
+  _or: [ShopProductBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  externalId: StringComparisonExp
+  id: UuidComparisonExp
+  kind: ShopProductKindEnumComparisonExp
+  metadata: JsonbComparisonExp
+  name: StringComparisonExp
+  price: IntComparisonExp
+  sku: StringComparisonExp
+  tenantId: StringComparisonExp
+  trialPeriodDays: IntComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""
+columns and relationships of "shop_product_kind"
+"""
+type ShopProductKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "shop_product_kind". All fields are combined with a logical 'AND'.
+"""
+input ShopProductKindBoolExp {
+  _and: [ShopProductKindBoolExp!]
+  _not: ShopProductKindBoolExp
+  _or: [ShopProductKindBoolExp!]
+  id: StringComparisonExp
+}
+
+enum ShopProductKindEnum {
+  DIGITAL
+  PHYSICAL
+  SUBSCRIPTION
+}
+
+"""
+Boolean expression to compare columns of type "ShopProductKindEnum". All fields are combined with logical 'AND'.
+"""
+input ShopProductKindEnumComparisonExp {
+  _eq: ShopProductKindEnum
+  _in: [ShopProductKindEnum!]
+  _isNull: Boolean
+  _neq: ShopProductKindEnum
+  _nin: [ShopProductKindEnum!]
+}
+
+"""Ordering options when selecting data from "shop_product_kind"."""
+input ShopProductKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "shop_product_kind"
+"""
+enum ShopProductKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "shop_product_kind"
+"""
+input ShopProductKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ShopProductKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ShopProductKindStreamCursorValueInput {
+  id: String
+}
+
+"""Ordering options when selecting data from "shop_product"."""
+input ShopProductOrderBy {
+  createdAt: OrderBy
+  description: OrderBy
+  externalId: OrderBy
+  id: OrderBy
+  kind: OrderBy
+  metadata: OrderBy
+  name: OrderBy
+  price: OrderBy
+  sku: OrderBy
+  tenantId: OrderBy
+  trialPeriodDays: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "shop_product"
+"""
+enum ShopProductSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  description
+  """column name"""
+  externalId
+  """column name"""
+  id
+  """column name"""
+  kind
+  """column name"""
+  metadata
+  """column name"""
+  name
+  """column name"""
+  price
+  """column name"""
+  sku
+  """column name"""
+  tenantId
+  """column name"""
+  trialPeriodDays
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "shop_product"
+"""
+input ShopProductStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: ShopProductStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ShopProductStreamCursorValueInput {
+  createdAt: timestamptz
+  description: String
+  externalId: String
+  id: uuid
+  kind: ShopProductKindEnum
+  metadata: jsonb
+  name: String
+  price: Int
+  sku: String
+  tenantId: String
+  trialPeriodDays: Int
+  updatedAt: timestamptz
 }
 
 """
@@ -1140,13 +2031,11 @@ type SuccessOutput {
 columns and relationships of "tenant"
 """
 type Tenant {
-  createdAt: timestamptz!
   domain: citext!
   """url friendly version of name"""
   id: String!
   name: String!
   profileId: uuid
-  transactionalFromEmail: citext!
 }
 
 """
@@ -1156,30 +2045,24 @@ input TenantBoolExp {
   _and: [TenantBoolExp!]
   _not: TenantBoolExp
   _or: [TenantBoolExp!]
-  createdAt: TimestamptzComparisonExp
   domain: CitextComparisonExp
   id: StringComparisonExp
   name: StringComparisonExp
   profileId: UuidComparisonExp
-  transactionalFromEmail: CitextComparisonExp
 }
 
 """Ordering options when selecting data from "tenant"."""
 input TenantOrderBy {
-  createdAt: OrderBy
   domain: OrderBy
   id: OrderBy
   name: OrderBy
   profileId: OrderBy
-  transactionalFromEmail: OrderBy
 }
 
 """
 select columns of table "tenant"
 """
 enum TenantSelectColumn {
-  """column name"""
-  createdAt
   """column name"""
   domain
   """column name"""
@@ -1188,8 +2071,6 @@ enum TenantSelectColumn {
   name
   """column name"""
   profileId
-  """column name"""
-  transactionalFromEmail
 }
 
 """
@@ -1204,13 +2085,11 @@ input TenantStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input TenantStreamCursorValueInput {
-  createdAt: timestamptz
   domain: citext
   """url friendly version of name"""
   id: String
   name: String
   profileId: uuid
-  transactionalFromEmail: citext
 }
 
 """
@@ -1226,51 +2105,6 @@ input TimestamptzComparisonExp {
   _lte: timestamptz
   _neq: timestamptz
   _nin: [timestamptz!]
-}
-
-"""
-columns and relationships of "user_role_kind"
-"""
-type UserRoleKind {
-  id: String!
-}
-
-"""
-Boolean expression to filter rows from the table "user_role_kind". All fields are combined with a logical 'AND'.
-"""
-input UserRoleKindBoolExp {
-  _and: [UserRoleKindBoolExp!]
-  _not: UserRoleKindBoolExp
-  _or: [UserRoleKindBoolExp!]
-  id: StringComparisonExp
-}
-
-"""Ordering options when selecting data from "user_role_kind"."""
-input UserRoleKindOrderBy {
-  id: OrderBy
-}
-
-"""
-select columns of table "user_role_kind"
-"""
-enum UserRoleKindSelectColumn {
-  """column name"""
-  id
-}
-
-"""
-Streaming cursor of the table "user_role_kind"
-"""
-input UserRoleKindStreamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: UserRoleKindStreamCursorValueInput!
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input UserRoleKindStreamCursorValueInput {
-  id: String
 }
 
 """
@@ -1406,7 +2240,31 @@ type mutation_root {
 
 scalar numeric
 
+input profileFollowerAggregateBoolExpCount {
+  arguments: [ProfileFollowerSelectColumn!]
+  distinct: Boolean
+  filter: ProfileFollowerBoolExp
+  predicate: IntComparisonExp!
+}
+
 type query_root {
+  """
+  fetch data from the table: "auth_role_kind"
+  """
+  authRoleKind(
+    """distinct select on columns"""
+    distinctOn: [AuthRoleKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [AuthRoleKindOrderBy!]
+    """filter the rows returned"""
+    where: AuthRoleKindBoolExp
+  ): [AuthRoleKind!]!
+  """fetch data from the table: "auth_role_kind" using primary key columns"""
+  authRoleKindByPk(id: String!): AuthRoleKind
   """
   fetch data from the table: "event"
   """
@@ -1478,6 +2336,57 @@ type query_root {
   """fetch data from the table: "geo_location" using primary key columns"""
   geoLocationByPk(id: uuid!): GeoLocation
   """
+  fetch data from the table: "media_item"
+  """
+  mediaItem(
+    """distinct select on columns"""
+    distinctOn: [MediaItemSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaItemOrderBy!]
+    """filter the rows returned"""
+    where: MediaItemBoolExp
+  ): [MediaItem!]!
+  """fetch data from the table: "media_item" using primary key columns"""
+  mediaItemByPk(id: String!): MediaItem
+  """
+  fetch data from the table: "media_item_tag"
+  """
+  mediaItemTag(
+    """distinct select on columns"""
+    distinctOn: [MediaItemTagSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaItemTagOrderBy!]
+    """filter the rows returned"""
+    where: MediaItemTagBoolExp
+  ): [MediaItemTag!]!
+  """fetch data from the table: "media_item_tag" using primary key columns"""
+  mediaItemTagByPk(mediaItemId: String!, tag: String!): MediaItemTag
+  """
+  fetch data from the table: "media_kind"
+  """
+  mediaKind(
+    """distinct select on columns"""
+    distinctOn: [MediaKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaKindOrderBy!]
+    """filter the rows returned"""
+    where: MediaKindBoolExp
+  ): [MediaKind!]!
+  """fetch data from the table: "media_kind" using primary key columns"""
+  mediaKindByPk(id: String!): MediaKind
+  """
   fetch data from the table: "profile"
   """
   profile(
@@ -1509,6 +2418,41 @@ type query_root {
   ): [ProfileAttribute!]!
   """fetch data from the table: "profile" using primary key columns"""
   profileByPk(id: uuid!): Profile
+  profileCheckUsername(args: ProfileCheckUsernameInput!): ProfileCheckUsernameOutput
+  """
+  fetch data from the table: "profile_follower"
+  """
+  profileFollower(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): [ProfileFollower!]!
+  """
+  fetch aggregated fields from the table: "profile_follower"
+  """
+  profileFollowerAggregate(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): ProfileFollowerAggregate!
+  """
+  fetch data from the table: "profile_follower" using primary key columns
+  """
+  profileFollowerByPk(followedProfileId: uuid!, followerId: uuid!): ProfileFollower
   """
   fetch data from the table: "question_kind"
   """
@@ -1526,6 +2470,42 @@ type query_root {
   ): [QuestionKind!]!
   """fetch data from the table: "question_kind" using primary key columns"""
   questionKindByPk(id: String!): QuestionKind
+  """
+  fetch data from the table: "shop_product"
+  """
+  shopProduct(
+    """distinct select on columns"""
+    distinctOn: [ShopProductSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ShopProductOrderBy!]
+    """filter the rows returned"""
+    where: ShopProductBoolExp
+  ): [ShopProduct!]!
+  """fetch data from the table: "shop_product" using primary key columns"""
+  shopProductByPk(id: uuid!): ShopProduct
+  """
+  fetch data from the table: "shop_product_kind"
+  """
+  shopProductKind(
+    """distinct select on columns"""
+    distinctOn: [ShopProductKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ShopProductKindOrderBy!]
+    """filter the rows returned"""
+    where: ShopProductKindBoolExp
+  ): [ShopProductKind!]!
+  """
+  fetch data from the table: "shop_product_kind" using primary key columns
+  """
+  shopProductKindByPk(id: String!): ShopProductKind
   """
   fetch data from the table: "tenant"
   """
@@ -1546,23 +2526,6 @@ type query_root {
     """url friendly version of name"""
     id: String!
   ): Tenant
-  """
-  fetch data from the table: "user_role_kind"
-  """
-  userRoleKind(
-    """distinct select on columns"""
-    distinctOn: [UserRoleKindSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [UserRoleKindOrderBy!]
-    """filter the rows returned"""
-    where: UserRoleKindBoolExp
-  ): [UserRoleKind!]!
-  """fetch data from the table: "user_role_kind" using primary key columns"""
-  userRoleKindByPk(id: String!): UserRoleKind
   """
   fetch data from the table: "value_kind"
   """
@@ -1600,6 +2563,34 @@ type query_root {
 }
 
 type subscription_root {
+  """
+  fetch data from the table: "auth_role_kind"
+  """
+  authRoleKind(
+    """distinct select on columns"""
+    distinctOn: [AuthRoleKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [AuthRoleKindOrderBy!]
+    """filter the rows returned"""
+    where: AuthRoleKindBoolExp
+  ): [AuthRoleKind!]!
+  """fetch data from the table: "auth_role_kind" using primary key columns"""
+  authRoleKindByPk(id: String!): AuthRoleKind
+  """
+  fetch data from the table in a streaming manner: "auth_role_kind"
+  """
+  authRoleKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [AuthRoleKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: AuthRoleKindBoolExp
+  ): [AuthRoleKind!]!
   """
   fetch data from the table: "event"
   """
@@ -1715,6 +2706,90 @@ type subscription_root {
     where: GeoLocationBoolExp
   ): [GeoLocation!]!
   """
+  fetch data from the table: "media_item"
+  """
+  mediaItem(
+    """distinct select on columns"""
+    distinctOn: [MediaItemSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaItemOrderBy!]
+    """filter the rows returned"""
+    where: MediaItemBoolExp
+  ): [MediaItem!]!
+  """fetch data from the table: "media_item" using primary key columns"""
+  mediaItemByPk(id: String!): MediaItem
+  """
+  fetch data from the table in a streaming manner: "media_item"
+  """
+  mediaItemStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [MediaItemStreamCursorInput]!
+    """filter the rows returned"""
+    where: MediaItemBoolExp
+  ): [MediaItem!]!
+  """
+  fetch data from the table: "media_item_tag"
+  """
+  mediaItemTag(
+    """distinct select on columns"""
+    distinctOn: [MediaItemTagSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaItemTagOrderBy!]
+    """filter the rows returned"""
+    where: MediaItemTagBoolExp
+  ): [MediaItemTag!]!
+  """fetch data from the table: "media_item_tag" using primary key columns"""
+  mediaItemTagByPk(mediaItemId: String!, tag: String!): MediaItemTag
+  """
+  fetch data from the table in a streaming manner: "media_item_tag"
+  """
+  mediaItemTagStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [MediaItemTagStreamCursorInput]!
+    """filter the rows returned"""
+    where: MediaItemTagBoolExp
+  ): [MediaItemTag!]!
+  """
+  fetch data from the table: "media_kind"
+  """
+  mediaKind(
+    """distinct select on columns"""
+    distinctOn: [MediaKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [MediaKindOrderBy!]
+    """filter the rows returned"""
+    where: MediaKindBoolExp
+  ): [MediaKind!]!
+  """fetch data from the table: "media_kind" using primary key columns"""
+  mediaKindByPk(id: String!): MediaKind
+  """
+  fetch data from the table in a streaming manner: "media_kind"
+  """
+  mediaKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [MediaKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: MediaKindBoolExp
+  ): [MediaKind!]!
+  """
   fetch data from the table: "profile"
   """
   profile(
@@ -1758,6 +2833,51 @@ type subscription_root {
   """fetch data from the table: "profile" using primary key columns"""
   profileByPk(id: uuid!): Profile
   """
+  fetch data from the table: "profile_follower"
+  """
+  profileFollower(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): [ProfileFollower!]!
+  """
+  fetch aggregated fields from the table: "profile_follower"
+  """
+  profileFollowerAggregate(
+    """distinct select on columns"""
+    distinctOn: [ProfileFollowerSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ProfileFollowerOrderBy!]
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): ProfileFollowerAggregate!
+  """
+  fetch data from the table: "profile_follower" using primary key columns
+  """
+  profileFollowerByPk(followedProfileId: uuid!, followerId: uuid!): ProfileFollower
+  """
+  fetch data from the table in a streaming manner: "profile_follower"
+  """
+  profileFollowerStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ProfileFollowerStreamCursorInput]!
+    """filter the rows returned"""
+    where: ProfileFollowerBoolExp
+  ): [ProfileFollower!]!
+  """
   fetch data from the table in a streaming manner: "profile"
   """
   profileStream(
@@ -1797,6 +2917,64 @@ type subscription_root {
     where: QuestionKindBoolExp
   ): [QuestionKind!]!
   """
+  fetch data from the table: "shop_product"
+  """
+  shopProduct(
+    """distinct select on columns"""
+    distinctOn: [ShopProductSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ShopProductOrderBy!]
+    """filter the rows returned"""
+    where: ShopProductBoolExp
+  ): [ShopProduct!]!
+  """fetch data from the table: "shop_product" using primary key columns"""
+  shopProductByPk(id: uuid!): ShopProduct
+  """
+  fetch data from the table: "shop_product_kind"
+  """
+  shopProductKind(
+    """distinct select on columns"""
+    distinctOn: [ShopProductKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [ShopProductKindOrderBy!]
+    """filter the rows returned"""
+    where: ShopProductKindBoolExp
+  ): [ShopProductKind!]!
+  """
+  fetch data from the table: "shop_product_kind" using primary key columns
+  """
+  shopProductKindByPk(id: String!): ShopProductKind
+  """
+  fetch data from the table in a streaming manner: "shop_product_kind"
+  """
+  shopProductKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ShopProductKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: ShopProductKindBoolExp
+  ): [ShopProductKind!]!
+  """
+  fetch data from the table in a streaming manner: "shop_product"
+  """
+  shopProductStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ShopProductStreamCursorInput]!
+    """filter the rows returned"""
+    where: ShopProductBoolExp
+  ): [ShopProduct!]!
+  """
   fetch data from the table: "tenant"
   """
   tenant(
@@ -1827,34 +3005,6 @@ type subscription_root {
     """filter the rows returned"""
     where: TenantBoolExp
   ): [Tenant!]!
-  """
-  fetch data from the table: "user_role_kind"
-  """
-  userRoleKind(
-    """distinct select on columns"""
-    distinctOn: [UserRoleKindSelectColumn!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    orderBy: [UserRoleKindOrderBy!]
-    """filter the rows returned"""
-    where: UserRoleKindBoolExp
-  ): [UserRoleKind!]!
-  """fetch data from the table: "user_role_kind" using primary key columns"""
-  userRoleKindByPk(id: String!): UserRoleKind
-  """
-  fetch data from the table in a streaming manner: "user_role_kind"
-  """
-  userRoleKindStream(
-    """maximum number of rows returned in a single batch"""
-    batchSize: Int!
-    """cursor to stream the results returned by the query"""
-    cursor: [UserRoleKindStreamCursorInput]!
-    """filter the rows returned"""
-    where: UserRoleKindBoolExp
-  ): [UserRoleKind!]!
   """
   fetch data from the table: "value_kind"
   """

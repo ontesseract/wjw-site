@@ -25,5 +25,5 @@ export const submitContactForm = async (args: ContactFormInput) => {
   return publicClient.request<
     SubmitContactFormMutationResponse,
     SubmitContactFormMutationVariables
-  >({ document: mutation, variables: { args } });
+  >(mutation, { args });
 };

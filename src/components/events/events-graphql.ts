@@ -8,7 +8,6 @@ export const publicProfileFragment = graphql(`
     id
     kind
     locationId
-    photoUrl
     tenantId
     username
   }
@@ -117,10 +116,7 @@ export async function getEvents({
     };
   }
 
-  const data = await publicClient.request({
-    document: eventsQuery,
-    variables: { where },
-  });
+  const data = await publicClient.request(eventsQuery, { where });
   return data?.events ?? [];
 }
 

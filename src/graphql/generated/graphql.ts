@@ -24,20 +24,17 @@ export type Scalars = {
 
 export type AuthAnonymousInput = {
   deviceId: Scalars['String']['input'];
-  tenantId: Scalars['String']['input'];
 };
 
 export type AuthEmailInput = {
   email: Scalars['citext']['input'];
   state?: InputMaybe<Scalars['String']['input']>;
-  tenantId: Scalars['String']['input'];
   useVerificationCode?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AuthEmailPasswordInput = {
   email: Scalars['citext']['input'];
   password: Scalars['String']['input'];
-  tenantId: Scalars['String']['input'];
 };
 
 export type AuthEmailPasswordSignUpInput = {
@@ -47,7 +44,6 @@ export type AuthEmailPasswordSignUpInput = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   state?: InputMaybe<Scalars['String']['input']>;
-  tenantId: Scalars['String']['input'];
   useVerificationCode?: InputMaybe<Scalars['Boolean']['input']>;
   username?: InputMaybe<Scalars['citext']['input']>;
 };
@@ -58,41 +54,74 @@ export type AuthEmailSignupInput = {
   firstName?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
-  tenantId: Scalars['String']['input'];
   useVerificationCode?: InputMaybe<Scalars['Boolean']['input']>;
   username?: InputMaybe<Scalars['citext']['input']>;
 };
 
 export type AuthEmailTicketInput = {
   email: Scalars['citext']['input'];
-  tenantId: Scalars['String']['input'];
   ticket: Scalars['String']['input'];
 };
 
 export type AuthOutput = {
   __typename?: 'AuthOutput';
   profileId?: Maybe<Scalars['uuid']['output']>;
+  refreshToken?: Maybe<Scalars['String']['output']>;
   sessionId?: Maybe<Scalars['String']['output']>;
-  tenantId: Scalars['String']['output'];
   token?: Maybe<Scalars['String']['output']>;
 };
 
 export type AuthResetPasswordInput = {
   email: Scalars['citext']['input'];
   password: Scalars['String']['input'];
-  tenantId: Scalars['String']['input'];
   ticket: Scalars['String']['input'];
+};
+
+/** columns and relationships of "auth_role_kind" */
+export type AuthRoleKind = {
+  __typename?: 'AuthRoleKind';
+  id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "auth_role_kind". All fields are combined with a logical 'AND'. */
+export type AuthRoleKindBoolExp = {
+  _and?: InputMaybe<Array<AuthRoleKindBoolExp>>;
+  _not?: InputMaybe<AuthRoleKindBoolExp>;
+  _or?: InputMaybe<Array<AuthRoleKindBoolExp>>;
+  id?: InputMaybe<StringComparisonExp>;
+};
+
+/** Ordering options when selecting data from "auth_role_kind". */
+export type AuthRoleKindOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "auth_role_kind" */
+export enum AuthRoleKindSelectColumn {
+  /** column name */
+  Id = 'id'
+}
+
+/** Streaming cursor of the table "auth_role_kind" */
+export type AuthRoleKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: AuthRoleKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AuthRoleKindStreamCursorValueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type AuthSmsCodeInput = {
   code: Scalars['String']['input'];
   mobile: Scalars['citext']['input'];
-  tenantId: Scalars['String']['input'];
 };
 
 export type AuthSmsInput = {
   mobile: Scalars['citext']['input'];
-  tenantId: Scalars['String']['input'];
 };
 
 export type AuthSmsSignUpInput = {
@@ -100,7 +129,6 @@ export type AuthSmsSignUpInput = {
   firstName?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   mobile: Scalars['citext']['input'];
-  tenantId: Scalars['String']['input'];
   username?: InputMaybe<Scalars['citext']['input']>;
 };
 
@@ -728,6 +756,273 @@ export type JsonbComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
 };
 
+/** columns and relationships of "media_item" */
+export type MediaItem = {
+  __typename?: 'MediaItem';
+  blurHash: Scalars['String']['output'];
+  contentLength: Scalars['Int']['output'];
+  contentType: Scalars['String']['output'];
+  createdAt: Scalars['timestamptz']['output'];
+  defaultUrl: Scalars['String']['output'];
+  filename: Scalars['String']['output'];
+  height: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  kind: MediaKindEnum;
+  /** An array relationship */
+  tags: Array<MediaItemTag>;
+  tenantId: Scalars['String']['output'];
+  thumbnailUrl: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+  width: Scalars['Int']['output'];
+};
+
+
+/** columns and relationships of "media_item" */
+export type MediaItemTagsArgs = {
+  distinctOn?: InputMaybe<Array<MediaItemTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaItemTagOrderBy>>;
+  where?: InputMaybe<MediaItemTagBoolExp>;
+};
+
+/** Boolean expression to filter rows from the table "media_item". All fields are combined with a logical 'AND'. */
+export type MediaItemBoolExp = {
+  _and?: InputMaybe<Array<MediaItemBoolExp>>;
+  _not?: InputMaybe<MediaItemBoolExp>;
+  _or?: InputMaybe<Array<MediaItemBoolExp>>;
+  blurHash?: InputMaybe<StringComparisonExp>;
+  contentLength?: InputMaybe<IntComparisonExp>;
+  contentType?: InputMaybe<StringComparisonExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  defaultUrl?: InputMaybe<StringComparisonExp>;
+  filename?: InputMaybe<StringComparisonExp>;
+  height?: InputMaybe<IntComparisonExp>;
+  id?: InputMaybe<StringComparisonExp>;
+  kind?: InputMaybe<MediaKindEnumComparisonExp>;
+  tags?: InputMaybe<MediaItemTagBoolExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  thumbnailUrl?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  width?: InputMaybe<IntComparisonExp>;
+};
+
+/** Ordering options when selecting data from "media_item". */
+export type MediaItemOrderBy = {
+  blurHash?: InputMaybe<OrderBy>;
+  contentLength?: InputMaybe<OrderBy>;
+  contentType?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  defaultUrl?: InputMaybe<OrderBy>;
+  filename?: InputMaybe<OrderBy>;
+  height?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  tagsAggregate?: InputMaybe<MediaItemTagAggregateOrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  thumbnailUrl?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  width?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "media_item" */
+export enum MediaItemSelectColumn {
+  /** column name */
+  BlurHash = 'blurHash',
+  /** column name */
+  ContentLength = 'contentLength',
+  /** column name */
+  ContentType = 'contentType',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  DefaultUrl = 'defaultUrl',
+  /** column name */
+  Filename = 'filename',
+  /** column name */
+  Height = 'height',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  ThumbnailUrl = 'thumbnailUrl',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Width = 'width'
+}
+
+/** Streaming cursor of the table "media_item" */
+export type MediaItemStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: MediaItemStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type MediaItemStreamCursorValueInput = {
+  blurHash?: InputMaybe<Scalars['String']['input']>;
+  contentLength?: InputMaybe<Scalars['Int']['input']>;
+  contentType?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  defaultUrl?: InputMaybe<Scalars['String']['input']>;
+  filename?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  kind?: InputMaybe<MediaKindEnum>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  thumbnailUrl?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  width?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** columns and relationships of "media_item_tag" */
+export type MediaItemTag = {
+  __typename?: 'MediaItemTag';
+  createdAt: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  mediaItem: MediaItem;
+  mediaItemId: Scalars['String']['output'];
+  tag: Scalars['String']['output'];
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+/** order by aggregate values of table "media_item_tag" */
+export type MediaItemTagAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<MediaItemTagMaxOrderBy>;
+  min?: InputMaybe<MediaItemTagMinOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "media_item_tag". All fields are combined with a logical 'AND'. */
+export type MediaItemTagBoolExp = {
+  _and?: InputMaybe<Array<MediaItemTagBoolExp>>;
+  _not?: InputMaybe<MediaItemTagBoolExp>;
+  _or?: InputMaybe<Array<MediaItemTagBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  mediaItem?: InputMaybe<MediaItemBoolExp>;
+  mediaItemId?: InputMaybe<StringComparisonExp>;
+  tag?: InputMaybe<StringComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** order by max() on columns of table "media_item_tag" */
+export type MediaItemTagMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  tag?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "media_item_tag" */
+export type MediaItemTagMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  tag?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "media_item_tag". */
+export type MediaItemTagOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  mediaItem?: InputMaybe<MediaItemOrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  tag?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "media_item_tag" */
+export enum MediaItemTagSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  MediaItemId = 'mediaItemId',
+  /** column name */
+  Tag = 'tag',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "media_item_tag" */
+export type MediaItemTagStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: MediaItemTagStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type MediaItemTagStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  mediaItemId?: InputMaybe<Scalars['String']['input']>;
+  tag?: InputMaybe<Scalars['String']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** columns and relationships of "media_kind" */
+export type MediaKind = {
+  __typename?: 'MediaKind';
+  id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "media_kind". All fields are combined with a logical 'AND'. */
+export type MediaKindBoolExp = {
+  _and?: InputMaybe<Array<MediaKindBoolExp>>;
+  _not?: InputMaybe<MediaKindBoolExp>;
+  _or?: InputMaybe<Array<MediaKindBoolExp>>;
+  id?: InputMaybe<StringComparisonExp>;
+};
+
+export enum MediaKindEnum {
+  CloudflareImage = 'CLOUDFLARE_IMAGE',
+  CloudflareVideo = 'CLOUDFLARE_VIDEO'
+}
+
+/** Boolean expression to compare columns of type "MediaKindEnum". All fields are combined with logical 'AND'. */
+export type MediaKindEnumComparisonExp = {
+  _eq?: InputMaybe<MediaKindEnum>;
+  _in?: InputMaybe<Array<MediaKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<MediaKindEnum>;
+  _nin?: InputMaybe<Array<MediaKindEnum>>;
+};
+
+/** Ordering options when selecting data from "media_kind". */
+export type MediaKindOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "media_kind" */
+export enum MediaKindSelectColumn {
+  /** column name */
+  Id = 'id'
+}
+
+/** Streaming cursor of the table "media_kind" */
+export type MediaKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: MediaKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type MediaKindStreamCursorValueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type NumericComparisonExp = {
   _eq?: InputMaybe<Scalars['numeric']['input']>;
@@ -762,19 +1057,42 @@ export type Profile = {
   __typename?: 'Profile';
   /** An array relationship */
   attributes: Array<ProfileAttribute>;
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  bio?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  childProfileNodes: Array<Profile>;
+  createdAt: Scalars['timestamptz']['output'];
   /** A computed field, executes function "display_name" */
   displayName?: Maybe<Scalars['String']['output']>;
+  facebookUsername?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  followedProfiles: Array<ProfileFollower>;
+  /** An aggregate relationship */
+  followedProfilesAggregate: ProfileFollowerAggregate;
+  /** An array relationship */
+  followers: Array<ProfileFollower>;
+  /** An aggregate relationship */
+  followersAggregate: ProfileFollowerAggregate;
   id: Scalars['uuid']['output'];
+  instagramUsername?: Maybe<Scalars['String']['output']>;
   kind: Scalars['String']['output'];
   /** An object relationship */
   location?: Maybe<GeoLocation>;
   locationId?: Maybe<Scalars['uuid']['output']>;
-  photoUrl?: Maybe<Scalars['String']['output']>;
+  metaData: Scalars['jsonb']['output'];
+  parentNodeId?: Maybe<Scalars['uuid']['output']>;
+  /** An object relationship */
+  parentProfileNode?: Maybe<Profile>;
+  /** An object relationship */
+  photo?: Maybe<MediaItem>;
+  photoId?: Maybe<Scalars['String']['output']>;
+  startDate?: Maybe<Scalars['date']['output']>;
   /** An object relationship */
   tenant: Tenant;
   tenantId: Scalars['String']['output'];
+  tiktokUsername?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['timestamptz']['output'];
   username: Scalars['citext']['output'];
+  xUsername?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -787,11 +1105,76 @@ export type ProfileAttributesArgs = {
   where?: InputMaybe<ProfileAttributeBoolExp>;
 };
 
+
+/** columns and relationships of "profile" */
+export type ProfileChildProfileNodesArgs = {
+  distinctOn?: InputMaybe<Array<ProfileSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileOrderBy>>;
+  where?: InputMaybe<ProfileBoolExp>;
+};
+
+
+/** columns and relationships of "profile" */
+export type ProfileFollowedProfilesArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+/** columns and relationships of "profile" */
+export type ProfileFollowedProfilesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+/** columns and relationships of "profile" */
+export type ProfileFollowersArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+/** columns and relationships of "profile" */
+export type ProfileFollowersAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+/** columns and relationships of "profile" */
+export type ProfileMetaDataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** order by aggregate values of table "profile" */
+export type ProfileAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<ProfileMaxOrderBy>;
+  min?: InputMaybe<ProfileMinOrderBy>;
+};
+
 /** columns and relationships of "profile_attribute" */
 export type ProfileAttribute = {
   __typename?: 'ProfileAttribute';
+  createdAt: Scalars['timestamptz']['output'];
   kind: Scalars['String']['output'];
   order?: Maybe<Scalars['Int']['output']>;
+  updatedAt: Scalars['timestamptz']['output'];
   value: Scalars['String']['output'];
 };
 
@@ -820,38 +1203,50 @@ export type ProfileAttributeBoolExp = {
   _and?: InputMaybe<Array<ProfileAttributeBoolExp>>;
   _not?: InputMaybe<ProfileAttributeBoolExp>;
   _or?: InputMaybe<Array<ProfileAttributeBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   kind?: InputMaybe<StringComparisonExp>;
   order?: InputMaybe<IntComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
 /** order by max() on columns of table "profile_attribute" */
 export type ProfileAttributeMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
   kind?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "profile_attribute" */
 export type ProfileAttributeMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
   kind?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
 /** Ordering options when selecting data from "profile_attribute". */
 export type ProfileAttributeOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
   kind?: InputMaybe<OrderBy>;
   order?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "profile_attribute" */
 export enum ProfileAttributeSelectColumn {
   /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
   Kind = 'kind',
   /** column name */
   Order = 'order',
+  /** column name */
+  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -881,8 +1276,10 @@ export type ProfileAttributeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type ProfileAttributeStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   kind?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   value?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -912,49 +1309,306 @@ export type ProfileBoolExp = {
   _not?: InputMaybe<ProfileBoolExp>;
   _or?: InputMaybe<Array<ProfileBoolExp>>;
   attributes?: InputMaybe<ProfileAttributeBoolExp>;
+  bio?: InputMaybe<StringComparisonExp>;
+  childProfileNodes?: InputMaybe<ProfileBoolExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   displayName?: InputMaybe<StringComparisonExp>;
+  facebookUsername?: InputMaybe<StringComparisonExp>;
+  followedProfiles?: InputMaybe<ProfileFollowerBoolExp>;
+  followedProfilesAggregate?: InputMaybe<ProfileFollowerAggregateBoolExp>;
+  followers?: InputMaybe<ProfileFollowerBoolExp>;
+  followersAggregate?: InputMaybe<ProfileFollowerAggregateBoolExp>;
   id?: InputMaybe<UuidComparisonExp>;
+  instagramUsername?: InputMaybe<StringComparisonExp>;
   kind?: InputMaybe<StringComparisonExp>;
   location?: InputMaybe<GeoLocationBoolExp>;
   locationId?: InputMaybe<UuidComparisonExp>;
-  photoUrl?: InputMaybe<StringComparisonExp>;
+  metaData?: InputMaybe<JsonbComparisonExp>;
+  parentNodeId?: InputMaybe<UuidComparisonExp>;
+  parentProfileNode?: InputMaybe<ProfileBoolExp>;
+  photo?: InputMaybe<MediaItemBoolExp>;
+  photoId?: InputMaybe<StringComparisonExp>;
+  startDate?: InputMaybe<DateComparisonExp>;
   tenant?: InputMaybe<TenantBoolExp>;
   tenantId?: InputMaybe<StringComparisonExp>;
+  tiktokUsername?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   username?: InputMaybe<CitextComparisonExp>;
+  xUsername?: InputMaybe<StringComparisonExp>;
+};
+
+export type ProfileCheckUsernameInput = {
+  username: Scalars['citext']['input'];
+};
+
+export type ProfileCheckUsernameOutput = {
+  __typename?: 'ProfileCheckUsernameOutput';
+  isAvailable: Scalars['Boolean']['output'];
+  suggestedUsername?: Maybe<Scalars['String']['output']>;
+};
+
+/** columns and relationships of "profile_follower" */
+export type ProfileFollower = {
+  __typename?: 'ProfileFollower';
+  createdAt: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  followedProfile: Profile;
+  followedProfileId: Scalars['uuid']['output'];
+  /** An object relationship */
+  follower: Profile;
+  followerId: Scalars['uuid']['output'];
+  kind: ProfileFollowerKindEnum;
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "profile_follower" */
+export type ProfileFollowerAggregate = {
+  __typename?: 'ProfileFollowerAggregate';
+  aggregate?: Maybe<ProfileFollowerAggregateFields>;
+  nodes: Array<ProfileFollower>;
+};
+
+export type ProfileFollowerAggregateBoolExp = {
+  count?: InputMaybe<ProfileFollowerAggregateBoolExpCount>;
+};
+
+/** aggregate fields of "profile_follower" */
+export type ProfileFollowerAggregateFields = {
+  __typename?: 'ProfileFollowerAggregateFields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ProfileFollowerMaxFields>;
+  min?: Maybe<ProfileFollowerMinFields>;
+};
+
+
+/** aggregate fields of "profile_follower" */
+export type ProfileFollowerAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "profile_follower" */
+export type ProfileFollowerAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<ProfileFollowerMaxOrderBy>;
+  min?: InputMaybe<ProfileFollowerMinOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "profile_follower". All fields are combined with a logical 'AND'. */
+export type ProfileFollowerBoolExp = {
+  _and?: InputMaybe<Array<ProfileFollowerBoolExp>>;
+  _not?: InputMaybe<ProfileFollowerBoolExp>;
+  _or?: InputMaybe<Array<ProfileFollowerBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  followedProfile?: InputMaybe<ProfileBoolExp>;
+  followedProfileId?: InputMaybe<UuidComparisonExp>;
+  follower?: InputMaybe<ProfileBoolExp>;
+  followerId?: InputMaybe<UuidComparisonExp>;
+  kind?: InputMaybe<ProfileFollowerKindEnumComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+export enum ProfileFollowerKindEnum {
+  Organization = 'ORGANIZATION',
+  Social = 'SOCIAL'
+}
+
+/** Boolean expression to compare columns of type "ProfileFollowerKindEnum". All fields are combined with logical 'AND'. */
+export type ProfileFollowerKindEnumComparisonExp = {
+  _eq?: InputMaybe<ProfileFollowerKindEnum>;
+  _in?: InputMaybe<Array<ProfileFollowerKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ProfileFollowerKindEnum>;
+  _nin?: InputMaybe<Array<ProfileFollowerKindEnum>>;
+};
+
+/** aggregate max on columns */
+export type ProfileFollowerMaxFields = {
+  __typename?: 'ProfileFollowerMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  followedProfileId?: Maybe<Scalars['uuid']['output']>;
+  followerId?: Maybe<Scalars['uuid']['output']>;
+  tenantId?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "profile_follower" */
+export type ProfileFollowerMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  followedProfileId?: InputMaybe<OrderBy>;
+  followerId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ProfileFollowerMinFields = {
+  __typename?: 'ProfileFollowerMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  followedProfileId?: Maybe<Scalars['uuid']['output']>;
+  followerId?: Maybe<Scalars['uuid']['output']>;
+  tenantId?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "profile_follower" */
+export type ProfileFollowerMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  followedProfileId?: InputMaybe<OrderBy>;
+  followerId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "profile_follower". */
+export type ProfileFollowerOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  followedProfile?: InputMaybe<ProfileOrderBy>;
+  followedProfileId?: InputMaybe<OrderBy>;
+  follower?: InputMaybe<ProfileOrderBy>;
+  followerId?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "profile_follower" */
+export enum ProfileFollowerSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  FollowedProfileId = 'followedProfileId',
+  /** column name */
+  FollowerId = 'followerId',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "profile_follower" */
+export type ProfileFollowerStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: ProfileFollowerStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ProfileFollowerStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  followedProfileId?: InputMaybe<Scalars['uuid']['input']>;
+  followerId?: InputMaybe<Scalars['uuid']['input']>;
+  kind?: InputMaybe<ProfileFollowerKindEnum>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** order by max() on columns of table "profile" */
+export type ProfileMaxOrderBy = {
+  bio?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  facebookUsername?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  instagramUsername?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
+  parentNodeId?: InputMaybe<OrderBy>;
+  photoId?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  tiktokUsername?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  username?: InputMaybe<OrderBy>;
+  xUsername?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "profile" */
+export type ProfileMinOrderBy = {
+  bio?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  facebookUsername?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  instagramUsername?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  locationId?: InputMaybe<OrderBy>;
+  parentNodeId?: InputMaybe<OrderBy>;
+  photoId?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  tiktokUsername?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  username?: InputMaybe<OrderBy>;
+  xUsername?: InputMaybe<OrderBy>;
 };
 
 /** Ordering options when selecting data from "profile". */
 export type ProfileOrderBy = {
   attributesAggregate?: InputMaybe<ProfileAttributeAggregateOrderBy>;
+  bio?: InputMaybe<OrderBy>;
+  childProfileNodesAggregate?: InputMaybe<ProfileAggregateOrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   displayName?: InputMaybe<OrderBy>;
+  facebookUsername?: InputMaybe<OrderBy>;
+  followedProfilesAggregate?: InputMaybe<ProfileFollowerAggregateOrderBy>;
+  followersAggregate?: InputMaybe<ProfileFollowerAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
+  instagramUsername?: InputMaybe<OrderBy>;
   kind?: InputMaybe<OrderBy>;
   location?: InputMaybe<GeoLocationOrderBy>;
   locationId?: InputMaybe<OrderBy>;
-  photoUrl?: InputMaybe<OrderBy>;
+  metaData?: InputMaybe<OrderBy>;
+  parentNodeId?: InputMaybe<OrderBy>;
+  parentProfileNode?: InputMaybe<ProfileOrderBy>;
+  photo?: InputMaybe<MediaItemOrderBy>;
+  photoId?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
   tenant?: InputMaybe<TenantOrderBy>;
   tenantId?: InputMaybe<OrderBy>;
+  tiktokUsername?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   username?: InputMaybe<OrderBy>;
+  xUsername?: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "profile" */
 export enum ProfileSelectColumn {
   /** column name */
+  Bio = 'bio',
+  /** column name */
   CreatedAt = 'createdAt',
   /** column name */
+  FacebookUsername = 'facebookUsername',
+  /** column name */
   Id = 'id',
+  /** column name */
+  InstagramUsername = 'instagramUsername',
   /** column name */
   Kind = 'kind',
   /** column name */
   LocationId = 'locationId',
   /** column name */
-  PhotoUrl = 'photoUrl',
+  MetaData = 'metaData',
+  /** column name */
+  ParentNodeId = 'parentNodeId',
+  /** column name */
+  PhotoId = 'photoId',
+  /** column name */
+  StartDate = 'startDate',
   /** column name */
   TenantId = 'tenantId',
   /** column name */
-  Username = 'username'
+  TiktokUsername = 'tiktokUsername',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Username = 'username',
+  /** column name */
+  XUsername = 'xUsername'
 }
 
 /** Streaming cursor of the table "profile" */
@@ -967,13 +1621,22 @@ export type ProfileStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type ProfileStreamCursorValueInput = {
+  bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  facebookUsername?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  instagramUsername?: InputMaybe<Scalars['String']['input']>;
   kind?: InputMaybe<Scalars['String']['input']>;
   locationId?: InputMaybe<Scalars['uuid']['input']>;
-  photoUrl?: InputMaybe<Scalars['String']['input']>;
+  metaData?: InputMaybe<Scalars['jsonb']['input']>;
+  parentNodeId?: InputMaybe<Scalars['uuid']['input']>;
+  photoId?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['date']['input']>;
   tenantId?: InputMaybe<Scalars['String']['input']>;
+  tiktokUsername?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['citext']['input']>;
+  xUsername?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "question_kind" */
@@ -1012,6 +1675,169 @@ export type QuestionKindStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type QuestionKindStreamCursorValueInput = {
   id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** columns and relationships of "shop_product" */
+export type ShopProduct = {
+  __typename?: 'ShopProduct';
+  createdAt: Scalars['timestamptz']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  externalId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  kind: ShopProductKindEnum;
+  metadata: Scalars['jsonb']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Int']['output'];
+  sku: Scalars['String']['output'];
+  tenantId: Scalars['String']['output'];
+  trialPeriodDays?: Maybe<Scalars['Int']['output']>;
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+
+/** columns and relationships of "shop_product" */
+export type ShopProductMetadataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "shop_product". All fields are combined with a logical 'AND'. */
+export type ShopProductBoolExp = {
+  _and?: InputMaybe<Array<ShopProductBoolExp>>;
+  _not?: InputMaybe<ShopProductBoolExp>;
+  _or?: InputMaybe<Array<ShopProductBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
+  externalId?: InputMaybe<StringComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  kind?: InputMaybe<ShopProductKindEnumComparisonExp>;
+  metadata?: InputMaybe<JsonbComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
+  price?: InputMaybe<IntComparisonExp>;
+  sku?: InputMaybe<StringComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  trialPeriodDays?: InputMaybe<IntComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** columns and relationships of "shop_product_kind" */
+export type ShopProductKind = {
+  __typename?: 'ShopProductKind';
+  id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "shop_product_kind". All fields are combined with a logical 'AND'. */
+export type ShopProductKindBoolExp = {
+  _and?: InputMaybe<Array<ShopProductKindBoolExp>>;
+  _not?: InputMaybe<ShopProductKindBoolExp>;
+  _or?: InputMaybe<Array<ShopProductKindBoolExp>>;
+  id?: InputMaybe<StringComparisonExp>;
+};
+
+export enum ShopProductKindEnum {
+  Digital = 'DIGITAL',
+  Physical = 'PHYSICAL',
+  Subscription = 'SUBSCRIPTION'
+}
+
+/** Boolean expression to compare columns of type "ShopProductKindEnum". All fields are combined with logical 'AND'. */
+export type ShopProductKindEnumComparisonExp = {
+  _eq?: InputMaybe<ShopProductKindEnum>;
+  _in?: InputMaybe<Array<ShopProductKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ShopProductKindEnum>;
+  _nin?: InputMaybe<Array<ShopProductKindEnum>>;
+};
+
+/** Ordering options when selecting data from "shop_product_kind". */
+export type ShopProductKindOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "shop_product_kind" */
+export enum ShopProductKindSelectColumn {
+  /** column name */
+  Id = 'id'
+}
+
+/** Streaming cursor of the table "shop_product_kind" */
+export type ShopProductKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: ShopProductKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopProductKindStreamCursorValueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Ordering options when selecting data from "shop_product". */
+export type ShopProductOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  externalId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  metadata?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  price?: InputMaybe<OrderBy>;
+  sku?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  trialPeriodDays?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "shop_product" */
+export enum ShopProductSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  ExternalId = 'externalId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Price = 'price',
+  /** column name */
+  Sku = 'sku',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  TrialPeriodDays = 'trialPeriodDays',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "shop_product" */
+export type ShopProductStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: ShopProductStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopProductStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  externalId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  kind?: InputMaybe<ShopProductKindEnum>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['Int']['input']>;
+  sku?: InputMaybe<Scalars['String']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  trialPeriodDays?: InputMaybe<Scalars['Int']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -1055,13 +1881,11 @@ export type SuccessOutput = {
 /** columns and relationships of "tenant" */
 export type Tenant = {
   __typename?: 'Tenant';
-  createdAt: Scalars['timestamptz']['output'];
   domain: Scalars['citext']['output'];
   /** url friendly version of name */
   id: Scalars['String']['output'];
   name: Scalars['String']['output'];
   profileId?: Maybe<Scalars['uuid']['output']>;
-  transactionalFromEmail: Scalars['citext']['output'];
 };
 
 /** Boolean expression to filter rows from the table "tenant". All fields are combined with a logical 'AND'. */
@@ -1069,28 +1893,22 @@ export type TenantBoolExp = {
   _and?: InputMaybe<Array<TenantBoolExp>>;
   _not?: InputMaybe<TenantBoolExp>;
   _or?: InputMaybe<Array<TenantBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   domain?: InputMaybe<CitextComparisonExp>;
   id?: InputMaybe<StringComparisonExp>;
   name?: InputMaybe<StringComparisonExp>;
   profileId?: InputMaybe<UuidComparisonExp>;
-  transactionalFromEmail?: InputMaybe<CitextComparisonExp>;
 };
 
 /** Ordering options when selecting data from "tenant". */
 export type TenantOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
   domain?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   profileId?: InputMaybe<OrderBy>;
-  transactionalFromEmail?: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "tenant" */
 export enum TenantSelectColumn {
-  /** column name */
-  CreatedAt = 'createdAt',
   /** column name */
   Domain = 'domain',
   /** column name */
@@ -1098,9 +1916,7 @@ export enum TenantSelectColumn {
   /** column name */
   Name = 'name',
   /** column name */
-  ProfileId = 'profileId',
-  /** column name */
-  TransactionalFromEmail = 'transactionalFromEmail'
+  ProfileId = 'profileId'
 }
 
 /** Streaming cursor of the table "tenant" */
@@ -1113,13 +1929,11 @@ export type TenantStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type TenantStreamCursorValueInput = {
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   domain?: InputMaybe<Scalars['citext']['input']>;
   /** url friendly version of name */
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   profileId?: InputMaybe<Scalars['uuid']['input']>;
-  transactionalFromEmail?: InputMaybe<Scalars['citext']['input']>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -1133,44 +1947,6 @@ export type TimestamptzComparisonExp = {
   _lte?: InputMaybe<Scalars['timestamptz']['input']>;
   _neq?: InputMaybe<Scalars['timestamptz']['input']>;
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
-};
-
-/** columns and relationships of "user_role_kind" */
-export type UserRoleKind = {
-  __typename?: 'UserRoleKind';
-  id: Scalars['String']['output'];
-};
-
-/** Boolean expression to filter rows from the table "user_role_kind". All fields are combined with a logical 'AND'. */
-export type UserRoleKindBoolExp = {
-  _and?: InputMaybe<Array<UserRoleKindBoolExp>>;
-  _not?: InputMaybe<UserRoleKindBoolExp>;
-  _or?: InputMaybe<Array<UserRoleKindBoolExp>>;
-  id?: InputMaybe<StringComparisonExp>;
-};
-
-/** Ordering options when selecting data from "user_role_kind". */
-export type UserRoleKindOrderBy = {
-  id?: InputMaybe<OrderBy>;
-};
-
-/** select columns of table "user_role_kind" */
-export enum UserRoleKindSelectColumn {
-  /** column name */
-  Id = 'id'
-}
-
-/** Streaming cursor of the table "user_role_kind" */
-export type UserRoleKindStreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: UserRoleKindStreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type UserRoleKindStreamCursorValueInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
@@ -1379,8 +2155,19 @@ export type Mutation_RootSubmitFeedbackArgs = {
   args: FeedbackInput;
 };
 
+export type ProfileFollowerAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<ProfileFollowerBoolExp>;
+  predicate: IntComparisonExp;
+};
+
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "auth_role_kind" */
+  authRoleKind: Array<AuthRoleKind>;
+  /** fetch data from the table: "auth_role_kind" using primary key columns */
+  authRoleKindByPk?: Maybe<AuthRoleKind>;
   /** fetch data from the table: "event" */
   event: Array<Event>;
   /** fetch data from the table: "event_availability_kind" */
@@ -1397,24 +2184,47 @@ export type Query_Root = {
   geoLocation: Array<GeoLocation>;
   /** fetch data from the table: "geo_location" using primary key columns */
   geoLocationByPk?: Maybe<GeoLocation>;
+  /** fetch data from the table: "media_item" */
+  mediaItem: Array<MediaItem>;
+  /** fetch data from the table: "media_item" using primary key columns */
+  mediaItemByPk?: Maybe<MediaItem>;
+  /** fetch data from the table: "media_item_tag" */
+  mediaItemTag: Array<MediaItemTag>;
+  /** fetch data from the table: "media_item_tag" using primary key columns */
+  mediaItemTagByPk?: Maybe<MediaItemTag>;
+  /** fetch data from the table: "media_kind" */
+  mediaKind: Array<MediaKind>;
+  /** fetch data from the table: "media_kind" using primary key columns */
+  mediaKindByPk?: Maybe<MediaKind>;
   /** fetch data from the table: "profile" */
   profile: Array<Profile>;
   /** fetch data from the table: "profile_attribute" */
   profileAttribute: Array<ProfileAttribute>;
   /** fetch data from the table: "profile" using primary key columns */
   profileByPk?: Maybe<Profile>;
+  profileCheckUsername?: Maybe<ProfileCheckUsernameOutput>;
+  /** fetch data from the table: "profile_follower" */
+  profileFollower: Array<ProfileFollower>;
+  /** fetch aggregated fields from the table: "profile_follower" */
+  profileFollowerAggregate: ProfileFollowerAggregate;
+  /** fetch data from the table: "profile_follower" using primary key columns */
+  profileFollowerByPk?: Maybe<ProfileFollower>;
   /** fetch data from the table: "question_kind" */
   questionKind: Array<QuestionKind>;
   /** fetch data from the table: "question_kind" using primary key columns */
   questionKindByPk?: Maybe<QuestionKind>;
+  /** fetch data from the table: "shop_product" */
+  shopProduct: Array<ShopProduct>;
+  /** fetch data from the table: "shop_product" using primary key columns */
+  shopProductByPk?: Maybe<ShopProduct>;
+  /** fetch data from the table: "shop_product_kind" */
+  shopProductKind: Array<ShopProductKind>;
+  /** fetch data from the table: "shop_product_kind" using primary key columns */
+  shopProductKindByPk?: Maybe<ShopProductKind>;
   /** fetch data from the table: "tenant" */
   tenant: Array<Tenant>;
   /** fetch data from the table: "tenant" using primary key columns */
   tenantByPk?: Maybe<Tenant>;
-  /** fetch data from the table: "user_role_kind" */
-  userRoleKind: Array<UserRoleKind>;
-  /** fetch data from the table: "user_role_kind" using primary key columns */
-  userRoleKindByPk?: Maybe<UserRoleKind>;
   /** fetch data from the table: "value_kind" */
   valueKind: Array<ValueKind>;
   /** fetch data from the table: "value_kind" using primary key columns */
@@ -1423,6 +2233,20 @@ export type Query_Root = {
   visibilityKind: Array<VisibilityKind>;
   /** fetch data from the table: "visibility_kind" using primary key columns */
   visibilityKindByPk?: Maybe<VisibilityKind>;
+};
+
+
+export type Query_RootAuthRoleKindArgs = {
+  distinctOn?: InputMaybe<Array<AuthRoleKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AuthRoleKindOrderBy>>;
+  where?: InputMaybe<AuthRoleKindBoolExp>;
+};
+
+
+export type Query_RootAuthRoleKindByPkArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -1482,6 +2306,49 @@ export type Query_RootGeoLocationByPkArgs = {
 };
 
 
+export type Query_RootMediaItemArgs = {
+  distinctOn?: InputMaybe<Array<MediaItemSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaItemOrderBy>>;
+  where?: InputMaybe<MediaItemBoolExp>;
+};
+
+
+export type Query_RootMediaItemByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Query_RootMediaItemTagArgs = {
+  distinctOn?: InputMaybe<Array<MediaItemTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaItemTagOrderBy>>;
+  where?: InputMaybe<MediaItemTagBoolExp>;
+};
+
+
+export type Query_RootMediaItemTagByPkArgs = {
+  mediaItemId: Scalars['String']['input'];
+  tag: Scalars['String']['input'];
+};
+
+
+export type Query_RootMediaKindArgs = {
+  distinctOn?: InputMaybe<Array<MediaKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaKindOrderBy>>;
+  where?: InputMaybe<MediaKindBoolExp>;
+};
+
+
+export type Query_RootMediaKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type Query_RootProfileArgs = {
   distinctOn?: InputMaybe<Array<ProfileSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1505,6 +2372,35 @@ export type Query_RootProfileByPkArgs = {
 };
 
 
+export type Query_RootProfileCheckUsernameArgs = {
+  args: ProfileCheckUsernameInput;
+};
+
+
+export type Query_RootProfileFollowerArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+export type Query_RootProfileFollowerAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+export type Query_RootProfileFollowerByPkArgs = {
+  followedProfileId: Scalars['uuid']['input'];
+  followerId: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootQuestionKindArgs = {
   distinctOn?: InputMaybe<Array<QuestionKindSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1519,6 +2415,34 @@ export type Query_RootQuestionKindByPkArgs = {
 };
 
 
+export type Query_RootShopProductArgs = {
+  distinctOn?: InputMaybe<Array<ShopProductSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ShopProductOrderBy>>;
+  where?: InputMaybe<ShopProductBoolExp>;
+};
+
+
+export type Query_RootShopProductByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootShopProductKindArgs = {
+  distinctOn?: InputMaybe<Array<ShopProductKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ShopProductKindOrderBy>>;
+  where?: InputMaybe<ShopProductKindBoolExp>;
+};
+
+
+export type Query_RootShopProductKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type Query_RootTenantArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1529,20 +2453,6 @@ export type Query_RootTenantArgs = {
 
 
 export type Query_RootTenantByPkArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type Query_RootUserRoleKindArgs = {
-  distinctOn?: InputMaybe<Array<UserRoleKindSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UserRoleKindOrderBy>>;
-  where?: InputMaybe<UserRoleKindBoolExp>;
-};
-
-
-export type Query_RootUserRoleKindByPkArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -1576,6 +2486,12 @@ export type Query_RootVisibilityKindByPkArgs = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "auth_role_kind" */
+  authRoleKind: Array<AuthRoleKind>;
+  /** fetch data from the table: "auth_role_kind" using primary key columns */
+  authRoleKindByPk?: Maybe<AuthRoleKind>;
+  /** fetch data from the table in a streaming manner: "auth_role_kind" */
+  authRoleKindStream: Array<AuthRoleKind>;
   /** fetch data from the table: "event" */
   event: Array<Event>;
   /** fetch data from the table: "event_availability_kind" */
@@ -1600,6 +2516,24 @@ export type Subscription_Root = {
   geoLocationByPk?: Maybe<GeoLocation>;
   /** fetch data from the table in a streaming manner: "geo_location" */
   geoLocationStream: Array<GeoLocation>;
+  /** fetch data from the table: "media_item" */
+  mediaItem: Array<MediaItem>;
+  /** fetch data from the table: "media_item" using primary key columns */
+  mediaItemByPk?: Maybe<MediaItem>;
+  /** fetch data from the table in a streaming manner: "media_item" */
+  mediaItemStream: Array<MediaItem>;
+  /** fetch data from the table: "media_item_tag" */
+  mediaItemTag: Array<MediaItemTag>;
+  /** fetch data from the table: "media_item_tag" using primary key columns */
+  mediaItemTagByPk?: Maybe<MediaItemTag>;
+  /** fetch data from the table in a streaming manner: "media_item_tag" */
+  mediaItemTagStream: Array<MediaItemTag>;
+  /** fetch data from the table: "media_kind" */
+  mediaKind: Array<MediaKind>;
+  /** fetch data from the table: "media_kind" using primary key columns */
+  mediaKindByPk?: Maybe<MediaKind>;
+  /** fetch data from the table in a streaming manner: "media_kind" */
+  mediaKindStream: Array<MediaKind>;
   /** fetch data from the table: "profile" */
   profile: Array<Profile>;
   /** fetch data from the table: "profile_attribute" */
@@ -1608,6 +2542,14 @@ export type Subscription_Root = {
   profileAttributeStream: Array<ProfileAttribute>;
   /** fetch data from the table: "profile" using primary key columns */
   profileByPk?: Maybe<Profile>;
+  /** fetch data from the table: "profile_follower" */
+  profileFollower: Array<ProfileFollower>;
+  /** fetch aggregated fields from the table: "profile_follower" */
+  profileFollowerAggregate: ProfileFollowerAggregate;
+  /** fetch data from the table: "profile_follower" using primary key columns */
+  profileFollowerByPk?: Maybe<ProfileFollower>;
+  /** fetch data from the table in a streaming manner: "profile_follower" */
+  profileFollowerStream: Array<ProfileFollower>;
   /** fetch data from the table in a streaming manner: "profile" */
   profileStream: Array<Profile>;
   /** fetch data from the table: "question_kind" */
@@ -1616,18 +2558,24 @@ export type Subscription_Root = {
   questionKindByPk?: Maybe<QuestionKind>;
   /** fetch data from the table in a streaming manner: "question_kind" */
   questionKindStream: Array<QuestionKind>;
+  /** fetch data from the table: "shop_product" */
+  shopProduct: Array<ShopProduct>;
+  /** fetch data from the table: "shop_product" using primary key columns */
+  shopProductByPk?: Maybe<ShopProduct>;
+  /** fetch data from the table: "shop_product_kind" */
+  shopProductKind: Array<ShopProductKind>;
+  /** fetch data from the table: "shop_product_kind" using primary key columns */
+  shopProductKindByPk?: Maybe<ShopProductKind>;
+  /** fetch data from the table in a streaming manner: "shop_product_kind" */
+  shopProductKindStream: Array<ShopProductKind>;
+  /** fetch data from the table in a streaming manner: "shop_product" */
+  shopProductStream: Array<ShopProduct>;
   /** fetch data from the table: "tenant" */
   tenant: Array<Tenant>;
   /** fetch data from the table: "tenant" using primary key columns */
   tenantByPk?: Maybe<Tenant>;
   /** fetch data from the table in a streaming manner: "tenant" */
   tenantStream: Array<Tenant>;
-  /** fetch data from the table: "user_role_kind" */
-  userRoleKind: Array<UserRoleKind>;
-  /** fetch data from the table: "user_role_kind" using primary key columns */
-  userRoleKindByPk?: Maybe<UserRoleKind>;
-  /** fetch data from the table in a streaming manner: "user_role_kind" */
-  userRoleKindStream: Array<UserRoleKind>;
   /** fetch data from the table: "value_kind" */
   valueKind: Array<ValueKind>;
   /** fetch data from the table: "value_kind" using primary key columns */
@@ -1640,6 +2588,27 @@ export type Subscription_Root = {
   visibilityKindByPk?: Maybe<VisibilityKind>;
   /** fetch data from the table in a streaming manner: "visibility_kind" */
   visibilityKindStream: Array<VisibilityKind>;
+};
+
+
+export type Subscription_RootAuthRoleKindArgs = {
+  distinctOn?: InputMaybe<Array<AuthRoleKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AuthRoleKindOrderBy>>;
+  where?: InputMaybe<AuthRoleKindBoolExp>;
+};
+
+
+export type Subscription_RootAuthRoleKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootAuthRoleKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AuthRoleKindStreamCursorInput>>;
+  where?: InputMaybe<AuthRoleKindBoolExp>;
 };
 
 
@@ -1727,6 +2696,70 @@ export type Subscription_RootGeoLocationStreamArgs = {
 };
 
 
+export type Subscription_RootMediaItemArgs = {
+  distinctOn?: InputMaybe<Array<MediaItemSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaItemOrderBy>>;
+  where?: InputMaybe<MediaItemBoolExp>;
+};
+
+
+export type Subscription_RootMediaItemByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootMediaItemStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<MediaItemStreamCursorInput>>;
+  where?: InputMaybe<MediaItemBoolExp>;
+};
+
+
+export type Subscription_RootMediaItemTagArgs = {
+  distinctOn?: InputMaybe<Array<MediaItemTagSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaItemTagOrderBy>>;
+  where?: InputMaybe<MediaItemTagBoolExp>;
+};
+
+
+export type Subscription_RootMediaItemTagByPkArgs = {
+  mediaItemId: Scalars['String']['input'];
+  tag: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootMediaItemTagStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<MediaItemTagStreamCursorInput>>;
+  where?: InputMaybe<MediaItemTagBoolExp>;
+};
+
+
+export type Subscription_RootMediaKindArgs = {
+  distinctOn?: InputMaybe<Array<MediaKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MediaKindOrderBy>>;
+  where?: InputMaybe<MediaKindBoolExp>;
+};
+
+
+export type Subscription_RootMediaKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootMediaKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<MediaKindStreamCursorInput>>;
+  where?: InputMaybe<MediaKindBoolExp>;
+};
+
+
 export type Subscription_RootProfileArgs = {
   distinctOn?: InputMaybe<Array<ProfileSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1754,6 +2787,37 @@ export type Subscription_RootProfileAttributeStreamArgs = {
 
 export type Subscription_RootProfileByPkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootProfileFollowerArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+export type Subscription_RootProfileFollowerAggregateArgs = {
+  distinctOn?: InputMaybe<Array<ProfileFollowerSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProfileFollowerOrderBy>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
+};
+
+
+export type Subscription_RootProfileFollowerByPkArgs = {
+  followedProfileId: Scalars['uuid']['input'];
+  followerId: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootProfileFollowerStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ProfileFollowerStreamCursorInput>>;
+  where?: InputMaybe<ProfileFollowerBoolExp>;
 };
 
 
@@ -1785,6 +2849,48 @@ export type Subscription_RootQuestionKindStreamArgs = {
 };
 
 
+export type Subscription_RootShopProductArgs = {
+  distinctOn?: InputMaybe<Array<ShopProductSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ShopProductOrderBy>>;
+  where?: InputMaybe<ShopProductBoolExp>;
+};
+
+
+export type Subscription_RootShopProductByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootShopProductKindArgs = {
+  distinctOn?: InputMaybe<Array<ShopProductKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ShopProductKindOrderBy>>;
+  where?: InputMaybe<ShopProductKindBoolExp>;
+};
+
+
+export type Subscription_RootShopProductKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootShopProductKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopProductKindStreamCursorInput>>;
+  where?: InputMaybe<ShopProductKindBoolExp>;
+};
+
+
+export type Subscription_RootShopProductStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopProductStreamCursorInput>>;
+  where?: InputMaybe<ShopProductBoolExp>;
+};
+
+
 export type Subscription_RootTenantArgs = {
   distinctOn?: InputMaybe<Array<TenantSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1803,27 +2909,6 @@ export type Subscription_RootTenantStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<TenantStreamCursorInput>>;
   where?: InputMaybe<TenantBoolExp>;
-};
-
-
-export type Subscription_RootUserRoleKindArgs = {
-  distinctOn?: InputMaybe<Array<UserRoleKindSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UserRoleKindOrderBy>>;
-  where?: InputMaybe<UserRoleKindBoolExp>;
-};
-
-
-export type Subscription_RootUserRoleKindByPkArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootUserRoleKindStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<UserRoleKindStreamCursorInput>>;
-  where?: InputMaybe<UserRoleKindBoolExp>;
 };
 
 
@@ -1868,7 +2953,7 @@ export type Subscription_RootVisibilityKindStreamArgs = {
   where?: InputMaybe<VisibilityKindBoolExp>;
 };
 
-export type PublicProfileFragment = { __typename?: 'Profile', createdAt?: string | null, displayName?: string | null, id: string, kind: string, locationId?: string | null, photoUrl?: string | null, tenantId: string, username: string };
+export type PublicProfileFragment = { __typename?: 'Profile', createdAt: string, displayName?: string | null, id: string, kind: string, locationId?: string | null, tenantId: string, username: string };
 
 export type PublicLocationFragment = { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string };
 
@@ -1883,9 +2968,9 @@ export type EventsQueryVariables = Exact<{
 }>;
 
 
-export type EventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, isPublic: boolean, kind: string, label?: string | null, locationId?: string | null, metadata?: Record<string, any> | null, name: string, profileId: string, raffleId?: string | null, startDate: string, startTimestamp?: string | null, templateId?: string | null, tenantId: string, updatedAt: string, location?: { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string } | null, profile: { __typename?: 'Profile', createdAt?: string | null, displayName?: string | null, id: string, kind: string, locationId?: string | null, photoUrl?: string | null, tenantId: string, username: string } }> };
+export type EventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, isPublic: boolean, kind: string, label?: string | null, locationId?: string | null, metadata?: Record<string, any> | null, name: string, profileId: string, raffleId?: string | null, startDate: string, startTimestamp?: string | null, templateId?: string | null, tenantId: string, updatedAt: string, location?: { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string } | null, profile: { __typename?: 'Profile', createdAt: string, displayName?: string | null, id: string, kind: string, locationId?: string | null, tenantId: string, username: string } }> };
 
-export const PublicProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"photoUrl"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<PublicProfileFragment, unknown>;
+export const PublicProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<PublicProfileFragment, unknown>;
 export const PublicLocationFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<PublicLocationFragment, unknown>;
 export const PublicEventFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isPublic"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"raffleId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"templateId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<PublicEventFragment, unknown>;
-export const EventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"events"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventSelectColumn"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventOrderBy"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventBoolExp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"events"},"name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinctOn"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicEvent"}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicLocation"}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicProfile"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isPublic"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"raffleId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"templateId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"photoUrl"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<EventsQuery, EventsQueryVariables>;
+export const EventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"events"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventSelectColumn"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventOrderBy"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventBoolExp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"events"},"name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinctOn"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicEvent"}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicLocation"}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicProfile"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isPublic"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"raffleId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"templateId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<EventsQuery, EventsQueryVariables>;
