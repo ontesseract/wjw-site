@@ -106,7 +106,7 @@ export async function getEvents({
       _gte: new Date(year ?? new Date().getFullYear(), 0, 1).toISOString(),
     };
     where.endTimestamp = {
-      _lte: new Date(year ?? new Date().getFullYear(), 11, 31).toISOString(),
+      _lte: new Date(year ?? new Date().getFullYear(), 12, 31).toISOString(),
     };
   }
 

@@ -41,9 +41,12 @@ export default function EventCalendarDay({
 
   const handleClick = () => {
     if (day?.events.length && !isPastDate) {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'ticket-day', date: date.toISOString() });
+        window.dataLayer.push({
+          event: "ticket-day",
+          date: date.toISOString(),
+        });
       }
       setIsModalOpen(true);
     }
@@ -61,7 +64,7 @@ export default function EventCalendarDay({
                 ? "cursor-pointer hover:opacity-80 active:scale-95 transition-transform"
                 : "",
               isPastDate && "opacity-50",
-              isMobile && day?.events.length && !isPastDate && "min-h-[44px] min-w-[44px]"
+              isMobile && day?.events.length && !isPastDate
             )}
             onClick={handleClick}
             data-gtm="ticket-day"
