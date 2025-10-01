@@ -131,3 +131,75 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Blog-specific styles */
+.blog-content {
+  /* Style for CTA tables with buttons */
+}
+
+.blog-content table {
+  @apply w-full my-6;
+}
+
+.blog-content table td {
+  @apply border-0 p-4 text-center;
+}
+
+/* Style CTA buttons in tables */
+.blog-content table td a {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors no-underline;
+}
+
+/* Handle emoji in CTA buttons */
+.blog-content table td:has(a) {
+  @apply bg-muted/50 rounded-lg;
+}
+
+/* Style for bold headers with annotations */
+.blog-content h1,
+.blog-content h2 {
+  @apply font-bold;
+}
+
+.blog-content h2 {
+  @apply border-b border-border pb-2 mb-4;
+}
+
+/* Style for emphasis and strong text */
+.blog-content em {
+  @apply italic text-foreground;
+}
+
+.blog-content strong {
+  @apply font-semibold text-foreground;
+}
+
+/* Style for the footer content in blog posts */
+.blog-content hr + p,
+.blog-content hr ~ p {
+  @apply text-sm text-muted-foreground;
+}
+
+/* Style bullet lists */
+.blog-content ul li::marker {
+  @apply text-primary;
+}
+
+/* Style numbered lists */
+.blog-content ol li::marker {
+  @apply text-primary font-semibold;
+}
+
+/* Improve readability */
+.blog-content p {
+  @apply leading-7 mb-4;
+}
+
+/* Style code snippets if any */
+.blog-content code {
+  @apply bg-muted px-2 py-1 rounded text-sm;
+}
+
+.blog-content pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto;
+}

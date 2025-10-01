@@ -58,7 +58,7 @@ export function HeroSection() {
           At Where Jesus Walked - Branson&apos;s premier immersive Christian theater - you don&apos;t just hear these stories, you&apos;re surrounded by them.
         </p>
         <Link href="/tickets">
-          <Button size="lg" className="text-lg cursor-pointer">
+          <Button size="lg" className="text-xl px-8 py-4 h-auto cursor-pointer">
             Book Now
           </Button>
         </Link>
