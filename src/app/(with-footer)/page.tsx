@@ -1,11 +1,12 @@
 "use client";
 
-import { Star, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/hero-section";
+import { TripAdvisorReviews } from "@/components/tripadvisor-reviews";
 import { faqs } from "@/lib/data";
 
 export default function Home() {
@@ -120,32 +121,7 @@ export default function Home() {
             <h2 className="text-3xl font-bold mb-8 text-center">
               What Visitors Are Saying
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-4 p-6 border border-border rounded-lg bg-background">
-              <div className="flex gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p>&ldquo;I felt like I was truly walking beside Jesus. The 360° screens and sound make this Branson Christian show unlike anything I&apos;ve ever seen.&rdquo;</p>
-            </div>
-            <div className="space-y-4 p-6 border border-border rounded-lg bg-background">
-              <div className="flex gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p>&ldquo;Powerful. Emotional. A 70-minute biblical experience that left our whole family in tears &mdash; in the best way.&rdquo;</p>
-            </div>
-            <div className="space-y-4 p-6 border border-border rounded-lg bg-background">
-              <div className="flex gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p>&ldquo;Perfect for our church group. Booking was easy, and the experience strengthened our faith.&rdquo;</p>
-            </div>
-            </div>
+            <TripAdvisorReviews />
           </div>
         </section>
 

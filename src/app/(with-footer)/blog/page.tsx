@@ -1,5 +1,5 @@
 import { getAllBlogPosts } from "@/lib/blog-data";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,19 +25,19 @@ export default async function BlogPage() {
             </p>
           </div>
         ) : (
-          <div className="max-w-5xl mx-auto space-y-8">
-            {posts.map((post) => (
-              <Card key={post.slug} className="hover:shadow-lg transition-shadow">
-                <div className="md:flex">
+          <div className="max-w-5xl mx-auto">
+            {posts.map((post, index) => (
+              <Card key={post.slug} className={`hover:shadow-lg transition-shadow py-0 ${index > 0 ? '-mt-1' : ''}`}>
+                <div className="md:flex md:min-h-[250px]">
                   {/* Image Section */}
-                  <div className="md:w-1/3">
+                  <div className="md:w-1/3 md:flex-shrink-0">
                     {post.firstImage ? (
-                      <div className="relative h-48 md:h-full w-full">
+                      <div className="relative h-48 md:h-full w-full overflow-hidden">
                         <Image
                           src={post.firstImage}
                           alt={post.title}
                           fill
-                          className="object-cover rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+                          className="object-cover object-center rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
                         />
                       </div>
                     ) : (
