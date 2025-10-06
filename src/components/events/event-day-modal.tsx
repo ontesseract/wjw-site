@@ -14,6 +14,13 @@ interface EventDayModalProps {
   theater: TheaterInfo;
 }
 
+// Add GTM dataLayer type to window
+declare global {
+  interface Window {
+    dataLayer: Array<Record<string, unknown>>;
+  }
+}
+
 export default function EventDayModal({
   date,
   day,
@@ -51,6 +58,13 @@ export default function EventDayModal({
                 href={event.metadata?.completeTicketing?.link ?? "#"}
                 target="_blank"
                 className="border border-border rounded-md p-3 block transition-colors hover:bg-muted/50"
+                data-gtm="ticket-checkout"
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({ event: 'ticket-checkout', eventId: event.id });
+                  }
+                }}
               >
                 <div className="grid grid-cols-2 gap-2">
                   <div>

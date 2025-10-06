@@ -30,6 +30,12 @@ const defaultBackgroundColorClasses = [
   "bg-chart-4",
   "bg-chart-5",
   "bg-chart-6",
+  "bg-chart-7",
+  "bg-chart-8",
+  "bg-chart-9",
+  "bg-chart-10",
+  "bg-chart-11",
+  "bg-chart-12",
 ];
 
 export default function EventCalendar({
@@ -76,17 +82,17 @@ export default function EventCalendar({
           const headerHeight = 64; // Main header height
           const legendHeight = legendRef.current?.offsetHeight || 0;
           const totalOffset = headerHeight + legendHeight + 20; // Extra padding
-          
+
           const elementTop = currentMonthRef.current.offsetTop;
           const scrollTop = elementTop - totalOffset;
-          
+
           window.scrollTo({
             top: scrollTop,
             behavior: "smooth",
           });
         }
       }, 100);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isMobile, events.length]);
@@ -128,16 +134,19 @@ export default function EventCalendar({
 
   return (
     <TooltipProvider delayDuration={100}>
-      <div className={cn(
-        "max-w-7xl mx-auto p-4",
-        isMobile && "pb-20" // Add extra padding at bottom for mobile to account for sticky header
-      )}>
+      <div
+        className={cn(
+          "max-w-7xl mx-auto p-4",
+          isMobile && "pb-20" // Add extra padding at bottom for mobile to account for sticky header
+        )}
+      >
         {/* Legend - Sticky on mobile */}
-        <div 
+        <div
           ref={legendRef}
           className={cn(
             "flex justify-center gap-8 mb-8 flex-wrap",
-            isMobile && "sticky top-22 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border pb-4 pt-2 shadow-sm"
+            isMobile &&
+              "sticky top-22 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border pb-4 pt-2 shadow-sm"
           )}
         >
           {legendKeys.map((legendKey) => (
@@ -161,7 +170,8 @@ export default function EventCalendar({
           )}
         >
           {months.map((month) => {
-            const isCurrentMonth = format(month, "yyyy-MM") === format(new Date(), "yyyy-MM");
+            const isCurrentMonth =
+              format(month, "yyyy-MM") === format(new Date(), "yyyy-MM");
             return (
               <div
                 key={month.toString()}
@@ -171,41 +181,41 @@ export default function EventCalendar({
                   isCurrentMonth && isMobile && "ring-2 ring-primary/20"
                 )}
               >
-              <h3 className="text-center font-bold mb-4">
-                {format(month, "MMMM yyyy").toUpperCase()}
-              </h3>
-              <div className="grid grid-cols-7 gap-1">
-                {/* Week days */}
-                {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
-                  <div
-                    key={index}
-                    className="text-center text-sm font-medium p-2"
-                  >
-                    {day}
-                  </div>
-                ))}
+                <h3 className="text-center font-bold mb-4">
+                  {format(month, "MMMM yyyy").toUpperCase()}
+                </h3>
+                <div className="grid grid-cols-7 gap-1">
+                  {/* Week days */}
+                  {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+                    <div
+                      key={index}
+                      className="text-center text-sm font-medium p-2"
+                    >
+                      {day}
+                    </div>
+                  ))}
 
-                {/* Calendar days with empty cells */}
-                {createCalendarDays(month).map((date, index) =>
-                  date ? (
-                    <EventCalendarDay
-                      key={date.toString()}
-                      date={date}
-                      month={month}
-                      day={getDayForDate(date)}
-                      backgroundColorClassName={getBackgroundColorClassNameForLegendKey(
-                        getDayForDate(date)?.legendKey
-                      )}
-                      theater={theater}
-                    />
-                  ) : (
-                    <div key={`empty-${index}`} className="aspect-square" />
-                  )
-                )}
+                  {/* Calendar days with empty cells */}
+                  {createCalendarDays(month).map((date, index) =>
+                    date ? (
+                      <EventCalendarDay
+                        key={date.toString()}
+                        date={date}
+                        month={month}
+                        day={getDayForDate(date)}
+                        backgroundColorClassName={getBackgroundColorClassNameForLegendKey(
+                          getDayForDate(date)?.legendKey
+                        )}
+                        theater={theater}
+                      />
+                    ) : (
+                      <div key={`empty-${index}`} className="aspect-square" />
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
       </div>
     </TooltipProvider>

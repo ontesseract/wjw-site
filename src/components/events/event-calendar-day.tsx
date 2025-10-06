@@ -9,6 +9,13 @@ import { TheaterInfo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+// Add GTM dataLayer type to window
+declare global {
+  interface Window {
+    dataLayer: Array<Record<string, unknown>>;
+  }
+}
+
 export interface EventCalendarDayProps {
   date: Date;
   month: Date;
@@ -34,6 +41,13 @@ export default function EventCalendarDay({
 
   const handleClick = () => {
     if (day?.events.length && !isPastDate) {
+      if (typeof window !== "undefined") {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "ticket-day",
+          date: date.toISOString(),
+        });
+      }
       setIsModalOpen(true);
     }
   };
@@ -50,9 +64,10 @@ export default function EventCalendarDay({
                 ? "cursor-pointer hover:opacity-80 active:scale-95 transition-transform"
                 : "",
               isPastDate && "opacity-50",
-              isMobile && day?.events.length && !isPastDate && "min-h-[44px] min-w-[44px]"
+              isMobile && day?.events.length && !isPastDate
             )}
             onClick={handleClick}
+            data-gtm="ticket-day"
           >
             <div
               className={cn(
