@@ -79,7 +79,7 @@ export const faqs: FAQItem[] = [
   {
     question: "Are there faith-based attractions in Branson besides this show?",
     answer:
-      "Yes. Branson has a strong tradition of Christian entertainment, including gospel music shows and faith-based concerts. Where Jesus Walked is unique as the only 360° immersive Christian theater.",
+      "Yes. Branson has a strong tradition of Christian entertainment, including gospel music shows and faith-based concerts. Where Jesus Walked is unique as the only 360° immersive Christian experience.",
   },
   {
     question: "When is the best time of year to visit Branson?",
