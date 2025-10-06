@@ -19,9 +19,9 @@ export function generateMetadata({
 }: PageMetadata): Metadata {
   const baseUrl = "https://wherejesuswalked.com";
   const fullUrl = `${baseUrl}${path}`;
-  const fullTitle = title.includes("Where Jesus Walked") 
-    ? title 
-    : `${title} | Where Jesus Walked - 360° Immersive Christian Show`;
+  const fullTitle = title.includes("Where Jesus Walked")
+    ? title
+    : `${title} | Where Jesus Walked - 360° Immersive Christian Production`;
 
   const defaultKeywords = [
     "Branson Christian theater",
@@ -31,7 +31,7 @@ export function generateMetadata({
     "Christian attraction Branson",
     "faith-based entertainment",
     "Jesus experience",
-    "Missouri Christian show"
+    "Missouri Christian show",
   ];
 
   const allKeywords = [...new Set([...defaultKeywords, ...keywords])];
@@ -76,14 +76,17 @@ export function generateMetadata({
 
 // Hero section content for consistent messaging
 export const heroContent = {
-  title: "A 360° Immersive Christian Show in Branson, MO",
-  description: "Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion. At Where Jesus Walked - Branson's premier immersive Christian theater - you don't just hear these stories, you're surrounded by them.",
-  shortDescription: "Experience the life of Jesus in Branson's premier 360° immersive Christian theater. You don't just hear these stories, you're surrounded by them.",
+  title: "A 360° Immersive Christian Production in Branson, MO",
+  description:
+    "Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion. At Where Jesus Walked - Branson's premier immersive Christian theater - you don't just hear these stories, you're surrounded by them.",
+  shortDescription:
+    "Experience the life of Jesus in Branson's premier 360° immersive Christian theater. You don't just hear these stories, you're surrounded by them.",
 };
 
 // Default metadata for the home page
 export const homeMetadata = generateMetadata({
-  title: "Where Jesus Walked - 360° Immersive Christian Show in Branson, MO",
+  title:
+    "Where Jesus Walked - 360° Immersive Christian Production in Branson, MO",
   description: heroContent.description,
   keywords: [
     "Branson shows",
@@ -93,6 +96,6 @@ export const homeMetadata = generateMetadata({
     "biblical stories",
     "Jesus Christ",
     "Missouri attractions",
-    "family entertainment"
+    "family entertainment",
   ],
 });

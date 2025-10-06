@@ -1,17 +1,17 @@
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog-data";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 
 interface BlogPostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     notFound();
@@ -37,18 +37,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {format(new Date(post.date), "MMMM d, yyyy")}
             </time>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {post.title}
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
           {post.description && (
-            <p className="text-xl text-muted-foreground">
-              {post.description}
-            </p>
+            <p className="text-xl text-muted-foreground">{post.description}</p>
           )}
         </header>
 
         {/* Article content */}
-        <article 
+        <article
           className="blog-content prose prose-lg max-w-none 
             prose-headings:font-bold prose-headings:text-foreground
             prose-h1:text-3xl prose-h1:mb-6 prose-h1:mt-8
@@ -63,7 +59,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             prose-td:border-0 prose-td:p-4 prose-td:text-center
             prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground
             prose-hr:border-border prose-hr:my-8"
-          dangerouslySetInnerHTML={{ 
+          dangerouslySetInnerHTML={{
             __html: post.body.replace(
               /\{\{BOOK_TICKETS_BUTTON:([^}]+)\}\}/g,
               `<div class="not-prose my-8 text-center">
@@ -71,7 +67,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   🎟️ $1
                 </a>
               </div>`
-            )
+            ),
           }}
         />
 
@@ -93,9 +89,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </div>
             <Link href="/blog">
-              <Button variant="outline">
-                View All Posts
-              </Button>
+              <Button variant="outline">View All Posts</Button>
             </Link>
           </div>
         </footer>
@@ -114,7 +108,8 @@ export async function generateStaticParams() {
 
 // Generate metadata for each blog post
 export async function generateMetadata({ params }: BlogPostPageProps) {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -124,7 +119,9 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
   return {
     title: `${post.title} - Where Jesus Walked Blog`,
-    description: post.description || `Read "${post.title}" on the Where Jesus Walked blog.`,
+    description:
+      post.description ||
+      `Read "${post.title}" on the Where Jesus Walked blog.`,
     keywords: post.keywords,
     openGraph: {
       title: post.title,
