@@ -51,7 +51,7 @@ export default function Home() {
         <section className="py-16 bg-muted text-secondary-foreground">
           <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             <h2 className="text-3xl font-bold mb-8 text-center">
-              Why &ldquo;Where Jesus Walked&rdquo; is Branson&apos;s Must-See Christian Theater
+              Why &ldquo;Where Jesus Walked&rdquo; is Branson&apos;s Must-See Christian Experience
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4 p-6 border border-border rounded-lg bg-background">

@@ -55,7 +55,7 @@ export function HeroSection() {
         </h2>
         <p className="text-xl mb-8">
           Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion.
-          At Where Jesus Walked - Branson&apos;s premier immersive Christian theater - you don&apos;t just hear these stories, you&apos;re surrounded by them.
+          At Where Jesus Walked - Branson&apos;s premier immersive Christian experience - you don&apos;t just hear these stories, you&apos;re surrounded by them.
         </p>
         <Link href="/tickets">
           <Button size="lg" className="text-xl px-8 py-4 h-auto cursor-pointer">

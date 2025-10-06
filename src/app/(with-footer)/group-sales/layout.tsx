@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = generateMetadata({
   title: "Group Sales & Bookings",
-  description: "Bring your church group, tour group, or organization to Where Jesus Walked. Enjoy discounted rates, priority booking, and customizable packages for groups of 20 or more at Branson's premier Christian theater.",
+  description: "Bring your church group, tour group, or organization to Where Jesus Walked. Enjoy discounted rates, priority booking, and customizable packages for groups of 20 or more at Branson's premier Christian experience.",
   path: "/group-sales",
   keywords: [
     "group sales",
@@ -11,7 +11,7 @@ export const metadata: Metadata = generateMetadata({
     "tour groups",
     "group discounts",
     "Branson group bookings",
-    "Christian theater groups",
+    "Christian experience groups",
     "group rates",
     "educational groups"
   ],

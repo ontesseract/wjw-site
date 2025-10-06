@@ -87,5 +87,5 @@ export default async function BlogPage() {
 
 export const metadata = {
   title: "Blog - Where Jesus Walked",
-  description: "Read the latest stories, insights, and updates from Where Jesus Walked - Branson's premier immersive Christian theater experience.",
+  description: "Read the latest stories, insights, and updates from Where Jesus Walked - Branson's premier immersive Christian experience.",
 };

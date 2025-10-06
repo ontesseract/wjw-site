@@ -57,7 +57,7 @@ export function generateMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: `${title} - Where Jesus Walked Branson Christian Theater`,
+          alt: `${title} - Where Jesus Walked Branson Christian Experience`,
         },
       ],
       locale: "en_US",
@@ -77,8 +77,8 @@ export function generateMetadata({
 // Hero section content for consistent messaging
 export const heroContent = {
   title: "A 360° Immersive Christian Show in Branson, MO",
-  description: "Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion. At Where Jesus Walked - Branson's premier immersive Christian theater - you don't just hear these stories, you're surrounded by them.",
-  shortDescription: "Experience the life of Jesus in Branson's premier 360° immersive Christian theater. You don't just hear these stories, you're surrounded by them.",
+  description: "Imagine standing on the shores of Galilee as Jesus calms the storm, or walking through the crowded streets of Jerusalem as He teaches with compassion and devotion. At Where Jesus Walked - Branson's premier immersive Christian experience - you don't just hear these stories, you're surrounded by them.",
+  shortDescription: "Experience the life of Jesus in Branson's premier 360° immersive Christian experience. You don't just hear these stories, you're surrounded by them.",
 };
 
 // Default metadata for the home page
