@@ -1,4 +1,9 @@
-import { EventBoolExp, EventsQuery, publicClient } from "@/graphql";
+import {
+  EventBoolExp,
+  EventsQuery,
+  publicClient,
+  VisibilityKindEnum,
+} from "@/graphql";
 import { graphql } from "@/graphql/generated";
 
 export const publicProfileFragment = graphql(`
@@ -42,19 +47,17 @@ export const publicEventFragment = graphql(`
     endDate
     endTimestamp
     id
-    isPublic
     kind
     label
     locationId
     metadata
     name
     profileId
-    raffleId
     startDate
     startTimestamp
-    templateId
     tenantId
     updatedAt
+    # visibility
   }
 `);
 
@@ -94,7 +97,7 @@ export async function getEvents({
   city?: string;
 }): Promise<EventsQuery["events"]> {
   const where: EventBoolExp = {
-    isPublic: { _eq: true },
+    visibility: { _eq: VisibilityKindEnum.Public },
   };
 
   if (showName) {
