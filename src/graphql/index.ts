@@ -19,8 +19,6 @@ export function client(
     headers,
     cache: options?.cache,
   });
-
-  // TODO: remove graffle and add middleware logging
 }
 
 export function publicClient(options?: Options) {
