@@ -12,12 +12,15 @@ export interface TheaterInfo {
   phone: string;
   location: GeoLocation;
   groupLink: string;
+  googleMapsUrl: string;
 }
 
 export const bransonTheater: TheaterInfo = {
   name: "The Dutton Family Theater",
   phone: "417-332-2772",
   groupLink: "/group-sales",
+  googleMapsUrl:
+    "https://www.google.com/maps/place/The+Dutton+Family+Theater/@36.642347,-93.285776,16z/data=!4m6!3m5!1s0x87cf1c9a52a12afb:0xb88614f9b27ecb91!8m2!3d36.642347!4d-93.2857756!16s%2Fg%2F1tgnb469?hl=en-US&entry=ttu&g_ep=EgoyMDI1MDQzMC4xIKXMDSoASAFQAw%3D%3D",
   location: {
     city: "Branson",
     country: "United States",

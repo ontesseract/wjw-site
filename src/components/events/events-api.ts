@@ -2,7 +2,7 @@ import {
   EventBoolExp,
   EventsQuery,
   publicClient,
-  VisibilityKindEnum,
+  // VisibilityKindEnum, // Commented out until visibility field is available in schema
 } from "@/graphql";
 import { graphql } from "@/graphql/generated";
 
@@ -97,7 +97,7 @@ export async function getEvents({
   city?: string;
 }): Promise<EventsQuery["events"]> {
   const where: EventBoolExp = {
-    visibility: { _eq: VisibilityKindEnum.Public },
+    // visibility: { _eq: VisibilityKindEnum.Public }, // Commented out until visibility field is available in schema
   };
 
   if (showName) {
@@ -119,8 +119,15 @@ export async function getEvents({
     };
   }
 
-  const data = await publicClient.request(eventsQuery, { where });
-  return data?.events ?? [];
+  try {
+    const data = await publicClient({ cache: "force-cache" })
+      .gql(eventsQuery)
+      .send({ where });
+    return data?.events ?? [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
 
 export function toTimeString(
