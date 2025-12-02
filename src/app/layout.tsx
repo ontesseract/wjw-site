@@ -52,11 +52,15 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Where Jesus Walked" />
         <meta name="application-name" content="Where Jesus Walked" />
-        
+
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -64,35 +68,53 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "TheaterEvent",
-              "name": "Where Jesus Walked",
-              "description": "A 360° Immersive Christian Show in Branson, MO. Experience the life of Jesus in a groundbreaking immersive theater production.",
-              "image": "https://wherejesuswalked.com/wjw-social.jpg",
-              "url": "https://wherejesuswalked.com",
-              "location": {
+              name: "Where Jesus Walked",
+              description:
+                "A 360° Immersive Christian Production in Branson, MO. Experience the life of Jesus in a groundbreaking immersive theater production.",
+              image: "https://wherejesuswalked.com/wjw-social.jpg",
+              url: "https://wherejesuswalked.com",
+              location: {
                 "@type": "Place",
-                "name": "Where Jesus Walked Theater",
-                "address": {
+                name: "Where Jesus Walked Theater",
+                address: {
                   "@type": "PostalAddress",
-                  "streetAddress": "76 Country Blvd",
-                  "addressLocality": "Branson",
-                  "addressRegion": "MO",
-                  "addressCountry": "US"
-                }
+                  streetAddress: "76 Country Blvd",
+                  addressLocality: "Branson",
+                  addressRegion: "MO",
+                  addressCountry: "US",
+                },
               },
-              "offers": {
+              offers: {
                 "@type": "Offer",
-                "url": "https://wherejesuswalked.com/tickets",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
+                url: "https://wherejesuswalked.com/tickets",
+                priceCurrency: "USD",
+                availability: "https://schema.org/InStock",
               },
-              "organizer": {
+              organizer: {
                 "@type": "Organization",
-                "name": "Where Jesus Walked",
-                "url": "https://wherejesuswalked.com"
-              }
-            })
+                name: "Where Jesus Walked",
+                url: "https://wherejesuswalked.com",
+              },
+            }),
           }}
         />
+<<<<<<< HEAD
+=======
+
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-P3MBCZRQ');
+            `,
+          }}
+        />
+        {/* End Google Tag Manager */}
+>>>>>>> 4e9d037e9d9fd4845bd9918cdfbda40f35ce73f1
       </head>
       <body className={cn(inter.className)}>
         <GoogleTagManagerNoScript gtmId={gtmId} />

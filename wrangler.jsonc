@@ -1,0 +1,36 @@
+{
+  // For more details on how to configure Wrangler, refer to:
+  // https://developers.cloudflare.com/workers/wrangler/configuration/
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "where-jesus-walked-site",
+  "account_id": "578a0ae80302acfd988a901aa9463418",
+  "compatibility_date": "2025-07-23",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  //   "minify": true,
+
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      // The service should match the "name" of your worker
+      "service": "where-jesus-walked-site"
+    }
+  ],
+
+  "r2_buckets": [
+    // Create a R2 binding with the binding name "NEXT_INC_CACHE_R2_BUCKET"
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "where-jesus-walked-site-next-inc-cache"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}

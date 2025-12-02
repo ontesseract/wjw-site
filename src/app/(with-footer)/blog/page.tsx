@@ -27,7 +27,12 @@ export default async function BlogPage() {
         ) : (
           <div className="max-w-5xl mx-auto">
             {posts.map((post, index) => (
-              <Card key={post.slug} className={`hover:shadow-lg transition-shadow py-0 ${index > 0 ? '-mt-1' : ''}`}>
+              <Card
+                key={post.slug}
+                className={`hover:shadow-lg transition-shadow py-0 ${
+                  index > 0 ? "-mt-1" : ""
+                }`}
+              >
                 <div className="md:flex md:min-h-[250px]">
                   {/* Image Section */}
                   <div className="md:w-1/3 md:flex-shrink-0">
@@ -46,7 +51,7 @@ export default async function BlogPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Content Section */}
                   <div className="md:w-2/3 p-6 flex flex-col justify-between">
                     <div>
@@ -56,9 +61,7 @@ export default async function BlogPage() {
                         </time>
                       </div>
                       <h2 className="text-2xl font-bold mb-4 hover:text-primary transition-colors">
-                        <Link href={`/blog/${post.slug}`}>
-                          {post.title}
-                        </Link>
+                        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                       </h2>
                       {post.description && (
                         <p className="text-muted-foreground mb-4 line-clamp-3">
@@ -66,10 +69,13 @@ export default async function BlogPage() {
                         </p>
                       )}
                     </div>
-                    
+
                     <div className="mt-4">
                       <Link href={`/blog/${post.slug}`}>
-                        <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors">
+                        <Button
+                          variant="outline"
+                          className="hover:bg-primary hover:text-primary-foreground transition-colors"
+                        >
                           Read More →
                         </Button>
                       </Link>
@@ -87,5 +93,6 @@ export default async function BlogPage() {
 
 export const metadata = {
   title: "Blog - Where Jesus Walked",
-  description: "Read the latest stories, insights, and updates from Where Jesus Walked - Branson's premier immersive Christian experience.",
+  description:
+    "Read the latest stories, insights, and updates from Where Jesus Walked - Branson's premier immersive Christian experience.",
 };

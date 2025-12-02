@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = generateMetadata({
   title: "Book Tickets - Where Jesus Walked",
-  description: "Book your tickets for Where Jesus Walked, Branson's premier 360° immersive Christian experience. See available showtimes and reserve your seats for this unforgettable biblical journey.",
+  description:
+    "Book your tickets for Where Jesus Walked, Branson's premier 360° immersive Christian experience. See available showtimes and reserve your seats for this unforgettable biblical journey.",
   path: "/tickets",
   keywords: [
     "book tickets",
@@ -13,7 +14,7 @@ export const metadata: Metadata = generateMetadata({
     "Where Jesus Walked tickets",
     "Christian show tickets",
     "Branson show reservations",
-    "biblical theater booking"
+    "biblical theater booking",
   ],
 });
 

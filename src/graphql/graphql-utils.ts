@@ -1,30 +1,41 @@
-import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Case from "case";
 import {
   type DocumentNode,
-  type FragmentDefinitionNode,
-  type FragmentSpreadNode,
+  type GraphQLField,
   type GraphQLInputType,
   type GraphQLObjectType,
   type GraphQLOutputType,
+  type GraphQLSchema,
   isEnumType,
+  isInputObjectType,
   isListType,
   isNonNullType,
   isObjectType,
   isScalarType,
   Kind,
   type OperationDefinitionNode,
-  OperationTypeNode,
   parse,
   print,
 } from "graphql";
 
-export enum OrderBy {
-  Asc = "ASC", // in ascending order, nulls last
-  AscNullsFirst = "ASC_NULLS_FIRST",
-  AscNullsLast = "ASC_NULLS_LAST",
-  Desc = "DESC", // in descending order, nulls first
-  DescNullsFirst = "DESC_NULLS_FIRST",
-  DescNullsLast = "DESC_NULLS_LAST",
+export function endsWithOneOf(value: string, suffixes: string[]) {
+  for (const suffix of suffixes) {
+    if (value.endsWith(suffix)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function getOutputTypeName(type: GraphQLOutputType): string {
+  if (isObjectType(type) || isScalarType(type) || isEnumType(type)) {
+    return type.name;
+  }
+  if (isListType(type) || isNonNullType(type)) {
+    return getOutputTypeName(type.ofType);
+  }
+  throw new Error("Unknown type");
 }
 
 export function getBaseType(type: GraphQLOutputType): GraphQLOutputType {
@@ -41,16 +52,6 @@ export function getBaseInputType(type: GraphQLInputType): GraphQLInputType {
   return type;
 }
 
-export function getOutputTypeName(type: GraphQLOutputType): string {
-  if (isObjectType(type) || isScalarType(type) || isEnumType(type)) {
-    return type.name;
-  }
-  if (isListType(type) || isNonNullType(type)) {
-    return getOutputTypeName(type.ofType);
-  }
-  throw new Error("Unknown type");
-}
-
 export function hasScalars(type: GraphQLObjectType): boolean {
   for (const field of Object.values(type.getFields())) {
     const baseFieldType = getBaseType(field.type);
@@ -61,57 +62,137 @@ export function hasScalars(type: GraphQLObjectType): boolean {
   return false;
 }
 
-export function documentToString(
-  document: DocumentNode | string | TypedDocumentNode<unknown, unknown>
+function defaultValueForVariableName(argName: string): string {
+  switch (argName) {
+    case "_append":
+    case "_deleteAtPath":
+    case "_deleteElem":
+    case "_deleteKey":
+    case "_inc":
+    case "_prepend":
+    case "_set":
+      return " = {}";
+    default:
+      return "";
+  }
+}
+
+export function generateVariables(
+  field: GraphQLField<any, any>,
+  excludeKeys: string[] = []
 ): string {
-  if (typeof document === "string") {
-    return document;
-  }
-  return print(document);
-}
-
-export function documentToDocument<T, V>(
-  document: DocumentNode | string | TypedDocumentNode<T, V>
-): DocumentNode {
-  if (typeof document === "string") {
-    return parse(document);
-  }
-  return document;
-}
-
-export function getFragmentDefinitions(
-  fragment: DocumentNode | string
-): FragmentDefinitionNode[] {
-  const fragmentDoc = documentToDocument(fragment);
-  return fragmentDoc.definitions.filter(
-    (definition) => definition.kind === Kind.FRAGMENT_DEFINITION
-  ) as FragmentDefinitionNode[];
-}
-
-export function getOperationFragmentSpreadNode(
-  document: DocumentNode | string
-): FragmentSpreadNode {
-  const doc = documentToDocument(document);
-  for (const definition of doc.definitions) {
-    if (definition.kind === Kind.OPERATION_DEFINITION) {
-      for (const selection of definition.selectionSet.selections) {
-        if (selection.kind === Kind.FIELD) {
-          if (selection.selectionSet) {
-            for (const fieldSelection of selection.selectionSet.selections) {
-              if (fieldSelection.kind === Kind.FRAGMENT_SPREAD) {
-                return fieldSelection;
-              }
-            }
-          }
-        }
+  if (field.args.length > 0) {
+    const variables: string[] = [];
+    field.args.forEach((arg) => {
+      if (!excludeKeys.includes(arg.name)) {
+        variables.push(
+          `$${arg.name}: ${arg.type}${defaultValueForVariableName(arg.name)}`
+        );
       }
+    });
+    return `(${variables.join(`, `)})`;
+  }
+  return "";
+}
+
+function generateOnConflict(
+  field: GraphQLField<any, any>,
+  upsert: boolean,
+  schema: GraphQLSchema | undefined = undefined
+): string {
+  if (
+    !schema ||
+    !upsert ||
+    !field.args.find((arg) => arg.name === "onConflict")
+  ) {
+    return "";
+  }
+  let baseTypeName = field.name;
+  if (baseTypeName.startsWith("insert")) {
+    baseTypeName = baseTypeName.slice(6);
+  }
+  if (baseTypeName.endsWith("One")) {
+    baseTypeName = baseTypeName.slice(0, baseTypeName.length - 3);
+  }
+  const type = schema.getType(`${baseTypeName}InsertInput`);
+  if (!isInputObjectType(type)) {
+    return "";
+  }
+
+  const excludeColumns = ["id", "createdAt", "updatedAt", "deletedAt"];
+  const typeFields = Object.values(type.getFields());
+  const updateColumns = typeFields
+    .filter(
+      (field) =>
+        !excludeColumns.includes(field.name) &&
+        isScalarType(getBaseInputType(field.type))
+    )
+    .map((field) => field.name);
+  const constraint = `${Case.snake(baseTypeName)}_pkey`;
+  const onConflict = `onConflict:{ constraint:${constraint} updateColumns:[${updateColumns.join(
+    ", "
+  )}]}`;
+
+  return `\n${onConflict}`;
+}
+
+export function generateArgs(
+  field: GraphQLField<any, any>,
+  excludeKeys: string[] = [],
+  upsert = false,
+  schema: GraphQLSchema | undefined = undefined
+): string {
+  if (field.args.length > 0) {
+    const args: string[] = [];
+    field.args.forEach((arg) => {
+      if (!excludeKeys.includes(arg.name)) {
+        args.push(`${arg.name}: $${arg.name}`);
+      }
+    });
+    return `(${args.join(", ")} ${generateOnConflict(field, upsert, schema)})`;
+  }
+  return "";
+}
+
+export function returnFieldMatchesOperationName(
+  definition: OperationDefinitionNode
+): boolean {
+  for (const node of definition.selectionSet.selections) {
+    if (
+      node.kind === Kind.FIELD &&
+      (node.alias?.value === definition.name?.value ||
+        (!node.alias && node.name?.value === definition.name?.value))
+    ) {
+      return true;
     }
   }
-  throw new Error(`No fragment spread definition in document ${doc.kind}`);
+  return false;
 }
 
-export function getOperationName<T, V>(
-  document: DocumentNode | string | TypedDocumentNode<T, V>
+export function hasLimitAndOffsetArgs(
+  definition: OperationDefinitionNode
+): boolean {
+  let hasLimit = false;
+  let hasOffset = false;
+  for (const node of definition.variableDefinitions ?? []) {
+    if (node.variable.name.value === "limit") {
+      hasLimit = true;
+    }
+    if (node.variable.name.value === "offset") {
+      hasOffset = true;
+    }
+  }
+  return hasLimit && hasOffset;
+}
+
+export function documentToDocument(
+  document: DocumentNode | string
+): DocumentNode {
+  return typeof document === "string" ? parse(document) : document;
+}
+
+export function getOperationName(
+  document: DocumentNode | string
 ): string | undefined {
   const doc = documentToDocument(document);
   for (const definition of doc.definitions) {
@@ -122,153 +203,6 @@ export function getOperationName<T, V>(
   return undefined;
 }
 
-export function getOperationType(
-  document: DocumentNode | string
-): string | undefined {
-  const doc = documentToDocument(document);
-  for (const definition of doc.definitions) {
-    if (definition.kind === Kind.OPERATION_DEFINITION) {
-      return definition.operation;
-    }
-  }
-  return undefined;
-}
-
-export function replaceFragmentSpreadNameInOperationDefinition(
-  definition: OperationDefinitionNode,
-  name: string
-): OperationDefinitionNode {
-  return {
-    ...definition,
-    selectionSet: {
-      ...definition.selectionSet,
-      selections: definition.selectionSet.selections.map((selection) => {
-        if (selection.kind === Kind.FIELD) {
-          if (!selection.selectionSet) {
-            return selection;
-          }
-          return {
-            ...selection,
-            selectionSet: {
-              ...selection.selectionSet,
-              selections: selection.selectionSet?.selections.map(
-                (fieldSelection) => {
-                  if (fieldSelection.kind === Kind.FRAGMENT_SPREAD) {
-                    return {
-                      kind: Kind.FRAGMENT_SPREAD,
-                      name: { kind: Kind.NAME, value: name },
-                    };
-                  }
-                  return selection;
-                }
-              ),
-            },
-          };
-        }
-        return selection;
-      }),
-    },
-  };
-}
-
-export function replaceFragmentInDocument(
-  document: DocumentNode | string,
-  fragment: DocumentNode | string
-): DocumentNode {
-  const doc = documentToDocument(document);
-  const fragmentDoc = documentToDocument(fragment);
-
-  const fragmentDefinitions = getFragmentDefinitions(fragmentDoc);
-  const firstFragmentDefinition = fragmentDefinitions[0];
-
-  const definitionsWithoutFragments = doc.definitions
-    .filter((definition) => definition.kind !== Kind.FRAGMENT_DEFINITION)
-    .map((definition) => {
-      if (definition.kind === Kind.OPERATION_DEFINITION) {
-        return replaceFragmentSpreadNameInOperationDefinition(
-          definition,
-          firstFragmentDefinition?.name.value
-        );
-      }
-      return definition;
-    });
-
-  return {
-    ...doc,
-    definitions: [...definitionsWithoutFragments, ...fragmentDefinitions],
-  };
-}
-
-export function convertQueryToSubscription(
-  document: DocumentNode | string
-): DocumentNode {
-  const doc = documentToDocument(document);
-  const subscriptionDoc = {
-    ...doc,
-    definitions: doc.definitions.map((definition) => {
-      if (
-        definition.kind === Kind.OPERATION_DEFINITION &&
-        definition.operation === OperationTypeNode.QUERY
-      ) {
-        return {
-          ...definition,
-          operation: OperationTypeNode.SUBSCRIPTION,
-        };
-      }
-      return definition;
-    }),
-  };
-  return subscriptionDoc;
-}
-
-export function hasuraCompare(
-  a: unknown,
-  b: unknown,
-  orderBy: OrderBy
-): number {
-  // asc: nulls first, desc: nulls last (https://hasura.io/docs/latest/queries/postgres/sorting/)
-  // 0: a == b
-  // negative: a before b
-  // positive: a after b
-
-  const emptyA = a === null || a === undefined;
-  const emptyB = b === null || b === undefined;
-
-  if (emptyA && emptyB) {
-    return 0;
-  }
-  if (emptyA) {
-    if (
-      [OrderBy.Asc, OrderBy.AscNullsFirst, OrderBy.DescNullsFirst].includes(
-        orderBy
-      )
-    ) {
-      return -1;
-    }
-    return 1;
-  }
-  if (emptyB) {
-    if (
-      [OrderBy.Asc, OrderBy.AscNullsFirst, OrderBy.DescNullsFirst].includes(
-        orderBy
-      )
-    ) {
-      return 1;
-    }
-    return -1;
-  }
-
-  let ascendingResult: number;
-  if (typeof a === "string" && typeof b === "string") {
-    ascendingResult = a.localeCompare(b);
-  } else {
-    ascendingResult = a < b ? -1 : a > b ? 1 : 0;
-  }
-  const isAscending = [
-    OrderBy.Asc,
-    OrderBy.AscNullsFirst,
-    OrderBy.AscNullsLast,
-  ].includes(orderBy);
-
-  return isAscending ? ascendingResult : ascendingResult * -1;
+export function documentToString(document: DocumentNode | string): string {
+  return typeof document === "string" ? document : print(document);
 }

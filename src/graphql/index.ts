@@ -1,4 +1,4 @@
-import GraphQLClient from "./graphql-client";
+import { GraphQLClient } from "./graphql-client";
 
 export * from "./generated/gql";
 export * from "./generated/graphql";
