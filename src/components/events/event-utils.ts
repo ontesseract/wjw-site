@@ -79,7 +79,20 @@ export function createCalendarDays(month: Date) {
 export function createEventDays(events: Event[]): Record<string, EventDay> {
   const days: Record<string, EventDay> = {};
 
-  events.forEach((event) => {
+  // Deduplicate events by date + time + name (not just ID, as API may return multiple events for same show)
+  const uniqueEvents = Array.from(
+    new Map(
+      events.map((event) => {
+        const date = getStart(event);
+        const compositeKey = `${format(date, "yyyy-MM-dd HH:mm")}-${
+          event.name
+        }`;
+        return [compositeKey, event];
+      })
+    ).values()
+  );
+
+  uniqueEvents.forEach((event) => {
     const date = getStart(event);
     const dayKey = format(date, "yyyy-MM-dd");
     if (!days[dayKey]) {
@@ -92,16 +105,18 @@ export function createEventDays(events: Event[]): Record<string, EventDay> {
     }
     const day = days[dayKey];
     day.events.push(event);
-    if (day.events.length === 2) {
-      day.legendKey = day.events
-        .map((e) => getTimeKey(getStart(e)))
-        .sort()
-        .join(" & ");
-    } else if (day.events.length > 2) {
-      day.legendKey = day.events
-        .map((e) => getTimeKey(getStart(e)))
-        .sort()
-        .join(", ");
+
+    // Get unique times for the legend
+    const uniqueTimes = Array.from(
+      new Set(day.events.map((e) => getTimeKey(getStart(e))))
+    ).sort();
+
+    if (uniqueTimes.length === 1) {
+      day.legendKey = uniqueTimes[0];
+    } else if (uniqueTimes.length === 2) {
+      day.legendKey = uniqueTimes.join(" & ");
+    } else {
+      day.legendKey = uniqueTimes.join(", ");
     }
   });
 

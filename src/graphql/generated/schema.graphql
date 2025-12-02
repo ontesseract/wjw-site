@@ -219,35 +219,439 @@ input DateComparisonExp {
 }
 
 """
+columns and relationships of "document"
+"""
+type Document {
+  createdAt: timestamptz!
+  id: uuid!
+  isDeleted: Boolean!
+  kind: DocumentKindEnum!
+  profileId: uuid
+  slug: citext!
+  tenantId: String!
+  updatedAt: timestamptz!
+  visibility: VisibilityKindEnum!
+}
+
+"""
+columns and relationships of "document_block"
+"""
+type DocumentBlock {
+  body: String
+  """An array relationship"""
+  childBlocks(
+    """distinct select on columns"""
+    distinctOn: [DocumentBlockSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentBlockOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBlockBoolExp
+  ): [DocumentBlock!]!
+  createdAt: timestamptz!
+  """An object relationship"""
+  document: Document!
+  documentId: uuid!
+  id: uuid!
+  kind: DocumentBlockKindEnum!
+  """An object relationship"""
+  mediaItem: MediaItem
+  mediaItemId: String
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  """An object relationship"""
+  parentBlock: DocumentBlock
+  parentBlockId: uuid
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+order by aggregate values of table "document_block"
+"""
+input DocumentBlockAggregateOrderBy {
+  count: OrderBy
+  max: DocumentBlockMaxOrderBy
+  min: DocumentBlockMinOrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "document_block". All fields are combined with a logical 'AND'.
+"""
+input DocumentBlockBoolExp {
+  _and: [DocumentBlockBoolExp!]
+  _not: DocumentBlockBoolExp
+  _or: [DocumentBlockBoolExp!]
+  body: StringComparisonExp
+  childBlocks: DocumentBlockBoolExp
+  createdAt: TimestamptzComparisonExp
+  document: DocumentBoolExp
+  documentId: UuidComparisonExp
+  id: UuidComparisonExp
+  kind: DocumentBlockKindEnumComparisonExp
+  mediaItem: MediaItemBoolExp
+  mediaItemId: StringComparisonExp
+  metadata: JsonbComparisonExp
+  parentBlock: DocumentBlockBoolExp
+  parentBlockId: UuidComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""
+columns and relationships of "document_block_kind"
+"""
+type DocumentBlockKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "document_block_kind". All fields are combined with a logical 'AND'.
+"""
+input DocumentBlockKindBoolExp {
+  _and: [DocumentBlockKindBoolExp!]
+  _not: DocumentBlockKindBoolExp
+  _or: [DocumentBlockKindBoolExp!]
+  id: StringComparisonExp
+}
+
+enum DocumentBlockKindEnum {
+  IMAGE
+  TEXT
+}
+
+"""
+Boolean expression to compare columns of type "DocumentBlockKindEnum". All fields are combined with logical 'AND'.
+"""
+input DocumentBlockKindEnumComparisonExp {
+  _eq: DocumentBlockKindEnum
+  _in: [DocumentBlockKindEnum!]
+  _isNull: Boolean
+  _neq: DocumentBlockKindEnum
+  _nin: [DocumentBlockKindEnum!]
+}
+
+"""Ordering options when selecting data from "document_block_kind"."""
+input DocumentBlockKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "document_block_kind"
+"""
+enum DocumentBlockKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "document_block_kind"
+"""
+input DocumentBlockKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: DocumentBlockKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DocumentBlockKindStreamCursorValueInput {
+  id: String
+}
+
+"""
+order by max() on columns of table "document_block"
+"""
+input DocumentBlockMaxOrderBy {
+  body: OrderBy
+  createdAt: OrderBy
+  documentId: OrderBy
+  id: OrderBy
+  mediaItemId: OrderBy
+  parentBlockId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+order by min() on columns of table "document_block"
+"""
+input DocumentBlockMinOrderBy {
+  body: OrderBy
+  createdAt: OrderBy
+  documentId: OrderBy
+  id: OrderBy
+  mediaItemId: OrderBy
+  parentBlockId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "document_block"."""
+input DocumentBlockOrderBy {
+  body: OrderBy
+  childBlocksAggregate: DocumentBlockAggregateOrderBy
+  createdAt: OrderBy
+  document: DocumentOrderBy
+  documentId: OrderBy
+  id: OrderBy
+  kind: OrderBy
+  mediaItem: MediaItemOrderBy
+  mediaItemId: OrderBy
+  metadata: OrderBy
+  parentBlock: DocumentBlockOrderBy
+  parentBlockId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "document_block"
+"""
+enum DocumentBlockSelectColumn {
+  """column name"""
+  body
+  """column name"""
+  createdAt
+  """column name"""
+  documentId
+  """column name"""
+  id
+  """column name"""
+  kind
+  """column name"""
+  mediaItemId
+  """column name"""
+  metadata
+  """column name"""
+  parentBlockId
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "document_block"
+"""
+input DocumentBlockStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: DocumentBlockStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DocumentBlockStreamCursorValueInput {
+  body: String
+  createdAt: timestamptz
+  documentId: uuid
+  id: uuid
+  kind: DocumentBlockKindEnum
+  mediaItemId: String
+  metadata: jsonb
+  parentBlockId: uuid
+  tenantId: String
+  updatedAt: timestamptz
+}
+
+"""
+Boolean expression to filter rows from the table "document". All fields are combined with a logical 'AND'.
+"""
+input DocumentBoolExp {
+  _and: [DocumentBoolExp!]
+  _not: DocumentBoolExp
+  _or: [DocumentBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  id: UuidComparisonExp
+  isDeleted: BooleanComparisonExp
+  kind: DocumentKindEnumComparisonExp
+  profileId: UuidComparisonExp
+  slug: CitextComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+  visibility: VisibilityKindEnumComparisonExp
+}
+
+"""
+columns and relationships of "document_kind"
+"""
+type DocumentKind {
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "document_kind". All fields are combined with a logical 'AND'.
+"""
+input DocumentKindBoolExp {
+  _and: [DocumentKindBoolExp!]
+  _not: DocumentKindBoolExp
+  _or: [DocumentKindBoolExp!]
+  id: StringComparisonExp
+}
+
+enum DocumentKindEnum {
+  AGREEMENT
+  PAGE
+}
+
+"""
+Boolean expression to compare columns of type "DocumentKindEnum". All fields are combined with logical 'AND'.
+"""
+input DocumentKindEnumComparisonExp {
+  _eq: DocumentKindEnum
+  _in: [DocumentKindEnum!]
+  _isNull: Boolean
+  _neq: DocumentKindEnum
+  _nin: [DocumentKindEnum!]
+}
+
+"""Ordering options when selecting data from "document_kind"."""
+input DocumentKindOrderBy {
+  id: OrderBy
+}
+
+"""
+select columns of table "document_kind"
+"""
+enum DocumentKindSelectColumn {
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "document_kind"
+"""
+input DocumentKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: DocumentKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DocumentKindStreamCursorValueInput {
+  id: String
+}
+
+"""Ordering options when selecting data from "document"."""
+input DocumentOrderBy {
+  createdAt: OrderBy
+  id: OrderBy
+  isDeleted: OrderBy
+  kind: OrderBy
+  profileId: OrderBy
+  slug: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+  visibility: OrderBy
+}
+
+"""
+select columns of table "document"
+"""
+enum DocumentSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  id
+  """column name"""
+  isDeleted
+  """column name"""
+  kind
+  """column name"""
+  profileId
+  """column name"""
+  slug
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+  """column name"""
+  visibility
+}
+
+"""
+Streaming cursor of the table "document"
+"""
+input DocumentStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: DocumentStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DocumentStreamCursorValueInput {
+  createdAt: timestamptz
+  id: uuid
+  isDeleted: Boolean
+  kind: DocumentKindEnum
+  profileId: uuid
+  slug: citext
+  tenantId: String
+  updatedAt: timestamptz
+  visibility: VisibilityKindEnum
+}
+
+"""
 columns and relationships of "event"
 """
 type Event {
+  """An object relationship"""
+  coverPhoto: MediaItem
+  coverPhotoId: String
   createdAt: timestamptz!
   endDate: date!
   endTimestamp: timestamptz
   """An object relationship"""
   eventLive: EventLive
   id: uuid!
-  isPublic: Boolean!
+  isDeleted: Boolean!
   kind: String!
   label: String
+  link: String
   """An object relationship"""
   location: GeoLocation
   locationId: uuid
   metadata(
     """JSON select path"""
     path: String
-  ): jsonb
+  ): jsonb!
   name: citext!
   """An object relationship"""
   profile: Profile!
   profileId: uuid!
   raffleId: uuid
+  """An object relationship"""
+  recurrence: EventRecurrence
+  recurrenceId: uuid
+  slug: String
   startDate: date!
   startTimestamp: timestamptz
   templateId: uuid
   tenantId: String!
+  """An array relationship"""
+  ticketOptions(
+    """distinct select on columns"""
+    distinctOn: [EventTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: EventTicketOptionBoolExp
+  ): [EventTicketOption!]!
+  timezone: String!
   updatedAt: timestamptz!
+  visibility: VisibilityKindEnum!
 }
 
 """
@@ -302,14 +706,17 @@ input EventBoolExp {
   _and: [EventBoolExp!]
   _not: EventBoolExp
   _or: [EventBoolExp!]
+  coverPhoto: MediaItemBoolExp
+  coverPhotoId: StringComparisonExp
   createdAt: TimestamptzComparisonExp
   endDate: DateComparisonExp
   endTimestamp: TimestamptzComparisonExp
   eventLive: EventLiveBoolExp
   id: UuidComparisonExp
-  isPublic: BooleanComparisonExp
+  isDeleted: BooleanComparisonExp
   kind: StringComparisonExp
   label: StringComparisonExp
+  link: StringComparisonExp
   location: GeoLocationBoolExp
   locationId: UuidComparisonExp
   metadata: JsonbComparisonExp
@@ -317,11 +724,17 @@ input EventBoolExp {
   profile: ProfileBoolExp
   profileId: UuidComparisonExp
   raffleId: UuidComparisonExp
+  recurrence: EventRecurrenceBoolExp
+  recurrenceId: UuidComparisonExp
+  slug: StringComparisonExp
   startDate: DateComparisonExp
   startTimestamp: TimestamptzComparisonExp
   templateId: UuidComparisonExp
   tenantId: StringComparisonExp
+  ticketOptions: EventTicketOptionBoolExp
+  timezone: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
+  visibility: VisibilityKindEnumComparisonExp
 }
 
 """
@@ -347,6 +760,8 @@ type EventLive {
   profileId: uuid!
   questionId: uuid
   questionSetId: uuid
+  """An object relationship"""
+  raffle: GameRaffle
   raffleId: uuid
   """
   A computed field, executes function "current_time"
@@ -380,6 +795,7 @@ input EventLiveBoolExp {
   profileId: UuidComparisonExp
   questionId: UuidComparisonExp
   questionSetId: UuidComparisonExp
+  raffle: GameRaffleBoolExp
   raffleId: UuidComparisonExp
   serverTime: TimestamptzComparisonExp
   showAfterQuestionDetails: BooleanComparisonExp
@@ -404,6 +820,7 @@ input EventLiveOrderBy {
   profileId: OrderBy
   questionId: OrderBy
   questionSetId: OrderBy
+  raffle: GameRaffleOrderBy
   raffleId: OrderBy
   serverTime: OrderBy
   showAfterQuestionDetails: OrderBy
@@ -480,14 +897,17 @@ input EventLiveStreamCursorValueInput {
 
 """Ordering options when selecting data from "event"."""
 input EventOrderBy {
+  coverPhoto: MediaItemOrderBy
+  coverPhotoId: OrderBy
   createdAt: OrderBy
   endDate: OrderBy
   endTimestamp: OrderBy
   eventLive: EventLiveOrderBy
   id: OrderBy
-  isPublic: OrderBy
+  isDeleted: OrderBy
   kind: OrderBy
   label: OrderBy
+  link: OrderBy
   location: GeoLocationOrderBy
   locationId: OrderBy
   metadata: OrderBy
@@ -495,17 +915,140 @@ input EventOrderBy {
   profile: ProfileOrderBy
   profileId: OrderBy
   raffleId: OrderBy
+  recurrence: EventRecurrenceOrderBy
+  recurrenceId: OrderBy
+  slug: OrderBy
   startDate: OrderBy
   startTimestamp: OrderBy
   templateId: OrderBy
   tenantId: OrderBy
+  ticketOptionsAggregate: EventTicketOptionAggregateOrderBy
+  timezone: OrderBy
   updatedAt: OrderBy
+  visibility: OrderBy
+}
+
+"""
+columns and relationships of "event_recurrence"
+"""
+type EventRecurrence {
+  createdAt: timestamptz!
+  dayOfMonth: Int
+  daysOfWeek: [String!]
+  endsAt: timestamptz
+  """An object relationship"""
+  event: Event
+  id: uuid!
+  kind: EventRecurrenceKindEnum!
+  month: Int
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+Boolean expression to filter rows from the table "event_recurrence". All fields are combined with a logical 'AND'.
+"""
+input EventRecurrenceBoolExp {
+  _and: [EventRecurrenceBoolExp!]
+  _not: EventRecurrenceBoolExp
+  _or: [EventRecurrenceBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  dayOfMonth: IntComparisonExp
+  daysOfWeek: StringArrayComparisonExp
+  endsAt: TimestamptzComparisonExp
+  event: EventBoolExp
+  id: UuidComparisonExp
+  kind: EventRecurrenceKindEnumComparisonExp
+  month: IntComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+enum EventRecurrenceKindEnum {
+  DAILY
+  MONTHLY
+  WEEKLY
+  YEARLY
+}
+
+"""
+Boolean expression to compare columns of type "EventRecurrenceKindEnum". All fields are combined with logical 'AND'.
+"""
+input EventRecurrenceKindEnumComparisonExp {
+  _eq: EventRecurrenceKindEnum
+  _in: [EventRecurrenceKindEnum!]
+  _isNull: Boolean
+  _neq: EventRecurrenceKindEnum
+  _nin: [EventRecurrenceKindEnum!]
+}
+
+"""Ordering options when selecting data from "event_recurrence"."""
+input EventRecurrenceOrderBy {
+  createdAt: OrderBy
+  dayOfMonth: OrderBy
+  daysOfWeek: OrderBy
+  endsAt: OrderBy
+  event: EventOrderBy
+  id: OrderBy
+  kind: OrderBy
+  month: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "event_recurrence"
+"""
+enum EventRecurrenceSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  dayOfMonth
+  """column name"""
+  daysOfWeek
+  """column name"""
+  endsAt
+  """column name"""
+  id
+  """column name"""
+  kind
+  """column name"""
+  month
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "event_recurrence"
+"""
+input EventRecurrenceStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: EventRecurrenceStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EventRecurrenceStreamCursorValueInput {
+  createdAt: timestamptz
+  dayOfMonth: Int
+  daysOfWeek: [String!]
+  endsAt: timestamptz
+  id: uuid
+  kind: EventRecurrenceKindEnum
+  month: Int
+  tenantId: String
+  updatedAt: timestamptz
 }
 
 """
 select columns of table "event"
 """
 enum EventSelectColumn {
+  """column name"""
+  coverPhotoId
   """column name"""
   createdAt
   """column name"""
@@ -515,11 +1058,13 @@ enum EventSelectColumn {
   """column name"""
   id
   """column name"""
-  isPublic
+  isDeleted
   """column name"""
   kind
   """column name"""
   label
+  """column name"""
+  link
   """column name"""
   locationId
   """column name"""
@@ -531,6 +1076,10 @@ enum EventSelectColumn {
   """column name"""
   raffleId
   """column name"""
+  recurrenceId
+  """column name"""
+  slug
+  """column name"""
   startDate
   """column name"""
   startTimestamp
@@ -539,7 +1088,11 @@ enum EventSelectColumn {
   """column name"""
   tenantId
   """column name"""
+  timezone
+  """column name"""
   updatedAt
+  """column name"""
+  visibility
 }
 
 """
@@ -554,21 +1107,135 @@ input EventStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input EventStreamCursorValueInput {
+  coverPhotoId: String
   createdAt: timestamptz
   endDate: date
   endTimestamp: timestamptz
   id: uuid
-  isPublic: Boolean
+  isDeleted: Boolean
   kind: String
   label: String
+  link: String
   locationId: uuid
   metadata: jsonb
   name: citext
   profileId: uuid
   raffleId: uuid
+  recurrenceId: uuid
+  slug: String
   startDate: date
   startTimestamp: timestamptz
   templateId: uuid
+  tenantId: String
+  timezone: String
+  updatedAt: timestamptz
+  visibility: VisibilityKindEnum
+}
+
+"""
+columns and relationships of "event_ticket_option"
+"""
+type EventTicketOption {
+  createdAt: timestamptz!
+  """An object relationship"""
+  event: Event!
+  eventId: uuid!
+  """An object relationship"""
+  product: ShopProduct!
+  productId: uuid!
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+order by aggregate values of table "event_ticket_option"
+"""
+input EventTicketOptionAggregateOrderBy {
+  count: OrderBy
+  max: EventTicketOptionMaxOrderBy
+  min: EventTicketOptionMinOrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "event_ticket_option". All fields are combined with a logical 'AND'.
+"""
+input EventTicketOptionBoolExp {
+  _and: [EventTicketOptionBoolExp!]
+  _not: EventTicketOptionBoolExp
+  _or: [EventTicketOptionBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  event: EventBoolExp
+  eventId: UuidComparisonExp
+  product: ShopProductBoolExp
+  productId: UuidComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""
+order by max() on columns of table "event_ticket_option"
+"""
+input EventTicketOptionMaxOrderBy {
+  createdAt: OrderBy
+  eventId: OrderBy
+  productId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+order by min() on columns of table "event_ticket_option"
+"""
+input EventTicketOptionMinOrderBy {
+  createdAt: OrderBy
+  eventId: OrderBy
+  productId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "event_ticket_option"."""
+input EventTicketOptionOrderBy {
+  createdAt: OrderBy
+  event: EventOrderBy
+  eventId: OrderBy
+  product: ShopProductOrderBy
+  productId: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "event_ticket_option"
+"""
+enum EventTicketOptionSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  eventId
+  """column name"""
+  productId
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "event_ticket_option"
+"""
+input EventTicketOptionStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: EventTicketOptionStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EventTicketOptionStreamCursorValueInput {
+  createdAt: timestamptz
+  eventId: uuid
+  productId: uuid
   tenantId: String
   updatedAt: timestamptz
 }
@@ -585,6 +1252,625 @@ input FeedbackInput {
 
 type FeedbackOutput {
   success: Boolean!
+}
+
+"""
+columns and relationships of "game_raffle"
+"""
+type GameRaffle {
+  createdAt: timestamptz
+  description: String
+  id: uuid!
+  name: String!
+  """An object relationship"""
+  profile: Profile!
+  profileId: uuid!
+  prompt: String
+  promptDescription: String
+  """An array relationship"""
+  rafflePrizes(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): [GameRafflePrize!]!
+  """An aggregate relationship"""
+  rafflePrizesAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): GameRafflePrizeAggregate!
+  """An array relationship"""
+  raffleTicketOptions(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): [GameRaffleTicketOption!]!
+  """An aggregate relationship"""
+  raffleTicketOptionsAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): GameRaffleTicketOptionAggregate!
+  updatedAt: timestamptz
+  visibility: VisibilityKindEnum!
+}
+
+"""
+Boolean expression to filter rows from the table "game_raffle". All fields are combined with a logical 'AND'.
+"""
+input GameRaffleBoolExp {
+  _and: [GameRaffleBoolExp!]
+  _not: GameRaffleBoolExp
+  _or: [GameRaffleBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  id: UuidComparisonExp
+  name: StringComparisonExp
+  profile: ProfileBoolExp
+  profileId: UuidComparisonExp
+  prompt: StringComparisonExp
+  promptDescription: StringComparisonExp
+  rafflePrizes: GameRafflePrizeBoolExp
+  rafflePrizesAggregate: GameRafflePrizeAggregateBoolExp
+  raffleTicketOptions: GameRaffleTicketOptionBoolExp
+  raffleTicketOptionsAggregate: GameRaffleTicketOptionAggregateBoolExp
+  updatedAt: TimestamptzComparisonExp
+  visibility: VisibilityKindEnumComparisonExp
+}
+
+"""Ordering options when selecting data from "game_raffle"."""
+input GameRaffleOrderBy {
+  createdAt: OrderBy
+  description: OrderBy
+  id: OrderBy
+  name: OrderBy
+  profile: ProfileOrderBy
+  profileId: OrderBy
+  prompt: OrderBy
+  promptDescription: OrderBy
+  rafflePrizesAggregate: GameRafflePrizeAggregateOrderBy
+  raffleTicketOptionsAggregate: GameRaffleTicketOptionAggregateOrderBy
+  updatedAt: OrderBy
+  visibility: OrderBy
+}
+
+"""
+columns and relationships of "game_raffle_prize"
+"""
+type GameRafflePrize {
+  createdAt: timestamptz
+  description: String
+  id: uuid!
+  name: String!
+  """An object relationship"""
+  raffle: GameRaffle!
+  raffleId: uuid!
+  updatedAt: timestamptz
+}
+
+"""
+aggregated selection of "game_raffle_prize"
+"""
+type GameRafflePrizeAggregate {
+  aggregate: GameRafflePrizeAggregateFields
+  nodes: [GameRafflePrize!]!
+}
+
+input GameRafflePrizeAggregateBoolExp {
+  count: gameRafflePrizeAggregateBoolExpCount
+}
+
+"""
+aggregate fields of "game_raffle_prize"
+"""
+type GameRafflePrizeAggregateFields {
+  count(columns: [GameRafflePrizeSelectColumn!], distinct: Boolean): Int!
+  max: GameRafflePrizeMaxFields
+  min: GameRafflePrizeMinFields
+}
+
+"""
+order by aggregate values of table "game_raffle_prize"
+"""
+input GameRafflePrizeAggregateOrderBy {
+  count: OrderBy
+  max: GameRafflePrizeMaxOrderBy
+  min: GameRafflePrizeMinOrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "game_raffle_prize". All fields are combined with a logical 'AND'.
+"""
+input GameRafflePrizeBoolExp {
+  _and: [GameRafflePrizeBoolExp!]
+  _not: GameRafflePrizeBoolExp
+  _or: [GameRafflePrizeBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  description: StringComparisonExp
+  id: UuidComparisonExp
+  name: StringComparisonExp
+  raffle: GameRaffleBoolExp
+  raffleId: UuidComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""aggregate max on columns"""
+type GameRafflePrizeMaxFields {
+  createdAt: timestamptz
+  description: String
+  id: uuid
+  name: String
+  raffleId: uuid
+  updatedAt: timestamptz
+}
+
+"""
+order by max() on columns of table "game_raffle_prize"
+"""
+input GameRafflePrizeMaxOrderBy {
+  createdAt: OrderBy
+  description: OrderBy
+  id: OrderBy
+  name: OrderBy
+  raffleId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""aggregate min on columns"""
+type GameRafflePrizeMinFields {
+  createdAt: timestamptz
+  description: String
+  id: uuid
+  name: String
+  raffleId: uuid
+  updatedAt: timestamptz
+}
+
+"""
+order by min() on columns of table "game_raffle_prize"
+"""
+input GameRafflePrizeMinOrderBy {
+  createdAt: OrderBy
+  description: OrderBy
+  id: OrderBy
+  name: OrderBy
+  raffleId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "game_raffle_prize"."""
+input GameRafflePrizeOrderBy {
+  createdAt: OrderBy
+  description: OrderBy
+  id: OrderBy
+  name: OrderBy
+  raffle: GameRaffleOrderBy
+  raffleId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "game_raffle_prize"
+"""
+enum GameRafflePrizeSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  description
+  """column name"""
+  id
+  """column name"""
+  name
+  """column name"""
+  raffleId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "game_raffle_prize"
+"""
+input GameRafflePrizeStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: GameRafflePrizeStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input GameRafflePrizeStreamCursorValueInput {
+  createdAt: timestamptz
+  description: String
+  id: uuid
+  name: String
+  raffleId: uuid
+  updatedAt: timestamptz
+}
+
+"""
+select columns of table "game_raffle"
+"""
+enum GameRaffleSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  description
+  """column name"""
+  id
+  """column name"""
+  name
+  """column name"""
+  profileId
+  """column name"""
+  prompt
+  """column name"""
+  promptDescription
+  """column name"""
+  updatedAt
+  """column name"""
+  visibility
+}
+
+"""
+Streaming cursor of the table "game_raffle"
+"""
+input GameRaffleStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: GameRaffleStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input GameRaffleStreamCursorValueInput {
+  createdAt: timestamptz
+  description: String
+  id: uuid
+  name: String
+  profileId: uuid
+  prompt: String
+  promptDescription: String
+  updatedAt: timestamptz
+  visibility: VisibilityKindEnum
+}
+
+"""
+columns and relationships of "game_raffle_ticket_option"
+"""
+type GameRaffleTicketOption {
+  createdAt: timestamptz
+  id: uuid!
+  instructions: String
+  isRequired: Boolean
+  kind: GameRaffleTicketOptionKindEnum!
+  """An object relationship"""
+  raffle: GameRaffle!
+  raffleId: uuid!
+  ticketsGranted: Int!
+  updatedAt: timestamptz
+}
+
+"""
+aggregated selection of "game_raffle_ticket_option"
+"""
+type GameRaffleTicketOptionAggregate {
+  aggregate: GameRaffleTicketOptionAggregateFields
+  nodes: [GameRaffleTicketOption!]!
+}
+
+input GameRaffleTicketOptionAggregateBoolExp {
+  bool_and: gameRaffleTicketOptionAggregateBoolExpBool_and
+  bool_or: gameRaffleTicketOptionAggregateBoolExpBool_or
+  count: gameRaffleTicketOptionAggregateBoolExpCount
+}
+
+"""
+aggregate fields of "game_raffle_ticket_option"
+"""
+type GameRaffleTicketOptionAggregateFields {
+  avg: GameRaffleTicketOptionAvgFields
+  count(columns: [GameRaffleTicketOptionSelectColumn!], distinct: Boolean): Int!
+  max: GameRaffleTicketOptionMaxFields
+  min: GameRaffleTicketOptionMinFields
+  stddev: GameRaffleTicketOptionStddevFields
+  stddevPop: GameRaffleTicketOptionStddevPopFields
+  stddevSamp: GameRaffleTicketOptionStddevSampFields
+  sum: GameRaffleTicketOptionSumFields
+  varPop: GameRaffleTicketOptionVarPopFields
+  varSamp: GameRaffleTicketOptionVarSampFields
+  variance: GameRaffleTicketOptionVarianceFields
+}
+
+"""
+order by aggregate values of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionAggregateOrderBy {
+  avg: GameRaffleTicketOptionAvgOrderBy
+  count: OrderBy
+  max: GameRaffleTicketOptionMaxOrderBy
+  min: GameRaffleTicketOptionMinOrderBy
+  stddev: GameRaffleTicketOptionStddevOrderBy
+  stddevPop: GameRaffleTicketOptionStddevPopOrderBy
+  stddevSamp: GameRaffleTicketOptionStddevSampOrderBy
+  sum: GameRaffleTicketOptionSumOrderBy
+  varPop: GameRaffleTicketOptionVarPopOrderBy
+  varSamp: GameRaffleTicketOptionVarSampOrderBy
+  variance: GameRaffleTicketOptionVarianceOrderBy
+}
+
+"""aggregate avg on columns"""
+type GameRaffleTicketOptionAvgFields {
+  ticketsGranted: Float
+}
+
+"""
+order by avg() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionAvgOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "game_raffle_ticket_option". All fields are combined with a logical 'AND'.
+"""
+input GameRaffleTicketOptionBoolExp {
+  _and: [GameRaffleTicketOptionBoolExp!]
+  _not: GameRaffleTicketOptionBoolExp
+  _or: [GameRaffleTicketOptionBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  id: UuidComparisonExp
+  instructions: StringComparisonExp
+  isRequired: BooleanComparisonExp
+  kind: GameRaffleTicketOptionKindEnumComparisonExp
+  raffle: GameRaffleBoolExp
+  raffleId: UuidComparisonExp
+  ticketsGranted: IntComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+enum GameRaffleTicketOptionKindEnum {
+  MAILING_LIST
+  SMS_NOTIFICATIONS
+}
+
+"""
+Boolean expression to compare columns of type "GameRaffleTicketOptionKindEnum". All fields are combined with logical 'AND'.
+"""
+input GameRaffleTicketOptionKindEnumComparisonExp {
+  _eq: GameRaffleTicketOptionKindEnum
+  _in: [GameRaffleTicketOptionKindEnum!]
+  _isNull: Boolean
+  _neq: GameRaffleTicketOptionKindEnum
+  _nin: [GameRaffleTicketOptionKindEnum!]
+}
+
+"""aggregate max on columns"""
+type GameRaffleTicketOptionMaxFields {
+  createdAt: timestamptz
+  id: uuid
+  instructions: String
+  raffleId: uuid
+  ticketsGranted: Int
+  updatedAt: timestamptz
+}
+
+"""
+order by max() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionMaxOrderBy {
+  createdAt: OrderBy
+  id: OrderBy
+  instructions: OrderBy
+  raffleId: OrderBy
+  ticketsGranted: OrderBy
+  updatedAt: OrderBy
+}
+
+"""aggregate min on columns"""
+type GameRaffleTicketOptionMinFields {
+  createdAt: timestamptz
+  id: uuid
+  instructions: String
+  raffleId: uuid
+  ticketsGranted: Int
+  updatedAt: timestamptz
+}
+
+"""
+order by min() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionMinOrderBy {
+  createdAt: OrderBy
+  id: OrderBy
+  instructions: OrderBy
+  raffleId: OrderBy
+  ticketsGranted: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Ordering options when selecting data from "game_raffle_ticket_option"."""
+input GameRaffleTicketOptionOrderBy {
+  createdAt: OrderBy
+  id: OrderBy
+  instructions: OrderBy
+  isRequired: OrderBy
+  kind: OrderBy
+  raffle: GameRaffleOrderBy
+  raffleId: OrderBy
+  ticketsGranted: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "game_raffle_ticket_option"
+"""
+enum GameRaffleTicketOptionSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  id
+  """column name"""
+  instructions
+  """column name"""
+  isRequired
+  """column name"""
+  kind
+  """column name"""
+  raffleId
+  """column name"""
+  ticketsGranted
+  """column name"""
+  updatedAt
+}
+
+"""
+select "gameRaffleTicketOptionAggregateBoolExpBool_andArgumentsColumns" columns of table "game_raffle_ticket_option"
+"""
+enum GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_andArgumentsColumns {
+  """column name"""
+  isRequired
+}
+
+"""
+select "gameRaffleTicketOptionAggregateBoolExpBool_orArgumentsColumns" columns of table "game_raffle_ticket_option"
+"""
+enum GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_orArgumentsColumns {
+  """column name"""
+  isRequired
+}
+
+"""aggregate stddev on columns"""
+type GameRaffleTicketOptionStddevFields {
+  ticketsGranted: Float
+}
+
+"""
+order by stddev() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionStddevOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""aggregate stddevPop on columns"""
+type GameRaffleTicketOptionStddevPopFields {
+  ticketsGranted: Float
+}
+
+"""
+order by stddevPop() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionStddevPopOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""aggregate stddevSamp on columns"""
+type GameRaffleTicketOptionStddevSampFields {
+  ticketsGranted: Float
+}
+
+"""
+order by stddevSamp() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionStddevSampOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""
+Streaming cursor of the table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: GameRaffleTicketOptionStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input GameRaffleTicketOptionStreamCursorValueInput {
+  createdAt: timestamptz
+  id: uuid
+  instructions: String
+  isRequired: Boolean
+  kind: GameRaffleTicketOptionKindEnum
+  raffleId: uuid
+  ticketsGranted: Int
+  updatedAt: timestamptz
+}
+
+"""aggregate sum on columns"""
+type GameRaffleTicketOptionSumFields {
+  ticketsGranted: Int
+}
+
+"""
+order by sum() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionSumOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""aggregate varPop on columns"""
+type GameRaffleTicketOptionVarPopFields {
+  ticketsGranted: Float
+}
+
+"""
+order by varPop() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionVarPopOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""aggregate varSamp on columns"""
+type GameRaffleTicketOptionVarSampFields {
+  ticketsGranted: Float
+}
+
+"""
+order by varSamp() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionVarSampOrderBy {
+  ticketsGranted: OrderBy
+}
+
+"""aggregate variance on columns"""
+type GameRaffleTicketOptionVarianceFields {
+  ticketsGranted: Float
+}
+
+"""
+order by variance() on columns of table "game_raffle_ticket_option"
+"""
+input GameRaffleTicketOptionVarianceOrderBy {
+  ticketsGranted: OrderBy
 }
 
 """
@@ -1046,6 +2332,8 @@ input MediaKindBoolExp {
 enum MediaKindEnum {
   CLOUDFLARE_IMAGE
   CLOUDFLARE_VIDEO
+  SVG_AVATAR
+  WEB_IMAGE
 }
 
 """
@@ -1116,6 +2404,69 @@ enum OrderBy {
   DESC_NULLS_FIRST
   """in descending order, nulls last"""
   DESC_NULLS_LAST
+}
+
+"""
+columns and relationships of "post_reaction_kind"
+"""
+type PostReactionKind {
+  createdAt: timestamptz!
+  id: String!
+  tenantId: String!
+  updatedAt: timestamptz!
+}
+
+"""
+Boolean expression to filter rows from the table "post_reaction_kind". All fields are combined with a logical 'AND'.
+"""
+input PostReactionKindBoolExp {
+  _and: [PostReactionKindBoolExp!]
+  _not: PostReactionKindBoolExp
+  _or: [PostReactionKindBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  id: StringComparisonExp
+  tenantId: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+}
+
+"""Ordering options when selecting data from "post_reaction_kind"."""
+input PostReactionKindOrderBy {
+  createdAt: OrderBy
+  id: OrderBy
+  tenantId: OrderBy
+  updatedAt: OrderBy
+}
+
+"""
+select columns of table "post_reaction_kind"
+"""
+enum PostReactionKindSelectColumn {
+  """column name"""
+  createdAt
+  """column name"""
+  id
+  """column name"""
+  tenantId
+  """column name"""
+  updatedAt
+}
+
+"""
+Streaming cursor of the table "post_reaction_kind"
+"""
+input PostReactionKindStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: PostReactionKindStreamCursorValueInput!
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input PostReactionKindStreamCursorValueInput {
+  createdAt: timestamptz
+  id: String
+  tenantId: String
+  updatedAt: timestamptz
 }
 
 """
@@ -1865,6 +3216,7 @@ input ShopProductKindBoolExp {
 
 enum ShopProductKindEnum {
   DIGITAL
+  EVENT_TICKET
   PHYSICAL
   SUBSCRIPTION
 }
@@ -1978,6 +3330,25 @@ input ShopProductStreamCursorValueInput {
   tenantId: String
   trialPeriodDays: Int
   updatedAt: timestamptz
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input StringArrayComparisonExp {
+  """is the array contained in the given array value"""
+  _containedIn: [String!]
+  """does the array contain the given value"""
+  _contains: [String!]
+  _eq: [String!]
+  _gt: [String!]
+  _gte: [String!]
+  _in: [[String!]!]
+  _isNull: Boolean
+  _lt: [String!]
+  _lte: [String!]
+  _neq: [String!]
+  _nin: [[String!]!]
 }
 
 """
@@ -2184,6 +3555,23 @@ input VisibilityKindBoolExp {
   id: StringComparisonExp
 }
 
+enum VisibilityKindEnum {
+  INTERNAL
+  PRIVATE
+  PUBLIC
+}
+
+"""
+Boolean expression to compare columns of type "VisibilityKindEnum". All fields are combined with logical 'AND'.
+"""
+input VisibilityKindEnumComparisonExp {
+  _eq: VisibilityKindEnum
+  _in: [VisibilityKindEnum!]
+  _isNull: Boolean
+  _neq: VisibilityKindEnum
+  _nin: [VisibilityKindEnum!]
+}
+
 """Ordering options when selecting data from "visibility_kind"."""
 input VisibilityKindOrderBy {
   id: OrderBy
@@ -2215,6 +3603,34 @@ input VisibilityKindStreamCursorValueInput {
 scalar citext
 
 scalar date
+
+input gameRafflePrizeAggregateBoolExpCount {
+  arguments: [GameRafflePrizeSelectColumn!]
+  distinct: Boolean
+  filter: GameRafflePrizeBoolExp
+  predicate: IntComparisonExp!
+}
+
+input gameRaffleTicketOptionAggregateBoolExpBool_and {
+  arguments: GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_andArgumentsColumns!
+  distinct: Boolean
+  filter: GameRaffleTicketOptionBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input gameRaffleTicketOptionAggregateBoolExpBool_or {
+  arguments: GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_orArgumentsColumns!
+  distinct: Boolean
+  filter: GameRaffleTicketOptionBoolExp
+  predicate: BooleanComparisonExp!
+}
+
+input gameRaffleTicketOptionAggregateBoolExpCount {
+  arguments: [GameRaffleTicketOptionSelectColumn!]
+  distinct: Boolean
+  filter: GameRaffleTicketOptionBoolExp
+  predicate: IntComparisonExp!
+}
 
 scalar jsonb
 
@@ -2265,6 +3681,76 @@ type query_root {
   ): [AuthRoleKind!]!
   """fetch data from the table: "auth_role_kind" using primary key columns"""
   authRoleKindByPk(id: String!): AuthRoleKind
+  """
+  fetch data from the table: "document"
+  """
+  document(
+    """distinct select on columns"""
+    distinctOn: [DocumentSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBoolExp
+  ): [Document!]!
+  """
+  fetch data from the table: "document_block"
+  """
+  documentBlock(
+    """distinct select on columns"""
+    distinctOn: [DocumentBlockSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentBlockOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBlockBoolExp
+  ): [DocumentBlock!]!
+  """fetch data from the table: "document_block" using primary key columns"""
+  documentBlockByPk(id: uuid!): DocumentBlock
+  """
+  fetch data from the table: "document_block_kind"
+  """
+  documentBlockKind(
+    """distinct select on columns"""
+    distinctOn: [DocumentBlockKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentBlockKindOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBlockKindBoolExp
+  ): [DocumentBlockKind!]!
+  """
+  fetch data from the table: "document_block_kind" using primary key columns
+  """
+  documentBlockKindByPk(id: String!): DocumentBlockKind
+  """fetch data from the table: "document" using primary key columns"""
+  documentByPk(id: uuid!): Document
+  """
+  fetch data from the table: "document_kind"
+  """
+  documentKind(
+    """distinct select on columns"""
+    distinctOn: [DocumentKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentKindOrderBy!]
+    """filter the rows returned"""
+    where: DocumentKindBoolExp
+  ): [DocumentKind!]!
+  """fetch data from the table: "document_kind" using primary key columns"""
+  documentKindByPk(id: String!): DocumentKind
   """
   fetch data from the table: "event"
   """
@@ -2318,6 +3804,129 @@ type query_root {
   ): [EventLive!]!
   """fetch data from the table: "event_live" using primary key columns"""
   eventLiveByPk(id: String!): EventLive
+  """
+  fetch data from the table: "event_recurrence"
+  """
+  eventRecurrence(
+    """distinct select on columns"""
+    distinctOn: [EventRecurrenceSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventRecurrenceOrderBy!]
+    """filter the rows returned"""
+    where: EventRecurrenceBoolExp
+  ): [EventRecurrence!]!
+  """
+  fetch data from the table: "event_recurrence" using primary key columns
+  """
+  eventRecurrenceByPk(id: uuid!): EventRecurrence
+  """
+  fetch data from the table: "event_ticket_option"
+  """
+  eventTicketOption(
+    """distinct select on columns"""
+    distinctOn: [EventTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: EventTicketOptionBoolExp
+  ): [EventTicketOption!]!
+  """
+  fetch data from the table: "event_ticket_option" using primary key columns
+  """
+  eventTicketOptionByPk(eventId: uuid!, productId: uuid!, tenantId: String!): EventTicketOption
+  """
+  fetch data from the table: "game_raffle"
+  """
+  gameRaffle(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleBoolExp
+  ): [GameRaffle!]!
+  """fetch data from the table: "game_raffle" using primary key columns"""
+  gameRaffleByPk(id: uuid!): GameRaffle
+  """
+  fetch data from the table: "game_raffle_prize"
+  """
+  gameRafflePrize(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): [GameRafflePrize!]!
+  """
+  fetch aggregated fields from the table: "game_raffle_prize"
+  """
+  gameRafflePrizeAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): GameRafflePrizeAggregate!
+  """
+  fetch data from the table: "game_raffle_prize" using primary key columns
+  """
+  gameRafflePrizeByPk(id: uuid!): GameRafflePrize
+  """
+  fetch data from the table: "game_raffle_ticket_option"
+  """
+  gameRaffleTicketOption(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): [GameRaffleTicketOption!]!
+  """
+  fetch aggregated fields from the table: "game_raffle_ticket_option"
+  """
+  gameRaffleTicketOptionAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): GameRaffleTicketOptionAggregate!
+  """
+  fetch data from the table: "game_raffle_ticket_option" using primary key columns
+  """
+  gameRaffleTicketOptionByPk(id: uuid!): GameRaffleTicketOption
   """
   fetch data from the table: "geo_location"
   """
@@ -2386,6 +3995,25 @@ type query_root {
   ): [MediaKind!]!
   """fetch data from the table: "media_kind" using primary key columns"""
   mediaKindByPk(id: String!): MediaKind
+  """
+  fetch data from the table: "post_reaction_kind"
+  """
+  postReactionKind(
+    """distinct select on columns"""
+    distinctOn: [PostReactionKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [PostReactionKindOrderBy!]
+    """filter the rows returned"""
+    where: PostReactionKindBoolExp
+  ): [PostReactionKind!]!
+  """
+  fetch data from the table: "post_reaction_kind" using primary key columns
+  """
+  postReactionKindByPk(id: String!, tenantId: String!): PostReactionKind
   """
   fetch data from the table: "profile"
   """
@@ -2592,6 +4220,120 @@ type subscription_root {
     where: AuthRoleKindBoolExp
   ): [AuthRoleKind!]!
   """
+  fetch data from the table: "document"
+  """
+  document(
+    """distinct select on columns"""
+    distinctOn: [DocumentSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBoolExp
+  ): [Document!]!
+  """
+  fetch data from the table: "document_block"
+  """
+  documentBlock(
+    """distinct select on columns"""
+    distinctOn: [DocumentBlockSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentBlockOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBlockBoolExp
+  ): [DocumentBlock!]!
+  """fetch data from the table: "document_block" using primary key columns"""
+  documentBlockByPk(id: uuid!): DocumentBlock
+  """
+  fetch data from the table: "document_block_kind"
+  """
+  documentBlockKind(
+    """distinct select on columns"""
+    distinctOn: [DocumentBlockKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentBlockKindOrderBy!]
+    """filter the rows returned"""
+    where: DocumentBlockKindBoolExp
+  ): [DocumentBlockKind!]!
+  """
+  fetch data from the table: "document_block_kind" using primary key columns
+  """
+  documentBlockKindByPk(id: String!): DocumentBlockKind
+  """
+  fetch data from the table in a streaming manner: "document_block_kind"
+  """
+  documentBlockKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [DocumentBlockKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: DocumentBlockKindBoolExp
+  ): [DocumentBlockKind!]!
+  """
+  fetch data from the table in a streaming manner: "document_block"
+  """
+  documentBlockStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [DocumentBlockStreamCursorInput]!
+    """filter the rows returned"""
+    where: DocumentBlockBoolExp
+  ): [DocumentBlock!]!
+  """fetch data from the table: "document" using primary key columns"""
+  documentByPk(id: uuid!): Document
+  """
+  fetch data from the table: "document_kind"
+  """
+  documentKind(
+    """distinct select on columns"""
+    distinctOn: [DocumentKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [DocumentKindOrderBy!]
+    """filter the rows returned"""
+    where: DocumentKindBoolExp
+  ): [DocumentKind!]!
+  """fetch data from the table: "document_kind" using primary key columns"""
+  documentKindByPk(id: String!): DocumentKind
+  """
+  fetch data from the table in a streaming manner: "document_kind"
+  """
+  documentKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [DocumentKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: DocumentKindBoolExp
+  ): [DocumentKind!]!
+  """
+  fetch data from the table in a streaming manner: "document"
+  """
+  documentStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [DocumentStreamCursorInput]!
+    """filter the rows returned"""
+    where: DocumentBoolExp
+  ): [Document!]!
+  """
   fetch data from the table: "event"
   """
   event(
@@ -2667,6 +4409,36 @@ type subscription_root {
     where: EventLiveBoolExp
   ): [EventLive!]!
   """
+  fetch data from the table: "event_recurrence"
+  """
+  eventRecurrence(
+    """distinct select on columns"""
+    distinctOn: [EventRecurrenceSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventRecurrenceOrderBy!]
+    """filter the rows returned"""
+    where: EventRecurrenceBoolExp
+  ): [EventRecurrence!]!
+  """
+  fetch data from the table: "event_recurrence" using primary key columns
+  """
+  eventRecurrenceByPk(id: uuid!): EventRecurrence
+  """
+  fetch data from the table in a streaming manner: "event_recurrence"
+  """
+  eventRecurrenceStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EventRecurrenceStreamCursorInput]!
+    """filter the rows returned"""
+    where: EventRecurrenceBoolExp
+  ): [EventRecurrence!]!
+  """
   fetch data from the table in a streaming manner: "event"
   """
   eventStream(
@@ -2677,6 +4449,154 @@ type subscription_root {
     """filter the rows returned"""
     where: EventBoolExp
   ): [Event!]!
+  """
+  fetch data from the table: "event_ticket_option"
+  """
+  eventTicketOption(
+    """distinct select on columns"""
+    distinctOn: [EventTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [EventTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: EventTicketOptionBoolExp
+  ): [EventTicketOption!]!
+  """
+  fetch data from the table: "event_ticket_option" using primary key columns
+  """
+  eventTicketOptionByPk(eventId: uuid!, productId: uuid!, tenantId: String!): EventTicketOption
+  """
+  fetch data from the table in a streaming manner: "event_ticket_option"
+  """
+  eventTicketOptionStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EventTicketOptionStreamCursorInput]!
+    """filter the rows returned"""
+    where: EventTicketOptionBoolExp
+  ): [EventTicketOption!]!
+  """
+  fetch data from the table: "game_raffle"
+  """
+  gameRaffle(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleBoolExp
+  ): [GameRaffle!]!
+  """fetch data from the table: "game_raffle" using primary key columns"""
+  gameRaffleByPk(id: uuid!): GameRaffle
+  """
+  fetch data from the table: "game_raffle_prize"
+  """
+  gameRafflePrize(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): [GameRafflePrize!]!
+  """
+  fetch aggregated fields from the table: "game_raffle_prize"
+  """
+  gameRafflePrizeAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRafflePrizeSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRafflePrizeOrderBy!]
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): GameRafflePrizeAggregate!
+  """
+  fetch data from the table: "game_raffle_prize" using primary key columns
+  """
+  gameRafflePrizeByPk(id: uuid!): GameRafflePrize
+  """
+  fetch data from the table in a streaming manner: "game_raffle_prize"
+  """
+  gameRafflePrizeStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [GameRafflePrizeStreamCursorInput]!
+    """filter the rows returned"""
+    where: GameRafflePrizeBoolExp
+  ): [GameRafflePrize!]!
+  """
+  fetch data from the table in a streaming manner: "game_raffle"
+  """
+  gameRaffleStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [GameRaffleStreamCursorInput]!
+    """filter the rows returned"""
+    where: GameRaffleBoolExp
+  ): [GameRaffle!]!
+  """
+  fetch data from the table: "game_raffle_ticket_option"
+  """
+  gameRaffleTicketOption(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): [GameRaffleTicketOption!]!
+  """
+  fetch aggregated fields from the table: "game_raffle_ticket_option"
+  """
+  gameRaffleTicketOptionAggregate(
+    """distinct select on columns"""
+    distinctOn: [GameRaffleTicketOptionSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [GameRaffleTicketOptionOrderBy!]
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): GameRaffleTicketOptionAggregate!
+  """
+  fetch data from the table: "game_raffle_ticket_option" using primary key columns
+  """
+  gameRaffleTicketOptionByPk(id: uuid!): GameRaffleTicketOption
+  """
+  fetch data from the table in a streaming manner: "game_raffle_ticket_option"
+  """
+  gameRaffleTicketOptionStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [GameRaffleTicketOptionStreamCursorInput]!
+    """filter the rows returned"""
+    where: GameRaffleTicketOptionBoolExp
+  ): [GameRaffleTicketOption!]!
   """
   fetch data from the table: "geo_location"
   """
@@ -2789,6 +4709,36 @@ type subscription_root {
     """filter the rows returned"""
     where: MediaKindBoolExp
   ): [MediaKind!]!
+  """
+  fetch data from the table: "post_reaction_kind"
+  """
+  postReactionKind(
+    """distinct select on columns"""
+    distinctOn: [PostReactionKindSelectColumn!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    orderBy: [PostReactionKindOrderBy!]
+    """filter the rows returned"""
+    where: PostReactionKindBoolExp
+  ): [PostReactionKind!]!
+  """
+  fetch data from the table: "post_reaction_kind" using primary key columns
+  """
+  postReactionKindByPk(id: String!, tenantId: String!): PostReactionKind
+  """
+  fetch data from the table in a streaming manner: "post_reaction_kind"
+  """
+  postReactionKindStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [PostReactionKindStreamCursorInput]!
+    """filter the rows returned"""
+    where: PostReactionKindBoolExp
+  ): [PostReactionKind!]!
   """
   fetch data from the table: "profile"
   """

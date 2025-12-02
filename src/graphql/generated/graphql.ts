@@ -208,38 +208,405 @@ export type DateComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['date']['input']>>;
 };
 
+/** columns and relationships of "document" */
+export type Document = {
+  __typename?: 'Document';
+  createdAt: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  isDeleted: Scalars['Boolean']['output'];
+  kind: DocumentKindEnum;
+  profileId?: Maybe<Scalars['uuid']['output']>;
+  slug: Scalars['citext']['output'];
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+  visibility: VisibilityKindEnum;
+};
+
+/** columns and relationships of "document_block" */
+export type DocumentBlock = {
+  __typename?: 'DocumentBlock';
+  body?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  childBlocks: Array<DocumentBlock>;
+  createdAt: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  document: Document;
+  documentId: Scalars['uuid']['output'];
+  id: Scalars['uuid']['output'];
+  kind: DocumentBlockKindEnum;
+  /** An object relationship */
+  mediaItem?: Maybe<MediaItem>;
+  mediaItemId?: Maybe<Scalars['String']['output']>;
+  metadata: Scalars['jsonb']['output'];
+  /** An object relationship */
+  parentBlock?: Maybe<DocumentBlock>;
+  parentBlockId?: Maybe<Scalars['uuid']['output']>;
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+
+/** columns and relationships of "document_block" */
+export type DocumentBlockChildBlocksArgs = {
+  distinctOn?: InputMaybe<Array<DocumentBlockSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentBlockOrderBy>>;
+  where?: InputMaybe<DocumentBlockBoolExp>;
+};
+
+
+/** columns and relationships of "document_block" */
+export type DocumentBlockMetadataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** order by aggregate values of table "document_block" */
+export type DocumentBlockAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<DocumentBlockMaxOrderBy>;
+  min?: InputMaybe<DocumentBlockMinOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "document_block". All fields are combined with a logical 'AND'. */
+export type DocumentBlockBoolExp = {
+  _and?: InputMaybe<Array<DocumentBlockBoolExp>>;
+  _not?: InputMaybe<DocumentBlockBoolExp>;
+  _or?: InputMaybe<Array<DocumentBlockBoolExp>>;
+  body?: InputMaybe<StringComparisonExp>;
+  childBlocks?: InputMaybe<DocumentBlockBoolExp>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  document?: InputMaybe<DocumentBoolExp>;
+  documentId?: InputMaybe<UuidComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  kind?: InputMaybe<DocumentBlockKindEnumComparisonExp>;
+  mediaItem?: InputMaybe<MediaItemBoolExp>;
+  mediaItemId?: InputMaybe<StringComparisonExp>;
+  metadata?: InputMaybe<JsonbComparisonExp>;
+  parentBlock?: InputMaybe<DocumentBlockBoolExp>;
+  parentBlockId?: InputMaybe<UuidComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** columns and relationships of "document_block_kind" */
+export type DocumentBlockKind = {
+  __typename?: 'DocumentBlockKind';
+  id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "document_block_kind". All fields are combined with a logical 'AND'. */
+export type DocumentBlockKindBoolExp = {
+  _and?: InputMaybe<Array<DocumentBlockKindBoolExp>>;
+  _not?: InputMaybe<DocumentBlockKindBoolExp>;
+  _or?: InputMaybe<Array<DocumentBlockKindBoolExp>>;
+  id?: InputMaybe<StringComparisonExp>;
+};
+
+export enum DocumentBlockKindEnum {
+  Image = 'IMAGE',
+  Text = 'TEXT'
+}
+
+/** Boolean expression to compare columns of type "DocumentBlockKindEnum". All fields are combined with logical 'AND'. */
+export type DocumentBlockKindEnumComparisonExp = {
+  _eq?: InputMaybe<DocumentBlockKindEnum>;
+  _in?: InputMaybe<Array<DocumentBlockKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<DocumentBlockKindEnum>;
+  _nin?: InputMaybe<Array<DocumentBlockKindEnum>>;
+};
+
+/** Ordering options when selecting data from "document_block_kind". */
+export type DocumentBlockKindOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "document_block_kind" */
+export enum DocumentBlockKindSelectColumn {
+  /** column name */
+  Id = 'id'
+}
+
+/** Streaming cursor of the table "document_block_kind" */
+export type DocumentBlockKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: DocumentBlockKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DocumentBlockKindStreamCursorValueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** order by max() on columns of table "document_block" */
+export type DocumentBlockMaxOrderBy = {
+  body?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  documentId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  parentBlockId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "document_block" */
+export type DocumentBlockMinOrderBy = {
+  body?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  documentId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  parentBlockId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "document_block". */
+export type DocumentBlockOrderBy = {
+  body?: InputMaybe<OrderBy>;
+  childBlocksAggregate?: InputMaybe<DocumentBlockAggregateOrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  document?: InputMaybe<DocumentOrderBy>;
+  documentId?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  mediaItem?: InputMaybe<MediaItemOrderBy>;
+  mediaItemId?: InputMaybe<OrderBy>;
+  metadata?: InputMaybe<OrderBy>;
+  parentBlock?: InputMaybe<DocumentBlockOrderBy>;
+  parentBlockId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "document_block" */
+export enum DocumentBlockSelectColumn {
+  /** column name */
+  Body = 'body',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  DocumentId = 'documentId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  MediaItemId = 'mediaItemId',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  ParentBlockId = 'parentBlockId',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "document_block" */
+export type DocumentBlockStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: DocumentBlockStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DocumentBlockStreamCursorValueInput = {
+  body?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  documentId?: InputMaybe<Scalars['uuid']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  kind?: InputMaybe<DocumentBlockKindEnum>;
+  mediaItemId?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  parentBlockId?: InputMaybe<Scalars['uuid']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "document". All fields are combined with a logical 'AND'. */
+export type DocumentBoolExp = {
+  _and?: InputMaybe<Array<DocumentBoolExp>>;
+  _not?: InputMaybe<DocumentBoolExp>;
+  _or?: InputMaybe<Array<DocumentBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  isDeleted?: InputMaybe<BooleanComparisonExp>;
+  kind?: InputMaybe<DocumentKindEnumComparisonExp>;
+  profileId?: InputMaybe<UuidComparisonExp>;
+  slug?: InputMaybe<CitextComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  visibility?: InputMaybe<VisibilityKindEnumComparisonExp>;
+};
+
+/** columns and relationships of "document_kind" */
+export type DocumentKind = {
+  __typename?: 'DocumentKind';
+  id: Scalars['String']['output'];
+};
+
+/** Boolean expression to filter rows from the table "document_kind". All fields are combined with a logical 'AND'. */
+export type DocumentKindBoolExp = {
+  _and?: InputMaybe<Array<DocumentKindBoolExp>>;
+  _not?: InputMaybe<DocumentKindBoolExp>;
+  _or?: InputMaybe<Array<DocumentKindBoolExp>>;
+  id?: InputMaybe<StringComparisonExp>;
+};
+
+export enum DocumentKindEnum {
+  Agreement = 'AGREEMENT',
+  Page = 'PAGE'
+}
+
+/** Boolean expression to compare columns of type "DocumentKindEnum". All fields are combined with logical 'AND'. */
+export type DocumentKindEnumComparisonExp = {
+  _eq?: InputMaybe<DocumentKindEnum>;
+  _in?: InputMaybe<Array<DocumentKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<DocumentKindEnum>;
+  _nin?: InputMaybe<Array<DocumentKindEnum>>;
+};
+
+/** Ordering options when selecting data from "document_kind". */
+export type DocumentKindOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "document_kind" */
+export enum DocumentKindSelectColumn {
+  /** column name */
+  Id = 'id'
+}
+
+/** Streaming cursor of the table "document_kind" */
+export type DocumentKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: DocumentKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DocumentKindStreamCursorValueInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Ordering options when selecting data from "document". */
+export type DocumentOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  isDeleted?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  profileId?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  visibility?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "document" */
+export enum DocumentSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsDeleted = 'isDeleted',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  ProfileId = 'profileId',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Visibility = 'visibility'
+}
+
+/** Streaming cursor of the table "document" */
+export type DocumentStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: DocumentStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DocumentStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  isDeleted?: InputMaybe<Scalars['Boolean']['input']>;
+  kind?: InputMaybe<DocumentKindEnum>;
+  profileId?: InputMaybe<Scalars['uuid']['input']>;
+  slug?: InputMaybe<Scalars['citext']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  visibility?: InputMaybe<VisibilityKindEnum>;
+};
+
 /** columns and relationships of "event" */
 export type Event = {
   __typename?: 'Event';
+  /** An object relationship */
+  coverPhoto?: Maybe<MediaItem>;
+  coverPhotoId?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['timestamptz']['output'];
   endDate: Scalars['date']['output'];
   endTimestamp?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   eventLive?: Maybe<EventLive>;
   id: Scalars['uuid']['output'];
-  isPublic: Scalars['Boolean']['output'];
+  isDeleted: Scalars['Boolean']['output'];
   kind: Scalars['String']['output'];
   label?: Maybe<Scalars['String']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   location?: Maybe<GeoLocation>;
   locationId?: Maybe<Scalars['uuid']['output']>;
-  metadata?: Maybe<Scalars['jsonb']['output']>;
+  metadata: Scalars['jsonb']['output'];
   name: Scalars['citext']['output'];
   /** An object relationship */
   profile: Profile;
   profileId: Scalars['uuid']['output'];
   raffleId?: Maybe<Scalars['uuid']['output']>;
+  /** An object relationship */
+  recurrence?: Maybe<EventRecurrence>;
+  recurrenceId?: Maybe<Scalars['uuid']['output']>;
+  slug?: Maybe<Scalars['String']['output']>;
   startDate: Scalars['date']['output'];
   startTimestamp?: Maybe<Scalars['timestamptz']['output']>;
   templateId?: Maybe<Scalars['uuid']['output']>;
   tenantId: Scalars['String']['output'];
+  /** An array relationship */
+  ticketOptions: Array<EventTicketOption>;
+  timezone: Scalars['String']['output'];
   updatedAt: Scalars['timestamptz']['output'];
+  visibility: VisibilityKindEnum;
 };
 
 
 /** columns and relationships of "event" */
 export type EventMetadataArgs = {
   path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** columns and relationships of "event" */
+export type EventTicketOptionsArgs = {
+  distinctOn?: InputMaybe<Array<EventTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventTicketOptionOrderBy>>;
+  where?: InputMaybe<EventTicketOptionBoolExp>;
 };
 
 /** columns and relationships of "event_availability_kind" */
@@ -285,14 +652,17 @@ export type EventBoolExp = {
   _and?: InputMaybe<Array<EventBoolExp>>;
   _not?: InputMaybe<EventBoolExp>;
   _or?: InputMaybe<Array<EventBoolExp>>;
+  coverPhoto?: InputMaybe<MediaItemBoolExp>;
+  coverPhotoId?: InputMaybe<StringComparisonExp>;
   createdAt?: InputMaybe<TimestamptzComparisonExp>;
   endDate?: InputMaybe<DateComparisonExp>;
   endTimestamp?: InputMaybe<TimestamptzComparisonExp>;
   eventLive?: InputMaybe<EventLiveBoolExp>;
   id?: InputMaybe<UuidComparisonExp>;
-  isPublic?: InputMaybe<BooleanComparisonExp>;
+  isDeleted?: InputMaybe<BooleanComparisonExp>;
   kind?: InputMaybe<StringComparisonExp>;
   label?: InputMaybe<StringComparisonExp>;
+  link?: InputMaybe<StringComparisonExp>;
   location?: InputMaybe<GeoLocationBoolExp>;
   locationId?: InputMaybe<UuidComparisonExp>;
   metadata?: InputMaybe<JsonbComparisonExp>;
@@ -300,11 +670,17 @@ export type EventBoolExp = {
   profile?: InputMaybe<ProfileBoolExp>;
   profileId?: InputMaybe<UuidComparisonExp>;
   raffleId?: InputMaybe<UuidComparisonExp>;
+  recurrence?: InputMaybe<EventRecurrenceBoolExp>;
+  recurrenceId?: InputMaybe<UuidComparisonExp>;
+  slug?: InputMaybe<StringComparisonExp>;
   startDate?: InputMaybe<DateComparisonExp>;
   startTimestamp?: InputMaybe<TimestamptzComparisonExp>;
   templateId?: InputMaybe<UuidComparisonExp>;
   tenantId?: InputMaybe<StringComparisonExp>;
+  ticketOptions?: InputMaybe<EventTicketOptionBoolExp>;
+  timezone?: InputMaybe<StringComparisonExp>;
   updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  visibility?: InputMaybe<VisibilityKindEnumComparisonExp>;
 };
 
 /** columns and relationships of "event_live" */
@@ -326,6 +702,8 @@ export type EventLive = {
   profileId: Scalars['uuid']['output'];
   questionId?: Maybe<Scalars['uuid']['output']>;
   questionSetId?: Maybe<Scalars['uuid']['output']>;
+  /** An object relationship */
+  raffle?: Maybe<GameRaffle>;
   raffleId?: Maybe<Scalars['uuid']['output']>;
   /** A computed field, executes function "current_time" */
   serverTime?: Maybe<Scalars['timestamptz']['output']>;
@@ -361,6 +739,7 @@ export type EventLiveBoolExp = {
   profileId?: InputMaybe<UuidComparisonExp>;
   questionId?: InputMaybe<UuidComparisonExp>;
   questionSetId?: InputMaybe<UuidComparisonExp>;
+  raffle?: InputMaybe<GameRaffleBoolExp>;
   raffleId?: InputMaybe<UuidComparisonExp>;
   serverTime?: InputMaybe<TimestamptzComparisonExp>;
   showAfterQuestionDetails?: InputMaybe<BooleanComparisonExp>;
@@ -385,6 +764,7 @@ export type EventLiveOrderBy = {
   profileId?: InputMaybe<OrderBy>;
   questionId?: InputMaybe<OrderBy>;
   questionSetId?: InputMaybe<OrderBy>;
+  raffle?: InputMaybe<GameRaffleOrderBy>;
   raffleId?: InputMaybe<OrderBy>;
   serverTime?: InputMaybe<OrderBy>;
   showAfterQuestionDetails?: InputMaybe<OrderBy>;
@@ -457,14 +837,17 @@ export type EventLiveStreamCursorValueInput = {
 
 /** Ordering options when selecting data from "event". */
 export type EventOrderBy = {
+  coverPhoto?: InputMaybe<MediaItemOrderBy>;
+  coverPhotoId?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   endDate?: InputMaybe<OrderBy>;
   endTimestamp?: InputMaybe<OrderBy>;
   eventLive?: InputMaybe<EventLiveOrderBy>;
   id?: InputMaybe<OrderBy>;
-  isPublic?: InputMaybe<OrderBy>;
+  isDeleted?: InputMaybe<OrderBy>;
   kind?: InputMaybe<OrderBy>;
   label?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
   location?: InputMaybe<GeoLocationOrderBy>;
   locationId?: InputMaybe<OrderBy>;
   metadata?: InputMaybe<OrderBy>;
@@ -472,15 +855,129 @@ export type EventOrderBy = {
   profile?: InputMaybe<ProfileOrderBy>;
   profileId?: InputMaybe<OrderBy>;
   raffleId?: InputMaybe<OrderBy>;
+  recurrence?: InputMaybe<EventRecurrenceOrderBy>;
+  recurrenceId?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   startDate?: InputMaybe<OrderBy>;
   startTimestamp?: InputMaybe<OrderBy>;
   templateId?: InputMaybe<OrderBy>;
   tenantId?: InputMaybe<OrderBy>;
+  ticketOptionsAggregate?: InputMaybe<EventTicketOptionAggregateOrderBy>;
+  timezone?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  visibility?: InputMaybe<OrderBy>;
+};
+
+/** columns and relationships of "event_recurrence" */
+export type EventRecurrence = {
+  __typename?: 'EventRecurrence';
+  createdAt: Scalars['timestamptz']['output'];
+  dayOfMonth?: Maybe<Scalars['Int']['output']>;
+  daysOfWeek?: Maybe<Array<Scalars['String']['output']>>;
+  endsAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** An object relationship */
+  event?: Maybe<Event>;
+  id: Scalars['uuid']['output'];
+  kind: EventRecurrenceKindEnum;
+  month?: Maybe<Scalars['Int']['output']>;
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+/** Boolean expression to filter rows from the table "event_recurrence". All fields are combined with a logical 'AND'. */
+export type EventRecurrenceBoolExp = {
+  _and?: InputMaybe<Array<EventRecurrenceBoolExp>>;
+  _not?: InputMaybe<EventRecurrenceBoolExp>;
+  _or?: InputMaybe<Array<EventRecurrenceBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  dayOfMonth?: InputMaybe<IntComparisonExp>;
+  daysOfWeek?: InputMaybe<StringArrayComparisonExp>;
+  endsAt?: InputMaybe<TimestamptzComparisonExp>;
+  event?: InputMaybe<EventBoolExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  kind?: InputMaybe<EventRecurrenceKindEnumComparisonExp>;
+  month?: InputMaybe<IntComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+export enum EventRecurrenceKindEnum {
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+  Weekly = 'WEEKLY',
+  Yearly = 'YEARLY'
+}
+
+/** Boolean expression to compare columns of type "EventRecurrenceKindEnum". All fields are combined with logical 'AND'. */
+export type EventRecurrenceKindEnumComparisonExp = {
+  _eq?: InputMaybe<EventRecurrenceKindEnum>;
+  _in?: InputMaybe<Array<EventRecurrenceKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<EventRecurrenceKindEnum>;
+  _nin?: InputMaybe<Array<EventRecurrenceKindEnum>>;
+};
+
+/** Ordering options when selecting data from "event_recurrence". */
+export type EventRecurrenceOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  dayOfMonth?: InputMaybe<OrderBy>;
+  daysOfWeek?: InputMaybe<OrderBy>;
+  endsAt?: InputMaybe<OrderBy>;
+  event?: InputMaybe<EventOrderBy>;
+  id?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  month?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "event_recurrence" */
+export enum EventRecurrenceSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  DayOfMonth = 'dayOfMonth',
+  /** column name */
+  DaysOfWeek = 'daysOfWeek',
+  /** column name */
+  EndsAt = 'endsAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  Month = 'month',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "event_recurrence" */
+export type EventRecurrenceStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: EventRecurrenceStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventRecurrenceStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  dayOfMonth?: InputMaybe<Scalars['Int']['input']>;
+  daysOfWeek?: InputMaybe<Array<Scalars['String']['input']>>;
+  endsAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  kind?: InputMaybe<EventRecurrenceKindEnum>;
+  month?: InputMaybe<Scalars['Int']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** select columns of table "event" */
 export enum EventSelectColumn {
+  /** column name */
+  CoverPhotoId = 'coverPhotoId',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -490,11 +987,13 @@ export enum EventSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
-  IsPublic = 'isPublic',
+  IsDeleted = 'isDeleted',
   /** column name */
   Kind = 'kind',
   /** column name */
   Label = 'label',
+  /** column name */
+  Link = 'link',
   /** column name */
   LocationId = 'locationId',
   /** column name */
@@ -506,6 +1005,10 @@ export enum EventSelectColumn {
   /** column name */
   RaffleId = 'raffleId',
   /** column name */
+  RecurrenceId = 'recurrenceId',
+  /** column name */
+  Slug = 'slug',
+  /** column name */
   StartDate = 'startDate',
   /** column name */
   StartTimestamp = 'startTimestamp',
@@ -514,7 +1017,11 @@ export enum EventSelectColumn {
   /** column name */
   TenantId = 'tenantId',
   /** column name */
-  UpdatedAt = 'updatedAt'
+  Timezone = 'timezone',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Visibility = 'visibility'
 }
 
 /** Streaming cursor of the table "event" */
@@ -527,21 +1034,122 @@ export type EventStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type EventStreamCursorValueInput = {
+  coverPhotoId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   endDate?: InputMaybe<Scalars['date']['input']>;
   endTimestamp?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  isPublic?: InputMaybe<Scalars['Boolean']['input']>;
+  isDeleted?: InputMaybe<Scalars['Boolean']['input']>;
   kind?: InputMaybe<Scalars['String']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
   locationId?: InputMaybe<Scalars['uuid']['input']>;
   metadata?: InputMaybe<Scalars['jsonb']['input']>;
   name?: InputMaybe<Scalars['citext']['input']>;
   profileId?: InputMaybe<Scalars['uuid']['input']>;
   raffleId?: InputMaybe<Scalars['uuid']['input']>;
+  recurrenceId?: InputMaybe<Scalars['uuid']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   startDate?: InputMaybe<Scalars['date']['input']>;
   startTimestamp?: InputMaybe<Scalars['timestamptz']['input']>;
   templateId?: InputMaybe<Scalars['uuid']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  visibility?: InputMaybe<VisibilityKindEnum>;
+};
+
+/** columns and relationships of "event_ticket_option" */
+export type EventTicketOption = {
+  __typename?: 'EventTicketOption';
+  createdAt: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  event: Event;
+  eventId: Scalars['uuid']['output'];
+  /** An object relationship */
+  product: ShopProduct;
+  productId: Scalars['uuid']['output'];
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+/** order by aggregate values of table "event_ticket_option" */
+export type EventTicketOptionAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<EventTicketOptionMaxOrderBy>;
+  min?: InputMaybe<EventTicketOptionMinOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "event_ticket_option". All fields are combined with a logical 'AND'. */
+export type EventTicketOptionBoolExp = {
+  _and?: InputMaybe<Array<EventTicketOptionBoolExp>>;
+  _not?: InputMaybe<EventTicketOptionBoolExp>;
+  _or?: InputMaybe<Array<EventTicketOptionBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  event?: InputMaybe<EventBoolExp>;
+  eventId?: InputMaybe<UuidComparisonExp>;
+  product?: InputMaybe<ShopProductBoolExp>;
+  productId?: InputMaybe<UuidComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** order by max() on columns of table "event_ticket_option" */
+export type EventTicketOptionMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  productId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "event_ticket_option" */
+export type EventTicketOptionMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  productId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "event_ticket_option". */
+export type EventTicketOptionOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  event?: InputMaybe<EventOrderBy>;
+  eventId?: InputMaybe<OrderBy>;
+  product?: InputMaybe<ShopProductOrderBy>;
+  productId?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "event_ticket_option" */
+export enum EventTicketOptionSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  ProductId = 'productId',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "event_ticket_option" */
+export type EventTicketOptionStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: EventTicketOptionStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventTicketOptionStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['uuid']['input']>;
+  productId?: InputMaybe<Scalars['uuid']['input']>;
   tenantId?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
 };
@@ -559,6 +1167,588 @@ export type FeedbackInput = {
 export type FeedbackOutput = {
   __typename?: 'FeedbackOutput';
   success: Scalars['Boolean']['output'];
+};
+
+/** columns and relationships of "game_raffle" */
+export type GameRaffle = {
+  __typename?: 'GameRaffle';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  name: Scalars['String']['output'];
+  /** An object relationship */
+  profile: Profile;
+  profileId: Scalars['uuid']['output'];
+  prompt?: Maybe<Scalars['String']['output']>;
+  promptDescription?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  rafflePrizes: Array<GameRafflePrize>;
+  /** An aggregate relationship */
+  rafflePrizesAggregate: GameRafflePrizeAggregate;
+  /** An array relationship */
+  raffleTicketOptions: Array<GameRaffleTicketOption>;
+  /** An aggregate relationship */
+  raffleTicketOptionsAggregate: GameRaffleTicketOptionAggregate;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  visibility: VisibilityKindEnum;
+};
+
+
+/** columns and relationships of "game_raffle" */
+export type GameRaffleRafflePrizesArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+/** columns and relationships of "game_raffle" */
+export type GameRaffleRafflePrizesAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+/** columns and relationships of "game_raffle" */
+export type GameRaffleRaffleTicketOptionsArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+
+/** columns and relationships of "game_raffle" */
+export type GameRaffleRaffleTicketOptionsAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+/** Boolean expression to filter rows from the table "game_raffle". All fields are combined with a logical 'AND'. */
+export type GameRaffleBoolExp = {
+  _and?: InputMaybe<Array<GameRaffleBoolExp>>;
+  _not?: InputMaybe<GameRaffleBoolExp>;
+  _or?: InputMaybe<Array<GameRaffleBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
+  profile?: InputMaybe<ProfileBoolExp>;
+  profileId?: InputMaybe<UuidComparisonExp>;
+  prompt?: InputMaybe<StringComparisonExp>;
+  promptDescription?: InputMaybe<StringComparisonExp>;
+  rafflePrizes?: InputMaybe<GameRafflePrizeBoolExp>;
+  rafflePrizesAggregate?: InputMaybe<GameRafflePrizeAggregateBoolExp>;
+  raffleTicketOptions?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+  raffleTicketOptionsAggregate?: InputMaybe<GameRaffleTicketOptionAggregateBoolExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  visibility?: InputMaybe<VisibilityKindEnumComparisonExp>;
+};
+
+/** Ordering options when selecting data from "game_raffle". */
+export type GameRaffleOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  profile?: InputMaybe<ProfileOrderBy>;
+  profileId?: InputMaybe<OrderBy>;
+  prompt?: InputMaybe<OrderBy>;
+  promptDescription?: InputMaybe<OrderBy>;
+  rafflePrizesAggregate?: InputMaybe<GameRafflePrizeAggregateOrderBy>;
+  raffleTicketOptionsAggregate?: InputMaybe<GameRaffleTicketOptionAggregateOrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  visibility?: InputMaybe<OrderBy>;
+};
+
+/** columns and relationships of "game_raffle_prize" */
+export type GameRafflePrize = {
+  __typename?: 'GameRafflePrize';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  name: Scalars['String']['output'];
+  /** An object relationship */
+  raffle: GameRaffle;
+  raffleId: Scalars['uuid']['output'];
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregated selection of "game_raffle_prize" */
+export type GameRafflePrizeAggregate = {
+  __typename?: 'GameRafflePrizeAggregate';
+  aggregate?: Maybe<GameRafflePrizeAggregateFields>;
+  nodes: Array<GameRafflePrize>;
+};
+
+export type GameRafflePrizeAggregateBoolExp = {
+  count?: InputMaybe<GameRafflePrizeAggregateBoolExpCount>;
+};
+
+/** aggregate fields of "game_raffle_prize" */
+export type GameRafflePrizeAggregateFields = {
+  __typename?: 'GameRafflePrizeAggregateFields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<GameRafflePrizeMaxFields>;
+  min?: Maybe<GameRafflePrizeMinFields>;
+};
+
+
+/** aggregate fields of "game_raffle_prize" */
+export type GameRafflePrizeAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "game_raffle_prize" */
+export type GameRafflePrizeAggregateOrderBy = {
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<GameRafflePrizeMaxOrderBy>;
+  min?: InputMaybe<GameRafflePrizeMinOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "game_raffle_prize". All fields are combined with a logical 'AND'. */
+export type GameRafflePrizeBoolExp = {
+  _and?: InputMaybe<Array<GameRafflePrizeBoolExp>>;
+  _not?: InputMaybe<GameRafflePrizeBoolExp>;
+  _or?: InputMaybe<Array<GameRafflePrizeBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  description?: InputMaybe<StringComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
+  raffle?: InputMaybe<GameRaffleBoolExp>;
+  raffleId?: InputMaybe<UuidComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type GameRafflePrizeMaxFields = {
+  __typename?: 'GameRafflePrizeMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  raffleId?: Maybe<Scalars['uuid']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "game_raffle_prize" */
+export type GameRafflePrizeMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type GameRafflePrizeMinFields = {
+  __typename?: 'GameRafflePrizeMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  raffleId?: Maybe<Scalars['uuid']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "game_raffle_prize" */
+export type GameRafflePrizeMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "game_raffle_prize". */
+export type GameRafflePrizeOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  raffle?: InputMaybe<GameRaffleOrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "game_raffle_prize" */
+export enum GameRafflePrizeSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  RaffleId = 'raffleId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "game_raffle_prize" */
+export type GameRafflePrizeStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GameRafflePrizeStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GameRafflePrizeStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  raffleId?: InputMaybe<Scalars['uuid']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** select columns of table "game_raffle" */
+export enum GameRaffleSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  ProfileId = 'profileId',
+  /** column name */
+  Prompt = 'prompt',
+  /** column name */
+  PromptDescription = 'promptDescription',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Visibility = 'visibility'
+}
+
+/** Streaming cursor of the table "game_raffle" */
+export type GameRaffleStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GameRaffleStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GameRaffleStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  profileId?: InputMaybe<Scalars['uuid']['input']>;
+  prompt?: InputMaybe<Scalars['String']['input']>;
+  promptDescription?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  visibility?: InputMaybe<VisibilityKindEnum>;
+};
+
+/** columns and relationships of "game_raffle_ticket_option" */
+export type GameRaffleTicketOption = {
+  __typename?: 'GameRaffleTicketOption';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['uuid']['output'];
+  instructions?: Maybe<Scalars['String']['output']>;
+  isRequired?: Maybe<Scalars['Boolean']['output']>;
+  kind: GameRaffleTicketOptionKindEnum;
+  /** An object relationship */
+  raffle: GameRaffle;
+  raffleId: Scalars['uuid']['output'];
+  ticketsGranted: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregated selection of "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionAggregate = {
+  __typename?: 'GameRaffleTicketOptionAggregate';
+  aggregate?: Maybe<GameRaffleTicketOptionAggregateFields>;
+  nodes: Array<GameRaffleTicketOption>;
+};
+
+export type GameRaffleTicketOptionAggregateBoolExp = {
+  bool_and?: InputMaybe<GameRaffleTicketOptionAggregateBoolExpBool_And>;
+  bool_or?: InputMaybe<GameRaffleTicketOptionAggregateBoolExpBool_Or>;
+  count?: InputMaybe<GameRaffleTicketOptionAggregateBoolExpCount>;
+};
+
+/** aggregate fields of "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionAggregateFields = {
+  __typename?: 'GameRaffleTicketOptionAggregateFields';
+  avg?: Maybe<GameRaffleTicketOptionAvgFields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<GameRaffleTicketOptionMaxFields>;
+  min?: Maybe<GameRaffleTicketOptionMinFields>;
+  stddev?: Maybe<GameRaffleTicketOptionStddevFields>;
+  stddevPop?: Maybe<GameRaffleTicketOptionStddevPopFields>;
+  stddevSamp?: Maybe<GameRaffleTicketOptionStddevSampFields>;
+  sum?: Maybe<GameRaffleTicketOptionSumFields>;
+  varPop?: Maybe<GameRaffleTicketOptionVarPopFields>;
+  varSamp?: Maybe<GameRaffleTicketOptionVarSampFields>;
+  variance?: Maybe<GameRaffleTicketOptionVarianceFields>;
+};
+
+
+/** aggregate fields of "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionAggregateOrderBy = {
+  avg?: InputMaybe<GameRaffleTicketOptionAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<GameRaffleTicketOptionMaxOrderBy>;
+  min?: InputMaybe<GameRaffleTicketOptionMinOrderBy>;
+  stddev?: InputMaybe<GameRaffleTicketOptionStddevOrderBy>;
+  stddevPop?: InputMaybe<GameRaffleTicketOptionStddevPopOrderBy>;
+  stddevSamp?: InputMaybe<GameRaffleTicketOptionStddevSampOrderBy>;
+  sum?: InputMaybe<GameRaffleTicketOptionSumOrderBy>;
+  varPop?: InputMaybe<GameRaffleTicketOptionVarPopOrderBy>;
+  varSamp?: InputMaybe<GameRaffleTicketOptionVarSampOrderBy>;
+  variance?: InputMaybe<GameRaffleTicketOptionVarianceOrderBy>;
+};
+
+/** aggregate avg on columns */
+export type GameRaffleTicketOptionAvgFields = {
+  __typename?: 'GameRaffleTicketOptionAvgFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionAvgOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "game_raffle_ticket_option". All fields are combined with a logical 'AND'. */
+export type GameRaffleTicketOptionBoolExp = {
+  _and?: InputMaybe<Array<GameRaffleTicketOptionBoolExp>>;
+  _not?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+  _or?: InputMaybe<Array<GameRaffleTicketOptionBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<UuidComparisonExp>;
+  instructions?: InputMaybe<StringComparisonExp>;
+  isRequired?: InputMaybe<BooleanComparisonExp>;
+  kind?: InputMaybe<GameRaffleTicketOptionKindEnumComparisonExp>;
+  raffle?: InputMaybe<GameRaffleBoolExp>;
+  raffleId?: InputMaybe<UuidComparisonExp>;
+  ticketsGranted?: InputMaybe<IntComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+export enum GameRaffleTicketOptionKindEnum {
+  MailingList = 'MAILING_LIST',
+  SmsNotifications = 'SMS_NOTIFICATIONS'
+}
+
+/** Boolean expression to compare columns of type "GameRaffleTicketOptionKindEnum". All fields are combined with logical 'AND'. */
+export type GameRaffleTicketOptionKindEnumComparisonExp = {
+  _eq?: InputMaybe<GameRaffleTicketOptionKindEnum>;
+  _in?: InputMaybe<Array<GameRaffleTicketOptionKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<GameRaffleTicketOptionKindEnum>;
+  _nin?: InputMaybe<Array<GameRaffleTicketOptionKindEnum>>;
+};
+
+/** aggregate max on columns */
+export type GameRaffleTicketOptionMaxFields = {
+  __typename?: 'GameRaffleTicketOptionMaxFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  instructions?: Maybe<Scalars['String']['output']>;
+  raffleId?: Maybe<Scalars['uuid']['output']>;
+  ticketsGranted?: Maybe<Scalars['Int']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionMaxOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  instructions?: InputMaybe<OrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  ticketsGranted?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type GameRaffleTicketOptionMinFields = {
+  __typename?: 'GameRaffleTicketOptionMinFields';
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  instructions?: Maybe<Scalars['String']['output']>;
+  raffleId?: Maybe<Scalars['uuid']['output']>;
+  ticketsGranted?: Maybe<Scalars['Int']['output']>;
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionMinOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  instructions?: InputMaybe<OrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  ticketsGranted?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Ordering options when selecting data from "game_raffle_ticket_option". */
+export type GameRaffleTicketOptionOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  instructions?: InputMaybe<OrderBy>;
+  isRequired?: InputMaybe<OrderBy>;
+  kind?: InputMaybe<OrderBy>;
+  raffle?: InputMaybe<GameRaffleOrderBy>;
+  raffleId?: InputMaybe<OrderBy>;
+  ticketsGranted?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "game_raffle_ticket_option" */
+export enum GameRaffleTicketOptionSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Instructions = 'instructions',
+  /** column name */
+  IsRequired = 'isRequired',
+  /** column name */
+  Kind = 'kind',
+  /** column name */
+  RaffleId = 'raffleId',
+  /** column name */
+  TicketsGranted = 'ticketsGranted',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** select "gameRaffleTicketOptionAggregateBoolExpBool_andArgumentsColumns" columns of table "game_raffle_ticket_option" */
+export enum GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_AndArgumentsColumns {
+  /** column name */
+  IsRequired = 'isRequired'
+}
+
+/** select "gameRaffleTicketOptionAggregateBoolExpBool_orArgumentsColumns" columns of table "game_raffle_ticket_option" */
+export enum GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_OrArgumentsColumns {
+  /** column name */
+  IsRequired = 'isRequired'
+}
+
+/** aggregate stddev on columns */
+export type GameRaffleTicketOptionStddevFields = {
+  __typename?: 'GameRaffleTicketOptionStddevFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionStddevOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** aggregate stddevPop on columns */
+export type GameRaffleTicketOptionStddevPopFields = {
+  __typename?: 'GameRaffleTicketOptionStddevPopFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddevPop() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionStddevPopOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** aggregate stddevSamp on columns */
+export type GameRaffleTicketOptionStddevSampFields = {
+  __typename?: 'GameRaffleTicketOptionStddevSampFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddevSamp() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionStddevSampOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: GameRaffleTicketOptionStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GameRaffleTicketOptionStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  instructions?: InputMaybe<Scalars['String']['input']>;
+  isRequired?: InputMaybe<Scalars['Boolean']['input']>;
+  kind?: InputMaybe<GameRaffleTicketOptionKindEnum>;
+  raffleId?: InputMaybe<Scalars['uuid']['input']>;
+  ticketsGranted?: InputMaybe<Scalars['Int']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type GameRaffleTicketOptionSumFields = {
+  __typename?: 'GameRaffleTicketOptionSumFields';
+  ticketsGranted?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionSumOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** aggregate varPop on columns */
+export type GameRaffleTicketOptionVarPopFields = {
+  __typename?: 'GameRaffleTicketOptionVarPopFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by varPop() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionVarPopOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** aggregate varSamp on columns */
+export type GameRaffleTicketOptionVarSampFields = {
+  __typename?: 'GameRaffleTicketOptionVarSampFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by varSamp() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionVarSampOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type GameRaffleTicketOptionVarianceFields = {
+  __typename?: 'GameRaffleTicketOptionVarianceFields';
+  ticketsGranted?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "game_raffle_ticket_option" */
+export type GameRaffleTicketOptionVarianceOrderBy = {
+  ticketsGranted?: InputMaybe<OrderBy>;
 };
 
 /** columns and relationships of "geo_location" */
@@ -987,7 +2177,9 @@ export type MediaKindBoolExp = {
 
 export enum MediaKindEnum {
   CloudflareImage = 'CLOUDFLARE_IMAGE',
-  CloudflareVideo = 'CLOUDFLARE_VIDEO'
+  CloudflareVideo = 'CLOUDFLARE_VIDEO',
+  SvgAvatar = 'SVG_AVATAR',
+  WebImage = 'WEB_IMAGE'
 }
 
 /** Boolean expression to compare columns of type "MediaKindEnum". All fields are combined with logical 'AND'. */
@@ -1051,6 +2243,62 @@ export enum OrderBy {
   /** in descending order, nulls last */
   DescNullsLast = 'DESC_NULLS_LAST'
 }
+
+/** columns and relationships of "post_reaction_kind" */
+export type PostReactionKind = {
+  __typename?: 'PostReactionKind';
+  createdAt: Scalars['timestamptz']['output'];
+  id: Scalars['String']['output'];
+  tenantId: Scalars['String']['output'];
+  updatedAt: Scalars['timestamptz']['output'];
+};
+
+/** Boolean expression to filter rows from the table "post_reaction_kind". All fields are combined with a logical 'AND'. */
+export type PostReactionKindBoolExp = {
+  _and?: InputMaybe<Array<PostReactionKindBoolExp>>;
+  _not?: InputMaybe<PostReactionKindBoolExp>;
+  _or?: InputMaybe<Array<PostReactionKindBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  id?: InputMaybe<StringComparisonExp>;
+  tenantId?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+};
+
+/** Ordering options when selecting data from "post_reaction_kind". */
+export type PostReactionKindOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
+  tenantId?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "post_reaction_kind" */
+export enum PostReactionKindSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  TenantId = 'tenantId',
+  /** column name */
+  UpdatedAt = 'updatedAt'
+}
+
+/** Streaming cursor of the table "post_reaction_kind" */
+export type PostReactionKindStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: PostReactionKindStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type PostReactionKindStreamCursorValueInput = {
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  tenantId?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
 
 /** columns and relationships of "profile" */
 export type Profile = {
@@ -1735,6 +2983,7 @@ export type ShopProductKindBoolExp = {
 
 export enum ShopProductKindEnum {
   Digital = 'DIGITAL',
+  EventTicket = 'EVENT_TICKET',
   Physical = 'PHYSICAL',
   Subscription = 'SUBSCRIPTION'
 }
@@ -1838,6 +3087,23 @@ export type ShopProductStreamCursorValueInput = {
   tenantId?: InputMaybe<Scalars['String']['input']>;
   trialPeriodDays?: InputMaybe<Scalars['Int']['input']>;
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
+export type StringArrayComparisonExp = {
+  /** is the array contained in the given array value */
+  _containedIn?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  _eq?: InputMaybe<Array<Scalars['String']['input']>>;
+  _gt?: InputMaybe<Array<Scalars['String']['input']>>;
+  _gte?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Array<Scalars['String']['input']>>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Array<Scalars['String']['input']>>;
+  _lte?: InputMaybe<Array<Scalars['String']['input']>>;
+  _neq?: InputMaybe<Array<Scalars['String']['input']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['String']['input']>>>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -2014,6 +3280,21 @@ export type VisibilityKindBoolExp = {
   id?: InputMaybe<StringComparisonExp>;
 };
 
+export enum VisibilityKindEnum {
+  Internal = 'INTERNAL',
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
+
+/** Boolean expression to compare columns of type "VisibilityKindEnum". All fields are combined with logical 'AND'. */
+export type VisibilityKindEnumComparisonExp = {
+  _eq?: InputMaybe<VisibilityKindEnum>;
+  _in?: InputMaybe<Array<VisibilityKindEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<VisibilityKindEnum>;
+  _nin?: InputMaybe<Array<VisibilityKindEnum>>;
+};
+
 /** Ordering options when selecting data from "visibility_kind". */
 export type VisibilityKindOrderBy = {
   id?: InputMaybe<OrderBy>;
@@ -2036,6 +3317,34 @@ export type VisibilityKindStreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type VisibilityKindStreamCursorValueInput = {
   id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type GameRafflePrizeAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<GameRafflePrizeBoolExp>;
+  predicate: IntComparisonExp;
+};
+
+export type GameRaffleTicketOptionAggregateBoolExpBool_And = {
+  arguments: GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_AndArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type GameRaffleTicketOptionAggregateBoolExpBool_Or = {
+  arguments: GameRaffleTicketOptionSelectColumnGameRaffleTicketOptionAggregateBoolExpBool_OrArgumentsColumns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+  predicate: BooleanComparisonExp;
+};
+
+export type GameRaffleTicketOptionAggregateBoolExpCount = {
+  arguments?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+  predicate: IntComparisonExp;
 };
 
 /** mutation root */
@@ -2168,6 +3477,22 @@ export type Query_Root = {
   authRoleKind: Array<AuthRoleKind>;
   /** fetch data from the table: "auth_role_kind" using primary key columns */
   authRoleKindByPk?: Maybe<AuthRoleKind>;
+  /** fetch data from the table: "document" */
+  document: Array<Document>;
+  /** fetch data from the table: "document_block" */
+  documentBlock: Array<DocumentBlock>;
+  /** fetch data from the table: "document_block" using primary key columns */
+  documentBlockByPk?: Maybe<DocumentBlock>;
+  /** fetch data from the table: "document_block_kind" */
+  documentBlockKind: Array<DocumentBlockKind>;
+  /** fetch data from the table: "document_block_kind" using primary key columns */
+  documentBlockKindByPk?: Maybe<DocumentBlockKind>;
+  /** fetch data from the table: "document" using primary key columns */
+  documentByPk?: Maybe<Document>;
+  /** fetch data from the table: "document_kind" */
+  documentKind: Array<DocumentKind>;
+  /** fetch data from the table: "document_kind" using primary key columns */
+  documentKindByPk?: Maybe<DocumentKind>;
   /** fetch data from the table: "event" */
   event: Array<Event>;
   /** fetch data from the table: "event_availability_kind" */
@@ -2180,6 +3505,30 @@ export type Query_Root = {
   eventLive: Array<EventLive>;
   /** fetch data from the table: "event_live" using primary key columns */
   eventLiveByPk?: Maybe<EventLive>;
+  /** fetch data from the table: "event_recurrence" */
+  eventRecurrence: Array<EventRecurrence>;
+  /** fetch data from the table: "event_recurrence" using primary key columns */
+  eventRecurrenceByPk?: Maybe<EventRecurrence>;
+  /** fetch data from the table: "event_ticket_option" */
+  eventTicketOption: Array<EventTicketOption>;
+  /** fetch data from the table: "event_ticket_option" using primary key columns */
+  eventTicketOptionByPk?: Maybe<EventTicketOption>;
+  /** fetch data from the table: "game_raffle" */
+  gameRaffle: Array<GameRaffle>;
+  /** fetch data from the table: "game_raffle" using primary key columns */
+  gameRaffleByPk?: Maybe<GameRaffle>;
+  /** fetch data from the table: "game_raffle_prize" */
+  gameRafflePrize: Array<GameRafflePrize>;
+  /** fetch aggregated fields from the table: "game_raffle_prize" */
+  gameRafflePrizeAggregate: GameRafflePrizeAggregate;
+  /** fetch data from the table: "game_raffle_prize" using primary key columns */
+  gameRafflePrizeByPk?: Maybe<GameRafflePrize>;
+  /** fetch data from the table: "game_raffle_ticket_option" */
+  gameRaffleTicketOption: Array<GameRaffleTicketOption>;
+  /** fetch aggregated fields from the table: "game_raffle_ticket_option" */
+  gameRaffleTicketOptionAggregate: GameRaffleTicketOptionAggregate;
+  /** fetch data from the table: "game_raffle_ticket_option" using primary key columns */
+  gameRaffleTicketOptionByPk?: Maybe<GameRaffleTicketOption>;
   /** fetch data from the table: "geo_location" */
   geoLocation: Array<GeoLocation>;
   /** fetch data from the table: "geo_location" using primary key columns */
@@ -2196,6 +3545,10 @@ export type Query_Root = {
   mediaKind: Array<MediaKind>;
   /** fetch data from the table: "media_kind" using primary key columns */
   mediaKindByPk?: Maybe<MediaKind>;
+  /** fetch data from the table: "post_reaction_kind" */
+  postReactionKind: Array<PostReactionKind>;
+  /** fetch data from the table: "post_reaction_kind" using primary key columns */
+  postReactionKindByPk?: Maybe<PostReactionKind>;
   /** fetch data from the table: "profile" */
   profile: Array<Profile>;
   /** fetch data from the table: "profile_attribute" */
@@ -2250,6 +3603,62 @@ export type Query_RootAuthRoleKindByPkArgs = {
 };
 
 
+export type Query_RootDocumentArgs = {
+  distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentOrderBy>>;
+  where?: InputMaybe<DocumentBoolExp>;
+};
+
+
+export type Query_RootDocumentBlockArgs = {
+  distinctOn?: InputMaybe<Array<DocumentBlockSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentBlockOrderBy>>;
+  where?: InputMaybe<DocumentBlockBoolExp>;
+};
+
+
+export type Query_RootDocumentBlockByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootDocumentBlockKindArgs = {
+  distinctOn?: InputMaybe<Array<DocumentBlockKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentBlockKindOrderBy>>;
+  where?: InputMaybe<DocumentBlockKindBoolExp>;
+};
+
+
+export type Query_RootDocumentBlockKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Query_RootDocumentByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootDocumentKindArgs = {
+  distinctOn?: InputMaybe<Array<DocumentKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentKindOrderBy>>;
+  where?: InputMaybe<DocumentKindBoolExp>;
+};
+
+
+export type Query_RootDocumentKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type Query_RootEventArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2289,6 +3698,96 @@ export type Query_RootEventLiveArgs = {
 
 export type Query_RootEventLiveByPkArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type Query_RootEventRecurrenceArgs = {
+  distinctOn?: InputMaybe<Array<EventRecurrenceSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventRecurrenceOrderBy>>;
+  where?: InputMaybe<EventRecurrenceBoolExp>;
+};
+
+
+export type Query_RootEventRecurrenceByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootEventTicketOptionArgs = {
+  distinctOn?: InputMaybe<Array<EventTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventTicketOptionOrderBy>>;
+  where?: InputMaybe<EventTicketOptionBoolExp>;
+};
+
+
+export type Query_RootEventTicketOptionByPkArgs = {
+  eventId: Scalars['uuid']['input'];
+  productId: Scalars['uuid']['input'];
+  tenantId: Scalars['String']['input'];
+};
+
+
+export type Query_RootGameRaffleArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleOrderBy>>;
+  where?: InputMaybe<GameRaffleBoolExp>;
+};
+
+
+export type Query_RootGameRaffleByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootGameRafflePrizeArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+export type Query_RootGameRafflePrizeAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+export type Query_RootGameRafflePrizeByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootGameRaffleTicketOptionArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+
+export type Query_RootGameRaffleTicketOptionAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+
+export type Query_RootGameRaffleTicketOptionByPkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -2346,6 +3845,21 @@ export type Query_RootMediaKindArgs = {
 
 export type Query_RootMediaKindByPkArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type Query_RootPostReactionKindArgs = {
+  distinctOn?: InputMaybe<Array<PostReactionKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PostReactionKindOrderBy>>;
+  where?: InputMaybe<PostReactionKindBoolExp>;
+};
+
+
+export type Query_RootPostReactionKindByPkArgs = {
+  id: Scalars['String']['input'];
+  tenantId: Scalars['String']['input'];
 };
 
 
@@ -2492,6 +4006,30 @@ export type Subscription_Root = {
   authRoleKindByPk?: Maybe<AuthRoleKind>;
   /** fetch data from the table in a streaming manner: "auth_role_kind" */
   authRoleKindStream: Array<AuthRoleKind>;
+  /** fetch data from the table: "document" */
+  document: Array<Document>;
+  /** fetch data from the table: "document_block" */
+  documentBlock: Array<DocumentBlock>;
+  /** fetch data from the table: "document_block" using primary key columns */
+  documentBlockByPk?: Maybe<DocumentBlock>;
+  /** fetch data from the table: "document_block_kind" */
+  documentBlockKind: Array<DocumentBlockKind>;
+  /** fetch data from the table: "document_block_kind" using primary key columns */
+  documentBlockKindByPk?: Maybe<DocumentBlockKind>;
+  /** fetch data from the table in a streaming manner: "document_block_kind" */
+  documentBlockKindStream: Array<DocumentBlockKind>;
+  /** fetch data from the table in a streaming manner: "document_block" */
+  documentBlockStream: Array<DocumentBlock>;
+  /** fetch data from the table: "document" using primary key columns */
+  documentByPk?: Maybe<Document>;
+  /** fetch data from the table: "document_kind" */
+  documentKind: Array<DocumentKind>;
+  /** fetch data from the table: "document_kind" using primary key columns */
+  documentKindByPk?: Maybe<DocumentKind>;
+  /** fetch data from the table in a streaming manner: "document_kind" */
+  documentKindStream: Array<DocumentKind>;
+  /** fetch data from the table in a streaming manner: "document" */
+  documentStream: Array<Document>;
   /** fetch data from the table: "event" */
   event: Array<Event>;
   /** fetch data from the table: "event_availability_kind" */
@@ -2508,8 +4046,42 @@ export type Subscription_Root = {
   eventLiveByPk?: Maybe<EventLive>;
   /** fetch data from the table in a streaming manner: "event_live" */
   eventLiveStream: Array<EventLive>;
+  /** fetch data from the table: "event_recurrence" */
+  eventRecurrence: Array<EventRecurrence>;
+  /** fetch data from the table: "event_recurrence" using primary key columns */
+  eventRecurrenceByPk?: Maybe<EventRecurrence>;
+  /** fetch data from the table in a streaming manner: "event_recurrence" */
+  eventRecurrenceStream: Array<EventRecurrence>;
   /** fetch data from the table in a streaming manner: "event" */
   eventStream: Array<Event>;
+  /** fetch data from the table: "event_ticket_option" */
+  eventTicketOption: Array<EventTicketOption>;
+  /** fetch data from the table: "event_ticket_option" using primary key columns */
+  eventTicketOptionByPk?: Maybe<EventTicketOption>;
+  /** fetch data from the table in a streaming manner: "event_ticket_option" */
+  eventTicketOptionStream: Array<EventTicketOption>;
+  /** fetch data from the table: "game_raffle" */
+  gameRaffle: Array<GameRaffle>;
+  /** fetch data from the table: "game_raffle" using primary key columns */
+  gameRaffleByPk?: Maybe<GameRaffle>;
+  /** fetch data from the table: "game_raffle_prize" */
+  gameRafflePrize: Array<GameRafflePrize>;
+  /** fetch aggregated fields from the table: "game_raffle_prize" */
+  gameRafflePrizeAggregate: GameRafflePrizeAggregate;
+  /** fetch data from the table: "game_raffle_prize" using primary key columns */
+  gameRafflePrizeByPk?: Maybe<GameRafflePrize>;
+  /** fetch data from the table in a streaming manner: "game_raffle_prize" */
+  gameRafflePrizeStream: Array<GameRafflePrize>;
+  /** fetch data from the table in a streaming manner: "game_raffle" */
+  gameRaffleStream: Array<GameRaffle>;
+  /** fetch data from the table: "game_raffle_ticket_option" */
+  gameRaffleTicketOption: Array<GameRaffleTicketOption>;
+  /** fetch aggregated fields from the table: "game_raffle_ticket_option" */
+  gameRaffleTicketOptionAggregate: GameRaffleTicketOptionAggregate;
+  /** fetch data from the table: "game_raffle_ticket_option" using primary key columns */
+  gameRaffleTicketOptionByPk?: Maybe<GameRaffleTicketOption>;
+  /** fetch data from the table in a streaming manner: "game_raffle_ticket_option" */
+  gameRaffleTicketOptionStream: Array<GameRaffleTicketOption>;
   /** fetch data from the table: "geo_location" */
   geoLocation: Array<GeoLocation>;
   /** fetch data from the table: "geo_location" using primary key columns */
@@ -2534,6 +4106,12 @@ export type Subscription_Root = {
   mediaKindByPk?: Maybe<MediaKind>;
   /** fetch data from the table in a streaming manner: "media_kind" */
   mediaKindStream: Array<MediaKind>;
+  /** fetch data from the table: "post_reaction_kind" */
+  postReactionKind: Array<PostReactionKind>;
+  /** fetch data from the table: "post_reaction_kind" using primary key columns */
+  postReactionKindByPk?: Maybe<PostReactionKind>;
+  /** fetch data from the table in a streaming manner: "post_reaction_kind" */
+  postReactionKindStream: Array<PostReactionKind>;
   /** fetch data from the table: "profile" */
   profile: Array<Profile>;
   /** fetch data from the table: "profile_attribute" */
@@ -2612,6 +4190,90 @@ export type Subscription_RootAuthRoleKindStreamArgs = {
 };
 
 
+export type Subscription_RootDocumentArgs = {
+  distinctOn?: InputMaybe<Array<DocumentSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentOrderBy>>;
+  where?: InputMaybe<DocumentBoolExp>;
+};
+
+
+export type Subscription_RootDocumentBlockArgs = {
+  distinctOn?: InputMaybe<Array<DocumentBlockSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentBlockOrderBy>>;
+  where?: InputMaybe<DocumentBlockBoolExp>;
+};
+
+
+export type Subscription_RootDocumentBlockByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootDocumentBlockKindArgs = {
+  distinctOn?: InputMaybe<Array<DocumentBlockKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentBlockKindOrderBy>>;
+  where?: InputMaybe<DocumentBlockKindBoolExp>;
+};
+
+
+export type Subscription_RootDocumentBlockKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootDocumentBlockKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<DocumentBlockKindStreamCursorInput>>;
+  where?: InputMaybe<DocumentBlockKindBoolExp>;
+};
+
+
+export type Subscription_RootDocumentBlockStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<DocumentBlockStreamCursorInput>>;
+  where?: InputMaybe<DocumentBlockBoolExp>;
+};
+
+
+export type Subscription_RootDocumentByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootDocumentKindArgs = {
+  distinctOn?: InputMaybe<Array<DocumentKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DocumentKindOrderBy>>;
+  where?: InputMaybe<DocumentKindBoolExp>;
+};
+
+
+export type Subscription_RootDocumentKindByPkArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootDocumentKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<DocumentKindStreamCursorInput>>;
+  where?: InputMaybe<DocumentKindBoolExp>;
+};
+
+
+export type Subscription_RootDocumentStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<DocumentStreamCursorInput>>;
+  where?: InputMaybe<DocumentBoolExp>;
+};
+
+
 export type Subscription_RootEventArgs = {
   distinctOn?: InputMaybe<Array<EventSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2668,10 +4330,135 @@ export type Subscription_RootEventLiveStreamArgs = {
 };
 
 
+export type Subscription_RootEventRecurrenceArgs = {
+  distinctOn?: InputMaybe<Array<EventRecurrenceSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventRecurrenceOrderBy>>;
+  where?: InputMaybe<EventRecurrenceBoolExp>;
+};
+
+
+export type Subscription_RootEventRecurrenceByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootEventRecurrenceStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<EventRecurrenceStreamCursorInput>>;
+  where?: InputMaybe<EventRecurrenceBoolExp>;
+};
+
+
 export type Subscription_RootEventStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventStreamCursorInput>>;
   where?: InputMaybe<EventBoolExp>;
+};
+
+
+export type Subscription_RootEventTicketOptionArgs = {
+  distinctOn?: InputMaybe<Array<EventTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EventTicketOptionOrderBy>>;
+  where?: InputMaybe<EventTicketOptionBoolExp>;
+};
+
+
+export type Subscription_RootEventTicketOptionByPkArgs = {
+  eventId: Scalars['uuid']['input'];
+  productId: Scalars['uuid']['input'];
+  tenantId: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootEventTicketOptionStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<EventTicketOptionStreamCursorInput>>;
+  where?: InputMaybe<EventTicketOptionBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleOrderBy>>;
+  where?: InputMaybe<GameRaffleBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootGameRafflePrizeArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+export type Subscription_RootGameRafflePrizeAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRafflePrizeSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRafflePrizeOrderBy>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+export type Subscription_RootGameRafflePrizeByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootGameRafflePrizeStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<GameRafflePrizeStreamCursorInput>>;
+  where?: InputMaybe<GameRafflePrizeBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<GameRaffleStreamCursorInput>>;
+  where?: InputMaybe<GameRaffleBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleTicketOptionArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleTicketOptionAggregateArgs = {
+  distinctOn?: InputMaybe<Array<GameRaffleTicketOptionSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<GameRaffleTicketOptionOrderBy>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
+};
+
+
+export type Subscription_RootGameRaffleTicketOptionByPkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootGameRaffleTicketOptionStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<GameRaffleTicketOptionStreamCursorInput>>;
+  where?: InputMaybe<GameRaffleTicketOptionBoolExp>;
 };
 
 
@@ -2757,6 +4544,28 @@ export type Subscription_RootMediaKindStreamArgs = {
   batchSize: Scalars['Int']['input'];
   cursor: Array<InputMaybe<MediaKindStreamCursorInput>>;
   where?: InputMaybe<MediaKindBoolExp>;
+};
+
+
+export type Subscription_RootPostReactionKindArgs = {
+  distinctOn?: InputMaybe<Array<PostReactionKindSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PostReactionKindOrderBy>>;
+  where?: InputMaybe<PostReactionKindBoolExp>;
+};
+
+
+export type Subscription_RootPostReactionKindByPkArgs = {
+  id: Scalars['String']['input'];
+  tenantId: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootPostReactionKindStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<PostReactionKindStreamCursorInput>>;
+  where?: InputMaybe<PostReactionKindBoolExp>;
 };
 
 
@@ -2957,7 +4766,7 @@ export type PublicProfileFragment = { __typename?: 'Profile', createdAt: string,
 
 export type PublicLocationFragment = { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string };
 
-export type PublicEventFragment = { __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, isPublic: boolean, kind: string, label?: string | null, locationId?: string | null, metadata?: Record<string, any> | null, name: string, profileId: string, raffleId?: string | null, startDate: string, startTimestamp?: string | null, templateId?: string | null, tenantId: string, updatedAt: string };
+export type PublicEventFragment = { __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, kind: string, label?: string | null, locationId?: string | null, metadata: Record<string, any>, name: string, profileId: string, startDate: string, startTimestamp?: string | null, tenantId: string, updatedAt: string };
 
 export type EventsQueryVariables = Exact<{
   distinctOn?: InputMaybe<Array<EventSelectColumn> | EventSelectColumn>;
@@ -2968,9 +4777,9 @@ export type EventsQueryVariables = Exact<{
 }>;
 
 
-export type EventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, isPublic: boolean, kind: string, label?: string | null, locationId?: string | null, metadata?: Record<string, any> | null, name: string, profileId: string, raffleId?: string | null, startDate: string, startTimestamp?: string | null, templateId?: string | null, tenantId: string, updatedAt: string, location?: { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string } | null, profile: { __typename?: 'Profile', createdAt: string, displayName?: string | null, id: string, kind: string, locationId?: string | null, tenantId: string, username: string } }> };
+export type EventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'Event', createdAt: string, endDate: string, endTimestamp?: string | null, id: string, kind: string, label?: string | null, locationId?: string | null, metadata: Record<string, any>, name: string, profileId: string, startDate: string, startTimestamp?: string | null, tenantId: string, updatedAt: string, location?: { __typename?: 'GeoLocation', city?: string | null, country: string, countryCode: string, createdAt: string, formatted?: string | null, id: string, latitude: number, longitude: number, metadata?: Record<string, any> | null, name?: string | null, postalCode?: string | null, state?: string | null, stateCode?: string | null, street1?: string | null, street2?: string | null, tenantId: string, timezone?: string | null, updatedAt: string } | null, profile: { __typename?: 'Profile', createdAt: string, displayName?: string | null, id: string, kind: string, locationId?: string | null, tenantId: string, username: string } }> };
 
 export const PublicProfileFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<PublicProfileFragment, unknown>;
 export const PublicLocationFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<PublicLocationFragment, unknown>;
-export const PublicEventFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isPublic"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"raffleId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"templateId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<PublicEventFragment, unknown>;
-export const EventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"events"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventSelectColumn"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventOrderBy"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventBoolExp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"events"},"name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinctOn"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicEvent"}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicLocation"}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicProfile"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isPublic"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"raffleId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"templateId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<EventsQuery, EventsQueryVariables>;
+export const PublicEventFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]} as unknown as DocumentNode<PublicEventFragment, unknown>;
+export const EventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"events"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventSelectColumn"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EventOrderBy"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EventBoolExp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"events"},"name":{"kind":"Name","value":"event"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinctOn"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinctOn"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicEvent"}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicLocation"}}]}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PublicProfile"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicEvent"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Event"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"endTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"startTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicLocation"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"GeoLocation"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"countryCode"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"formatted"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"metadata"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"stateCode"}},{"kind":"Field","name":{"kind":"Name","value":"street1"}},{"kind":"Field","name":{"kind":"Name","value":"street2"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"timezone"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PublicProfile"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"displayName"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"locationId"}},{"kind":"Field","name":{"kind":"Name","value":"tenantId"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]} as unknown as DocumentNode<EventsQuery, EventsQueryVariables>;

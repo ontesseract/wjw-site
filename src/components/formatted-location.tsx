@@ -6,6 +6,7 @@ import Link from "next/link";
 
 interface FormattedLocationProps {
   location: GeoLocation;
+  googleMapsUrl: string;
   phone?: string;
   className?: string;
 }
@@ -14,6 +15,7 @@ export function FormattedLocation({
   location,
   phone,
   className,
+  googleMapsUrl,
 }: FormattedLocationProps) {
   return (
     <div className={cn("flex flex-col", className)}>
@@ -37,9 +39,7 @@ export function FormattedLocation({
           {location.country && <p>{location.country}</p>}
         </div>
         <Link
-          href={`https://www.google.com/maps/search/?api=1&query=${
-            location.name + " " + location.formatted
-          }`}
+          href={googleMapsUrl}
           target="_blank"
           className="text-primary mt-2"
         >
