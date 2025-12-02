@@ -41,6 +41,7 @@ export default function EventCalendarDay({
 
   const handleClick = () => {
     if (day?.events.length && !isPastDate) {
+      // Push GTM event
       if (typeof window !== "undefined") {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({

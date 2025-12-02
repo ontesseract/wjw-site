@@ -378,7 +378,6 @@ export function SeatMapSvg({
                     key={id}
                     data-seat-id={id}
                     onClick={() => {
-                      console.log("clicked", didDrag.current);
                       if (!didDrag.current) {
                         onSeatClick(seat);
                       }

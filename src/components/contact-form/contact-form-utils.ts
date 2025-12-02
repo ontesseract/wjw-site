@@ -22,7 +22,7 @@ export const submitContactForm = async (args: ContactFormInput) => {
     }
   }
   `;
-  return publicClient.request<
+  return publicClient().request<
     SubmitContactFormMutationResponse,
     SubmitContactFormMutationVariables
   >(mutation, { args });

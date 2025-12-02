@@ -12,6 +12,7 @@ export default function FAQPage() {
         <FormattedLocation
           location={bransonTheater.location}
           phone={bransonTheater.phone}
+          googleMapsUrl={bransonTheater.googleMapsUrl}
           className="mb-8 text-center"
         />
         <div className="max-w-md mx-auto">

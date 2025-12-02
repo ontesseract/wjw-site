@@ -5,6 +5,7 @@ import { ExternalLink, Users, X, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { TheaterInfo } from "@/lib/data";
 import { FormattedLocation } from "../formatted-location";
+import { appendUtmSource } from "@/lib/utils";
 
 interface EventDayModalProps {
   date: Date;
@@ -12,13 +13,6 @@ interface EventDayModalProps {
   isOpen: boolean;
   onClose: () => void;
   theater: TheaterInfo;
-}
-
-// Add GTM dataLayer type to window
-declare global {
-  interface Window {
-    dataLayer: Array<Record<string, unknown>>;
-  }
 }
 
 export default function EventDayModal({
@@ -55,14 +49,19 @@ export default function EventDayModal({
             {day.events.map((event) => (
               <Link
                 key={event.id}
-                href={event.metadata?.completeTicketing?.link ?? "#"}
+                href={appendUtmSource(
+                  event.metadata?.completeTicketing?.link ?? "#"
+                )}
                 target="_blank"
                 className="border border-border rounded-md p-3 block transition-colors hover:bg-muted/50"
                 data-gtm="ticket-checkout"
                 onClick={() => {
-                  if (typeof window !== 'undefined') {
+                  if (typeof window !== "undefined") {
                     window.dataLayer = window.dataLayer || [];
-                    window.dataLayer.push({ event: 'ticket-checkout', eventId: event.id });
+                    window.dataLayer.push({
+                      event: "ticket-checkout",
+                      eventId: event.id,
+                    });
                   }
                 }}
               >
@@ -86,7 +85,7 @@ export default function EventDayModal({
               </Link>
             ))}
             <Link
-              href="/group-sales"
+              href="/branson/group-sales"
               className="border border-border rounded-md p-3 transition-colors hover:bg-muted/50 flex flex-row justify-between items-center gap-2"
             >
               <div className="flex flex-col gap-2">
@@ -106,6 +105,7 @@ export default function EventDayModal({
           <FormattedLocation
             location={theater.location}
             phone={theater.phone}
+            googleMapsUrl={theater.googleMapsUrl}
           />
         </CardContent>
       </Card>
