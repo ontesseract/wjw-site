@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { MainNav } from "@/components/main-nav";
 import { ThemeProvider } from "@/components/theme-provider";
 import { homeMetadata } from "@/lib/metadata";
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/gtm";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -38,6 +39,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "GTM-P3MBCZRQ";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -90,22 +93,10 @@ export default function RootLayout({
             })
           }}
         />
-        
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-P3MBCZRQ');
-            `,
-          }}
-        />
-        {/* End Google Tag Manager */}
       </head>
       <body className={cn(inter.className)}>
+        <GoogleTagManagerNoScript gtmId={gtmId} />
+        
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -117,6 +108,8 @@ export default function RootLayout({
             {children}
           </main>
         </ThemeProvider>
+        
+        <GoogleTagManager gtmId={gtmId} />
       </body>
     </html>
   );
