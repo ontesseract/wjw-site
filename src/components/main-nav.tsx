@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -62,10 +61,6 @@ export function MainNav() {
                     </Link>
                   </NavigationMenuItem>
                 ))}
-
-                <NavigationMenuItem>
-                  <ThemeToggle />
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
