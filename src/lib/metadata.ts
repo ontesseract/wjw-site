@@ -13,7 +13,7 @@ export function generateMetadata({
   title,
   description,
   path = "/",
-  image = "/wjw-social.jpg",
+  image = "https://images.wherejesuswalkedbranson.com/wjw-social.jpg",
   keywords = [],
   type = "website",
 }: PageMetadata): Metadata {
