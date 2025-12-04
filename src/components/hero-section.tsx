@@ -26,7 +26,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-[60vh] flex items-center justify-center text-secondary-foreground overflow-hidden">
+    <section className="relative min-h-[60vh] py-12 sm:py-16 flex items-center justify-center text-secondary-foreground overflow-hidden">
       {heroImages.map((src, index) => (
         <Image
           key={src}
@@ -41,7 +41,7 @@ export function HeroSection() {
       ))}
       <div className="absolute inset-0 bg-black/20 z-[1]"></div>
       <div className="relative z-10 text-center text-white flex flex-col items-center max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="w-full max-w-[600px] mb-8">
+        <div className="w-full max-w-[400px] sm:max-w-[500px] md:max-w-[600px] mb-6 sm:mb-8">
           <Image
             src="/wjw-logo-white.png"
             alt="Where Jesus Walked Logo"
@@ -50,10 +50,10 @@ export function HeroSection() {
             className="w-full h-auto"
           />
         </div>
-        <h2 className="text-5xl font-bold mb-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
           A 360° Immersive Christian Production in Branson, MO
         </h2>
-        <p className="text-xl mb-8">
+        <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8">
           Imagine standing on the shores of Galilee as Jesus calms the storm, or
           walking through the crowded streets of Jerusalem as He teaches with
           compassion and devotion. At Where Jesus Walked - Branson&apos;s
@@ -61,7 +61,7 @@ export function HeroSection() {
           these stories, you&apos;re surrounded by them.
         </p>
         <Link href="/tickets">
-          <Button size="lg" className="text-xl px-8 py-4 h-auto cursor-pointer">
+          <Button size="lg" className="text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 h-auto cursor-pointer">
             Book Now
           </Button>
         </Link>
