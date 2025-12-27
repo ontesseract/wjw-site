@@ -4,7 +4,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "where-jesus-walked-site",
-  "account_id": "578a0ae80302acfd988a901aa9463418",
+  // "account_id": "578a0ae80302acfd988a901aa9463418",
   "compatibility_date": "2025-07-23",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   //   "minify": true,
