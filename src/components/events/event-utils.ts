@@ -59,7 +59,26 @@ export function getUniqueLegendKeys(days: Record<string, EventDay>): string[] {
     uniqueLegendKeys.add(day.legendKey);
   });
 
-  return Array.from(uniqueLegendKeys);
+  return Array.from(uniqueLegendKeys).sort((a, b) => {
+    const getFirstTime = (key: string) => key.split(" & ")[0].split(", ")[0];
+    const timeA = getFirstTime(a);
+    const timeB = getFirstTime(b);
+    const parseTime = (timeStr: string) => {
+      const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (!match) return 0;
+      let hours = parseInt(match[1]);
+      const minutes = parseInt(match[2]);
+      const isPM = match[3]?.toUpperCase() === "PM";
+      if (isPM && hours !== 12) {
+        hours += 12;
+      } else if (!isPM && hours === 12) {
+        hours = 0;
+      }
+      return hours * 60 + minutes;
+    }
+    
+    return parseTime(timeA) - parseTime(timeB);
+  });
 }
 
 export function createCalendarDays(month: Date) {
