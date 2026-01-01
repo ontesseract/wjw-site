@@ -17,6 +17,12 @@ export interface EventDay {
   legendKey: string;
 }
 
+export interface SpecialDateConfig {
+  date: string; // Format: "yyyy-MM-dd" (e.g., "2026-01-29")
+  legendKey: string; // Custom legend key (e.g., "7:00 Opening Night*")
+  colorClass: string; // Custom color class (e.g., "bg-opening-night")
+}
+
 export function getDateKey(date: Date): string {
   return format(date, "yyyy-MM-dd");
 }
@@ -76,8 +82,14 @@ export function createCalendarDays(month: Date) {
   return [...emptyCells, ...days];
 }
 
-export function createEventDays(events: Event[]): Record<string, EventDay> {
+export function createEventDays(
+  events: Event[],
+  specialDates: SpecialDateConfig[] = []
+): Record<string, EventDay> {
   const days: Record<string, EventDay> = {};
+
+  // Create a lookup map for special dates
+  const specialDateMap = new Map(specialDates.map((sd) => [sd.date, sd]));
 
   // Deduplicate events by date + time + name (not just ID, as API may return multiple events for same show)
   const uniqueEvents = Array.from(
@@ -95,16 +107,26 @@ export function createEventDays(events: Event[]): Record<string, EventDay> {
   uniqueEvents.forEach((event) => {
     const date = getStart(event);
     const dayKey = format(date, "yyyy-MM-dd");
+
+    // Check if this is a special date
+    const specialDate = specialDateMap.get(dayKey);
+
     if (!days[dayKey]) {
       days[dayKey] = {
         dateKey: dayKey,
         events: [event],
-        legendKey: getTimeKey(date),
+        legendKey: specialDate ? specialDate.legendKey : getTimeKey(date),
       };
       return;
     }
     const day = days[dayKey];
     day.events.push(event);
+
+    // If it's a special date, keep the special legend key
+    if (specialDate) {
+      day.legendKey = specialDate.legendKey;
+      return;
+    }
 
     // Get unique times for the legend
     const uniqueTimes = Array.from(

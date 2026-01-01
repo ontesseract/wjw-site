@@ -1,25 +1,25 @@
 "use client";
 
-import { format } from "date-fns";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 import { EventsQuery } from "@/graphql";
 import {
   createCalendarDays,
   createEventDays,
   getUniqueLegendKeys,
   getUniqueMonths,
+  SpecialDateConfig,
 } from "./event-utils";
 import EventCalendarDay from "./event-calendar-day";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TheaterInfo } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 export interface MonthHighlight {
   monthNumber: number;
-  borderClassName: string;
-  colorClassName: string;
-  textClassName: string;
   label: string;
 }
 
@@ -28,6 +28,9 @@ export interface EventCalendarClientProps {
   backgroundColorClasses?: string[];
   theater: TheaterInfo;
   monthHighlights?: MonthHighlight[];
+  specialDates?: SpecialDateConfig[];
+  legendMessage?: ReactNode;
+  legendSortOrder?: "latest-first" | "earliest-first";
 }
 
 const defaultBackgroundColorClasses = [
@@ -45,19 +48,129 @@ const defaultBackgroundColorClasses = [
   "bg-chart-12",
 ];
 
+/**
+ * Parses a time string in "h:mm a" format and returns minutes since midnight
+ * Returns null if parsing fails
+ */
+function parseTimeToMinutes(timeStr: string): number | null {
+  try {
+    // Remove asterisk if present for parsing
+    const cleanTime = timeStr.trim().replace(/\*$/, "");
+    // Try uppercase AM/PM format first (required by dayjs customParseFormat)
+    let time = dayjs(cleanTime, "h:mm A", true); // strict mode
+    if (!time.isValid()) {
+      // Fallback to lowercase
+      time = dayjs(cleanTime, "h:mm a", true); // strict mode
+    }
+    if (!time.isValid()) {
+      return null;
+    }
+    return time.hour() * 60 + time.minute();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Extracts all time strings from a legend key
+ * Handles formats like "7:00 PM", "7:00 PM & 9:00 PM", "7:00 PM, 9:00 PM, 11:00 PM"
+ * Uses regex to extract time patterns in "h:mm a" format
+ */
+function extractTimes(legendKey: string): string[] {
+  // Match time patterns like "7:00 PM" or "12:30 AM"
+  const timePattern = /\d{1,2}:\d{2}\s*(AM|PM)/gi;
+  const matches = legendKey.match(timePattern);
+  return matches || [];
+}
+
+/**
+ * Sorts legend keys:
+ * 1. Special dates first (already handled separately)
+ * 2. Single times, sorted by time
+ * 3. Multiple times, sorted by latest/earliest time depending on sortOrder
+ */
+function sortLegendKeys(
+  keys: string[],
+  sortOrder: "latest-first" | "earliest-first" = "latest-first"
+): string[] {
+  // Create a copy to avoid mutating the original array
+  const sorted = [...keys].sort((a, b) => {
+    const timesA = extractTimes(a);
+    const timesB = extractTimes(b);
+
+    const isSingleA = timesA.length === 1;
+    const isSingleB = timesB.length === 1;
+
+    // Single times come before multiple times
+    if (isSingleA && !isSingleB) return -1;
+    if (!isSingleA && isSingleB) return 1;
+
+    // Both single times - sort by time
+    if (isSingleA && isSingleB) {
+      const minutesA = parseTimeToMinutes(timesA[0]);
+      const minutesB = parseTimeToMinutes(timesB[0]);
+      if (minutesA === null && minutesB === null) return 0;
+      if (minutesA === null) return 1;
+      if (minutesB === null) return -1;
+      // latest-first: larger minutes come first (11 PM before 7 PM)
+      // earliest-first: smaller minutes come first (7 PM before 11 PM)
+      return sortOrder === "latest-first"
+        ? minutesB - minutesA
+        : minutesA - minutesB;
+    }
+
+    // Both multiple times - sort by latest/earliest time
+    const latestA = timesA
+      .map((t) => parseTimeToMinutes(t))
+      .filter((m): m is number => m !== null)
+      .sort((x, y) => (sortOrder === "latest-first" ? y - x : x - y))[0];
+    const latestB = timesB
+      .map((t) => parseTimeToMinutes(t))
+      .filter((m): m is number => m !== null)
+      .sort((x, y) => (sortOrder === "latest-first" ? y - x : x - y))[0];
+
+    if (latestA === undefined && latestB === undefined) return 0;
+    if (latestA === undefined) return 1;
+    if (latestB === undefined) return -1;
+    // latest-first: larger minutes come first
+    // earliest-first: smaller minutes come first
+    return sortOrder === "latest-first" ? latestB - latestA : latestA - latestB;
+  });
+  return sorted;
+}
+
 export default function EventCalendarClient({
   events,
   backgroundColorClasses = defaultBackgroundColorClasses,
   theater,
   monthHighlights = [],
+  specialDates = [],
+  legendMessage,
+  legendSortOrder = "latest-first",
 }: EventCalendarClientProps) {
   const isMobile = useIsMobile();
   const currentMonthRef = useRef<HTMLDivElement>(null);
   const legendRef = useRef<HTMLDivElement>(null);
 
+  // Create a lookup map for special date colors
+  const specialDateColorMap = new Map(
+    specialDates.map((sd) => [sd.legendKey, sd.colorClass])
+  );
+
   const months = getUniqueMonths(events);
-  const days = createEventDays(events);
-  const legendKeys = getUniqueLegendKeys(days);
+  const days = createEventDays(events, specialDates);
+
+  // Get legend keys and sort so special dates appear first, then by time
+  const allLegendKeys = getUniqueLegendKeys(days);
+  const specialLegendKeys = specialDates.map((sd) => sd.legendKey);
+  const specialKeys = allLegendKeys.filter((key) =>
+    specialLegendKeys.includes(key)
+  );
+  const nonSpecialKeys = allLegendKeys.filter(
+    (key) => !specialLegendKeys.includes(key)
+  );
+  const sortedNonSpecialKeys = sortLegendKeys(nonSpecialKeys, legendSortOrder);
+  const legendKeys = [...specialKeys, ...sortedNonSpecialKeys];
 
   // Auto-snap to current month on mobile
   useEffect(() => {
@@ -88,7 +201,7 @@ export default function EventCalendarClient({
   }
 
   const getDayForDate = (date: Date) => {
-    const dayKey = format(date, "yyyy-MM-dd");
+    const dayKey = dayjs(date).format("YYYY-MM-DD");
     return days[dayKey];
   };
 
@@ -96,24 +209,33 @@ export default function EventCalendarClient({
     if (!legendKey) {
       return "bg-transparent";
     }
-    const index = legendKeys.indexOf(legendKey);
+    // Check if this legend key has a special color
+    const specialColor = specialDateColorMap.get(legendKey);
+    if (specialColor) {
+      return specialColor;
+    }
+    // For non-special keys, use index from only the non-special keys to preserve original colors
+    const nonSpecialKeys = legendKeys.filter(
+      (key) => !specialDateColorMap.has(key)
+    );
+    const index = nonSpecialKeys.indexOf(legendKey);
     if (index === -1) {
       return "bg-transparent";
     }
-    if (index > backgroundColorClasses.length) {
+    if (index >= backgroundColorClasses.length) {
       return backgroundColorClasses[0];
     }
     return backgroundColorClasses[index];
   };
 
   const isCurrentMonth = (month: Date) => {
-    const now = new Date();
-    return format(month, "yyyy-MM") === format(now, "yyyy-MM");
+    const now = dayjs();
+    return dayjs(month).format("YYYY-MM") === now.format("YYYY-MM");
   };
 
   const monthHighlight = (month: Date) => {
     return monthHighlights.find(
-      (highlight) => highlight.monthNumber === month.getMonth()
+      (highlight) => highlight.monthNumber === month.getMonth() + 1 // 1-indexed
     );
   };
 
@@ -131,20 +253,41 @@ export default function EventCalendarClient({
           className={cn(
             "flex justify-center gap-8 mb-8 flex-wrap",
             isMobile &&
-              "sticky top-16 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border pb-4 pt-2 shadow-sm"
+              "sticky top-16 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-b border-border pb-4 pt-2 shadow-sm"
           )}
         >
-          {legendKeys.map((legendKey) => (
-            <div className="flex items-center gap-2" key={legendKey}>
-              <div
-                className={`w-4 h-4 rounded ${getBackgroundColorClassNameForLegendKey(
-                  legendKey
-                )}`}
-              />
-              <span className="text-sm">{legendKey}</span>
-            </div>
-          ))}
+          {legendKeys.map((legendKey) => {
+            const isSpecial = specialDateColorMap.has(legendKey);
+            const hasAsterisk = legendKey.endsWith("*");
+            const displayText = hasAsterisk
+              ? legendKey.slice(0, -1)
+              : legendKey;
+
+            return (
+              <div className="flex items-center gap-2" key={legendKey}>
+                <div
+                  className={`w-4 h-4 rounded ${getBackgroundColorClassNameForLegendKey(
+                    legendKey
+                  )}`}
+                />
+                <span className="text-sm">
+                  {displayText}
+                  {hasAsterisk && isSpecial && (
+                    <span className="text-opening-night">*</span>
+                  )}
+                  {hasAsterisk && !isSpecial && "*"}
+                </span>
+              </div>
+            );
+          })}
         </div>
+
+        {/* Legend Message */}
+        {legendMessage && (
+          <div className="max-w-3xl mx-auto text-center mb-8 px-4">
+            {legendMessage}
+          </div>
+        )}
 
         {/* Calendar Grid */}
         <div
@@ -161,26 +304,22 @@ export default function EventCalendarClient({
               className={cn(
                 "border rounded-lg p-4 relative",
                 isCurrentMonth(month) && isMobile && "ring-2 ring-primary/20",
-                monthHighlight(month)?.borderClassName || "border-border"
+                monthHighlight(month)
+                  ? "border-primary border-2 shadow-lg"
+                  : "border-border"
               )}
             >
               {!!monthHighlight(month) && (
                 <div
-                  className={cn(
-                    "absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap",
-                    monthHighlight(month)?.colorClassName
-                  )}
+                  className={
+                    "absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-primary text-primary-foreground"
+                  }
                 >
                   {monthHighlight(month)?.label}
                 </div>
               )}
-              <h3
-                className={cn(
-                  "text-center font-bold mb-4",
-                  monthHighlight(month)?.textClassName
-                )}
-              >
-                {format(month, "MMMM yyyy").toUpperCase()}
+              <h3 className={"text-center font-bold mb-4 text-primary"}>
+                {dayjs(month).format("MMMM YYYY").toUpperCase()}
               </h3>
               <div className="grid grid-cols-7 gap-1">
                 {/* Week days */}
