@@ -10,6 +10,7 @@ export interface EventCalendarProps {
   monthHighlights?: MonthHighlight[];
   backgroundColorClasses?: string[];
   theater: TheaterInfo;
+  legendSortOrder?: "latest-first" | "earliest-first";
 }
 
 export default async function EventCalendar({
@@ -19,6 +20,7 @@ export default async function EventCalendar({
   backgroundColorClasses,
   theater,
   monthHighlights,
+  legendSortOrder,
 }: EventCalendarProps) {
   let events: EventsQuery["events"] = [];
   try {
@@ -38,6 +40,7 @@ export default async function EventCalendar({
       theater={theater}
       backgroundColorClasses={backgroundColorClasses}
       monthHighlights={monthHighlights}
+      legendSortOrder={legendSortOrder}
     />
   );
 }

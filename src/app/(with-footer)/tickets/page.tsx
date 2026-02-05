@@ -1,6 +1,7 @@
 import EventCalendar from "@/components/events/event-calendar";
 import { bransonTheater } from "@/lib/data";
 import { generateMetadata } from "@/lib/metadata";
+import dayjs from "dayjs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = generateMetadata({
@@ -17,15 +18,24 @@ export const metadata: Metadata = generateMetadata({
     "biblical theater booking",
   ],
 });
+interface BransonTicketsPageProps {
+  searchParams: Promise<{ year: string }>;
+}
 
-export default function TicketsPage() {
+const defaultYear = dayjs().year().toString();
+
+export default async function BransonTicketsPage({
+  searchParams,
+}: BransonTicketsPageProps) {
+  const year = parseInt((await searchParams).year || defaultYear);
   return (
     <div className="bg-background text-foreground py-16">
       <EventCalendar
         showName="Where Jesus Walked"
-        year={2025}
+        year={year}
         city="branson"
         theater={bransonTheater}
+        legendSortOrder="earliest-first"
       />
     </div>
   );

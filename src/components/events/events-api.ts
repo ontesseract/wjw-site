@@ -87,6 +87,17 @@ export const eventsQuery = graphql(`
   }
 `);
 
+export async function getEvent(
+  eventId: string
+): Promise<EventsQuery["events"][number]> {
+  console.log("eventId:", eventId);
+  const data = await publicClient({ cache: "force-cache" })
+    .gql(eventsQuery)
+    .send({ where: { id: { _eq: eventId } } });
+  console.log("data:", data);
+  return data?.events?.[0] ?? null;
+}
+
 export async function getEvents({
   showName,
   year,
