@@ -12,7 +12,8 @@
     "deploy:retry": "./deploy-with-retry.sh",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "codegen": "graphql-codegen --config graphql.codegen.ts --watch"
+    "codegen": "graphql-codegen --config graphql.codegen.ts --watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@date-fns/tz": "^1.2.0",
